@@ -393,10 +393,20 @@ function loadFromWeb() {
     palette: app.selected.palette,
     size: app.selected.size
   }
-    
+
+  initProject()
+
   load(JSON.stringify(file))
 
-  app.setPublish(app.selected.type == 'public' ? true: false )
+  app.setPublish(app.selected.type == 'public' && app.personal ? true: false )
+
+  if (app.personal) {
+    initialSave()
+
+    // TODO:update   updateSave() en loop
+
+    
+  }
 
 }
 

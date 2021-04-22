@@ -45,6 +45,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   ipc.on("loadBeads", (event, beads, pth) => {
     path = pth;
     load(beads);
+    initProject()
   });
 
   //TODO: guardar estas cosas en la version web tambien
