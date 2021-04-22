@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <title>Acerca de</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <script src="js/lib/uikit.min.js"></script>
+    <script src="js/lib/uikit-icons.min.js"></script>
+    <link rel="stylesheet" href="css/lib/uikit.min.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/ui.js"></script>
+
+</head>
+
+<body id="body">
+
+<script>
+
+if (navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) {
+
+switch (process.platform) {
+  case 'win32':
+    app.ctrl = true;
+  break;
+
+  case 'darwin':
+    app.cmd = true;
+  break;
+
+  default:
+    app.ctrl = true; // linux uses the win key, i thing??
+  break;
+}
+
+}
+
+</script>
+
+    <div id="app" class="uk-container uk-light uk-background-secondary uk-padding">
+ <div id="controls">
+
+            <div class="uk-light uk-background-secondary uk-padding">
+
+
+                <h1>Controles</h1>
+                <br>
+
+                <div class="uk-grid-small" uk-grid>
+                    <div class="uk-width-1-3@s">
+                        <h3>Camara</h3>
+
+
+                        <ul>
+                            <li><span class="icon keyboard_keys button_key right_cam"></span> Mover camara a la derecha
+                            </li>
+                            <li><span class="icon keyboard_keys button_key left_cam"></span> Mover camara a la izquierda
+                            </li>
+                            <li><span class="icon keyboard_keys button_key up_cam"></span> Mover camara a la arriba</li>
+                            <li><span class="icon keyboard_keys button_key down_cam"></span> Mover camara a la abajo
+                            </li>
+                            <br>
+                            <li><span class="icon keyboard_keys button_key zoom_cam"></span> Zoom</li>
+                        </ul>
+                    </div>
+
+                    <div class="uk-width-1-3@s">
+
+                        <h3>Herramientas</h3>
+
+
+                        <ul>
+                            <li><span class="icon keyboard_keys button_key erase_tool"></span> Borrar</li>
+                            <li><span class="icon keyboard_keys button_key fill_tool"></span> Rellenar</li>
+                            <li><span class="icon keyboard_keys button_key draw_tool"></span> Lapiz</li>
+                            <li><span class="icon keyboard_keys button_key pick_tool"></span> Selecionar color</li>
+                        </ul>
+                    </div>
+                    <div class="uk-width-1-3@s">
+
+                        <h3>Otros</h3>
+
+
+                        <ul>
+                            <li v-if='ctrl'><span class="icon keyboard_keys button_key ctrl_z"></span> Deshacer</li>
+                            <li v-if='cmd'><span class="icon keyboard_keys button_key cmd_z"></span> Deshacer</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <style>
+        body,html{
+            overflow-x: hidden!important;
+        }
+    </style>
+
+    <script src="js/ipc.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<html>
+
+<head>
+    <title>Blaster Maker</title>
+    <script src="js/lib/vue.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="js/lib/html2canvas.js"></script>
+
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    
+    <script src="js/lib/v-tooltip.min.js"></script>
+    
+    <link rel="stylesheet" href="css/lib/uikit.min.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="body">
+        <webview id="web"  style = 'position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;'>
+        </webview>
+    <div id="app">
+
+        <div id="consoles" v-if='ideas'>
+
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-margin-large-top uk-grid" uk-grid="">
+
+                <div @click="loadIdea('https://www.etsy.com/es/market/anime_pixel_art?ref=pagination')" class="img-max uk-first-column">
+                    <h3>Anime</h3>
+                    <img src="https://i.etsystatic.com/25097796/d/il/8904b5/2718320958/il_340x270.2718320958_qinw.jpg?version=0" alt="NES">
+                </div>
+
+                <div @click="loadIdea('https://www.pinterest.cl/search/pins/?q=8%20bit%20pixel%20art&rs=guide&term_meta[]=8%7Ctyped&term_meta[]=bits%7Ctyped&add_refine=8%20bit%20pixel%20art%7Cguide%7Cword%7C1')" class="img-max uk-first-column">
+                    <h3>Anime</h3>
+                    <img src="https://i.imgur.com/CuqAbnS.png" alt="NES">
+                </div>
+
+                <div @click="loadIdea('https://www.reddit.com/r/beadsprites')" class="img-max uk-first-column">
+                    <h3>Anime</h3>
+                    <img src="https://i.imgur.com/rE8LWel.png" alt="NES">
+                </div>
+
+
+            </div>
+
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-margin-large-top uk-grid" uk-grid="">
+                <div @click="loadIdea('https://blasterchile.com/portfolio-types/anime/#')" class="img-max uk-first-column">
+                    <h3>Anime</h3>
+                    <img src="http://blasterchile.com/wp-content/uploads/2019/09/logo_rojo.png" alt="NES">
+                </div>
+            </div>
+
+
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-margin-large-top uk-grid" uk-grid="">
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+
+        var app = new Vue({
+        el: "#app",
+        data: {
+            webview: false,
+            ideas: true
+        },
+        methods: {
+            loadIdea: function (url) {
+                this.webview = true
+                this.ideas = false
+
+                document.querySelector( 'webview' ).setAttribute( 'src', url );
+         
+                document.querySelector( 'webview' ).style.display = 'flex'
+
+            }
+        }
+        });
+
+        document.querySelector( 'webview' ).addEventListener('new-window', function (e) {
+            document.querySelector( 'webview' ).src = e.url;
+        });
+
+
+        Vue.use(VTooltip)
+
+    </script>
+
+    <style>
+
+        #web{
+            display: none;
+        }
+
+        #use-btn{
+            width: 100%;
+            height: 60px;
+            visibility: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        a,a:visited, a:hover{
+            text-decoration: none;
+        }
+
+        .img-max{
+            height: 300px; /* [1.1] Set it as per your need */
+            overflow: hidden; /* [1.2] Hide the overflowing of child elements */
+        }
+
+    </style>
+
+    <script src="js/ipc.js?asdas=22234234"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+</body>
+
+</html>

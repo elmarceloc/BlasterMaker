@@ -1,0 +1,146 @@
+<html>
+
+<head>
+    <title>Blaster Maker</title>
+    <script src="js/lib/vue.js"></script>
+    <script src="js/utils.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="js/lib/html2canvas.js"></script>
+    
+    <link rel="stylesheet" href="css/lib/uikit.min.css" />
+    <link href="css/lib/cropper.css" rel="stylesheet"/>
+    
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+    <script src="js/lib/jquery.js"></script>
+
+    
+    <script src="js/lib/cropper.js" ></script>
+     
+  <!--  <script src="js/lib/jquery-cropper.js"></script> -->
+    
+    <script>if (window.module) module = window.module;</script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="body">
+
+    <div class="btnfloat" id="closecropper" onclick="closecropper">
+        <div role="button" tabindex="0">x</div>
+    </div>
+
+
+<style>
+
+    img{
+        display: none;
+    }
+
+    #previewCanvas{
+        width: 500px;
+    }
+
+</style>
+
+    <div id="new-grid" class="uk-grid-small uk-grid">
+        <div class="uk-width-1-2@s  uk-light uk-background-secondary uk-padding">
+
+            <fieldset class="uk-fieldset">
+
+                <legend class="uk-legend">Importar imagen</legend>
+                <br>
+
+                <div class="uk-grid-small uk-grid">
+
+
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label" for="form-stacked-text">X</label>
+                        <input disabled class="uk-input" value="0" id="x" type="text" placeholder="x"/></br>
+                    </div>
+
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label" for="form-stacked-text">Y</label>
+                        <input disabled class="uk-input" value="0" id="y" type="text" placeholder="y"/></br>
+                    </div>
+
+                </div>
+
+                <div class="uk-grid-small uk-grid">
+
+
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label" for="form-stacked-text">Width</label>
+                        <input disabled class="uk-input" value="0" id="width" type="text" placeholder="anchura"/></br>
+                    </div>
+
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label" for="form-stacked-text">Height</label>
+                        <input disabled class="uk-input" value="0" id="height" type="text" placeholder="altura"/></br>
+                    </div>
+
+                </div>
+               
+                <div class="uk-grid-small uk-grid">
+
+
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label">Tamaño Beads</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            <label class="label-radio"><input class="uk-radio" value="5" id="size" type="radio" name="size" checked>
+                                5 mm</label><br>
+                            <label class="label-radio"><input class="uk-radio" value="2.6" id="size" type="radio" name="size">
+                                2.6 mm</label><br>
+                        </div>
+                    </div>
+
+                    <div class="uk-width-1-2@s">
+                        <label class="uk-form-label">Paleta</label>
+                        <div class="uk-form-controls uk-form-controls-text">
+                            <label class="label-radio"><input class="uk-radio" value="all" id="kit" type="radio" name="kit" checked>
+                                Todos</label><br>
+                            <label class="label-radio"><input class="uk-radio" value="basic" id="kit" type="radio" name="kit"> Solo Kit
+                                Basico</label><br>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="uk-margin">
+                    <label class="uk-form-label" id="showrange"></label>
+                        <div class="uk-form-controls uk-form-controls-text">
+
+                        <input disabled onchange="updateTextInput(this.value);" id="scale" type="range" min="1" max="100" value="1"><br>
+                    </div>
+
+                </div>
+
+                <button onclick="exportImageData()" class="uk-margin uk-button uk-button-secondary">Importar</button>
+
+            </fieldset>
+
+        </div>
+        <div class="uk-width-1-2@s ">
+            <!-- <div id="crop" style="position: absolute;border: white solid 1px;"> </div> -->
+
+            <div id="previewContainer">
+                
+                <img id="previewCropOriginal" src="" alt="">
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <script src="js/ipc.js?asdas=fdgdfg"></script>
+
+    <script src="js/cropper.js"></script>
+
+
+</body>
+
+</html>

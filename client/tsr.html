@@ -1,0 +1,147 @@
+<html>
+
+<head>
+    <title>Blaster Maker</title>
+    <script src="js/lib/vue.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="js/lib/html2canvas.js"></script>
+
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    
+    <script src="js/lib/v-tooltip.min.js"></script>
+    
+    <link rel="stylesheet" href="css/lib/uikit.min.css" />
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body id="body" class="tsrbg">
+
+    <div id="app">
+
+        <button v-on:click="useSprite()" class="uk-margin uk-button uk-button-primary" id="use-btn">Usar</button>
+
+        <webview id="web"  style = 'position:fixed; top:0; left:0; bottom:0; right:0; width:100%; height:100%; border:none; margin:0; padding:0; overflow:hidden;'>
+        </webview>
+
+        <div id="consoles" v-if='consoles'>
+
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-margin-large-top uk-grid" uk-grid="">
+                <div class="uk-first-column">
+                    <h3>NES</h3>
+                    <img v-on:click="loadConsole('nes')" v-tooltip="'Similiritud: 80%'" src="img/consoles/nes.png" alt="NES">
+                </div>
+                <div class="">
+                    <h3>SNES</h3>
+                    <img v-on:click="loadConsole('snes')" src="img/consoles/snes.png" alt="SNES">
+                </div>
+                <div class="">
+                    <h3>GBA</h3>
+                    <img v-on:click="loadConsole('gba')" src="img/consoles/gba.png" alt="GBA">
+                </div>
+            </div>
+
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-margin-large-top uk-grid" uk-grid="">
+                <div class="uk-first-column">
+                    <h3>Atari</h3>
+                    <img v-on:click="loadConsole('atari')" src="img/consoles/atari2600.png" alt="atari">
+                </div>
+                <div class="">
+                    <h3>PC</h3>
+                    <img v-on:click="loadConsole('pc')" src="img/consoles/pc.png" alt="PC">
+                </div>
+
+                <div class="">
+                    <h3>Arcade</h3>
+                    <img v-on:click="loadConsole('arcade')" src="img/consoles/arcade.png" alt="Arcade">
+                </div>
+            </div>
+
+
+            <div class="uk-grid-collapse uk-child-width-expand@s uk-text-center uk-margin-large-top uk-grid" uk-grid="">
+
+                <div class="">
+                    <h3>Nintendo DS</h3>
+                    <img v-on:click="loadConsole('ds_dsi')" src="img/consoles/nds.png" alt="nds">
+                </div>
+                <div></div>
+                <div></div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        var app = new Vue({
+        el: "#app",
+        data: {
+            consoles: true,
+            tsr: false
+        },
+        methods: {
+            useSprite: function () {
+                const url = document.querySelector('webview').src
+
+                ipc.send('openTSR', url);
+
+            },
+            loadConsole: function (console) {
+                this.tsr = true
+                this.consoles = false
+
+                console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+
+                document.querySelector( 'webview' ).setAttribute( 'src', 'https://www.spriters-resource.com/console/'+console );
+         
+
+            }
+        }
+        });
+
+        const webview = document.querySelector('webview')
+
+        webview.addEventListener('dom-ready', () => {
+            document.documentElement.style.overflow = 'hidden';
+            webview.setAudioMuted(true)
+
+        })
+        webview.addEventListener('did-finish-load', () => {
+            const url = document.querySelector('webview').src
+
+            if (url.includes('sheet')) {
+                document.getElementById('web').style.top = '60px'
+                document.getElementById('use-btn').style.visibility = 'visible'
+            }
+
+
+        })
+
+
+        Vue.use(VTooltip)
+
+    </script>
+
+    <style>
+
+        #use-btn{
+            width: 100%;
+            height: 60px;
+            visibility: hidden;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+    </style>
+
+    <script src="js/ipc.js?asdas=22234234"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+
+
+</body>
+
+</html>
