@@ -333,7 +333,7 @@ function showLayout(layout) {
     case "new":
       toggleEvents(false);
 
-      projectName = "";
+      app.name = "";
       document.getElementById("name").value = "";
       document.getElementById("x").value = 1;
       document.getElementById("y").value = 1;
@@ -367,7 +367,7 @@ function showLayout(layout) {
 
 function initProject() {
   app.size = width / gridSize + " x " + height / gridSize;
-  app.name = projectName;
+
   app.colorPalette = palette == "all" ? "Completa" : "Basica";
   app.beadSize = gridSize == 29 ? "5 mm" : "2.6 mm";
 
@@ -384,6 +384,8 @@ function initProject() {
 
   temp = []; //??
 
+  app.setPublish(false)
+
   save();
 
 }
@@ -399,8 +401,6 @@ function hasKit(kit) {
 }*/
 
 function createNew() {
-  projectName = document.getElementById("name").value;
-
   var x = document.getElementById("x").value;
   var y = document.getElementById("y").value;
   var kit = document.querySelector('input[name="kit"]:checked').value;
@@ -429,9 +429,8 @@ function createNew() {
     return;
   }
 
-  console.log(projectName);
 
-  if (projectName == "") {
+  if (app.name == "") {
     UIkit.notification({
       message: "Falta el nombre del proyecto",
       pos: "top-center",
@@ -462,6 +461,7 @@ function openRecent() {
     gridSize = localStorage.getItem("gridSize");
 
     initProject();
+      
   } else {
     // muestra un error, porque no hay un recent proyect
   }
@@ -652,7 +652,7 @@ function downloadTable() {
   }).then(function (canvas) {
     var link = document.createElement("a");
     document.body.appendChild(link);
-    link.download = projectName + ".jpg";
+    link.download = app.name + ".jpg";
     link.href = canvas.toDataURL();
     link.target = "_blank";
     link.click();

@@ -15,8 +15,6 @@ var id = null;
 
 var path = ''
 
-var projectName = '';
-
 var palette = "all";
 var colorPalette = [];
 
@@ -105,7 +103,9 @@ function load(file) {
   let code = data.code;
   let newGrid = decompress(code).split(" ");
   
-  projectName = name
+  //projectName = name
+
+  app.name = name;
 
   setColorPalete(size, kit)
 
@@ -144,7 +144,7 @@ function generate() {
     width: width,
     height: height,
     code: savedData,
-    name: projectName,
+    name: app.name,
     palette: palette,
     size: gridSize == 29 ? '5' : '2.6'
   }
@@ -322,7 +322,7 @@ function initialSave() {
     const formData = new FormData();
     formData.append('file', blob, 'filename.png');
 
-    formData.append('name' , projectName); 
+    formData.append('name' , app.name); 
     formData.append('type' , 'private'); 
     formData.append('size' , gridSize); 
     formData.append('palette' , palette); 
@@ -406,6 +406,8 @@ function loadFromWeb() {
     // TODO:update   updateSave() en loop
 
     
+  }else{
+    app.name = 'Copia de '+app.selected.name
   }
 
 }
