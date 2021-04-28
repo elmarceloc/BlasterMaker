@@ -18,24 +18,29 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   });
 }
 
-
-
 var ctrlDown = false;
-var ctrlKey = 17, vKey = 86, cKey = 67, zKey = 90;
+var ctrlKey = 17,
+  vKey = 86,
+  cKey = 67,
+  zKey = 90;
 
-document.body.onkeydown = function(e) {
+document.body.onkeydown = function (e) {
   if (e.keyCode == 17 || e.keyCode == 91) {
     ctrlDown = true;
   }
-  if ((ctrlDown && e.keyCode == zKey) || (ctrlDown && e.keyCode == vKey) || (ctrlDown && e.keyCode == cKey)) {
+  if (
+    (ctrlDown && e.keyCode == zKey) ||
+    (ctrlDown && e.keyCode == vKey) ||
+    (ctrlDown && e.keyCode == cKey)
+  ) {
     e.preventDefault();
     return false;
   }
-}
-document.body.onkeyup = function(e) {
+};
+document.body.onkeyup = function (e) {
   if (e.keyCode == 17 || e.keyCode == 91) {
     ctrlDown = false;
-  };
+  }
 };
 
 function launchFullScreen(element) {
@@ -66,35 +71,35 @@ function isNumeric(str) {
   ); // ...and ensure strings of whitespace fail
 }
 
-
 var fillStack = [];
-var matrix = [...Array(height)].map(k=>[...Array(width)].fill(0))
+var matrix = [...Array(height)].map((k) => [...Array(width)].fill(0));
 
-function fill(x,y) {
-    fillStack.push([x, y]);
+function fill(x, y) {
+  fillStack.push([x, y]);
 
-    while(fillStack.length > 0)
-    {
-        var [x, y] = fillStack.pop();
+  while (fillStack.length > 0) {
+    var [x, y] = fillStack.pop();
 
-        if (!(isInside(x, y) && getBeadColor(x, y) == fillBaseColor ) ) {continue};
-
-        if (matrix[y][x] == 1) {continue};
-
-        matrix[y][x] = 1;
-
-        setBeadColor(x, y, color)
-        
-        fillStack.push([x + 1, y]);
-        fillStack.push([x - 1, y]);
-        fillStack.push([x, y + 1]);
-        fillStack.push([x, y - 1]);
-        
-        
+    if (!(isInside(x, y) && getBeadColor(x, y) == fillBaseColor)) {
+      continue;
     }
+
+    if (matrix[y][x] == 1) {
+      continue;
+    }
+
+    matrix[y][x] = 1;
+
+    setBeadColor(x, y, color);
+
+    fillStack.push([x + 1, y]);
+    fillStack.push([x - 1, y]);
+    fillStack.push([x, y + 1]);
+    fillStack.push([x, y - 1]);
+  }
 }
 
-function line(x1, y1,x2,y2, color) {
+function line(x1, y1, x2, y2, color) {
   // Translate coordinates
   /* var x1 = startCoordinates.left;
       var y1 = startCoordinates.top;
@@ -191,27 +196,23 @@ function updateScreenSize() {
 
   //Marcos[1].y = window.innerHeight
 
-  panels["tools"].x = window.innerWidth / 2 - 96*2;
-  panels["tools"].y = window.innerHeight - 40 - navbarSize;
+  panels["tools"].x = window.innerWidth / 2 - 96 * 2;
+  panels["tools"].y = window.innerHeight - 74 - navbarSize;
 
- // panels["transform"].x = window.innerWidth / 2 + 400;
- // panels["transform"].y = window.innerHeight - 80 - navbarSize;
+  // panels["transform"].x = window.innerWidth / 2 + 400;
+  // panels["transform"].y = window.innerHeight - 80 - navbarSize;
 
- // panels["palete"].y = window.innerHeight - 150 - navbarSize;
+  // panels["palete"].y = window.innerHeight - 150 - navbarSize;
 
-
-  
   //document.getElementById('search').style.width = panels["colors"].width + 6
   //console.log(window.innerHeight - 232 - navbarSize + 'px')
-  document.getElementById('color-table').style.height = window.innerHeight - 232 - navbarSize + 'px'
-
+  document.getElementById("color-table").style.height =
+    window.innerHeight - 232 - navbarSize + "px";
 }
-
 
 setInterval(() => {
   updateScreenSize();
 }, 100);
-
 
 function getMousePos(e) {
   var rect = document.getElementById("uiCanvas").getBoundingClientRect();
@@ -223,7 +224,7 @@ function getMousePos(e) {
 
 function wheel(e) {
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
-};
+}
 
 var oldMouse = false;
 
@@ -233,80 +234,90 @@ function mouseDown(e) {
   click = true;
   clickDown = true;
 
-  if(isOverPanel()) return
+  if (isOverPanel()) return;
 
   /* if (isInside(...getPosScreenToGrid(e.pageX, e.pageY))) {
     save();
   }*/
-
-  if (e.button != 0) return;
-
-  switch (tool) {
-    // move camera
+  console.log('click')
+  switch (e.button ) {
     case 0:
+      switch (tool) {
+        // move camera
+        case 0:
+          panZoomFrom = [
+            mouse[0] - xOffset * scale,
+            mouse[1] - yOffset * scale,
+          ];
+          panZoomTo = [mouse[0] - xOffset * scale, mouse[1] - yOffset * scale];
+          isDragging = true;
+          break;
+        // pencil
+        case 1:
+          isDrawing = true;
+          if (
+            getBeadColor(...getPosScreenToGrid(...mouse)) != color &&
+            !isInInfo(...mouse)
+          ) {
+            setBeadColor(...getPosScreenToGrid(...mouse), color);
+            oldMouse = mouse;
+            //new Audio('./bead.mp3').play()
+          }
+          break;
+        // fill
+        case 2:
+          if (isInside(...getPosScreenToGrid(mouse[0], mouse[1]))) {
+            fillBaseColor = getBeadColor(
+              ...getPosScreenToGrid(mouse[0], mouse[1])
+            );
+            fill(...getPosScreenToGrid(...mouse));
+            matrix = [...Array(height)].map((k) => [...Array(width)].fill(0));
+          }
+          break;
+        // eracer
+        case 3:
+          isDrawing = true;
+          setBeadColor(...getPosScreenToGrid(...mouse), 0);
+          break;
+
+        // color picker
+        case 4:
+          let newcolor = getBeadColor(...getPosScreenToGrid(...mouse));
+
+          if (newcolor != 0) {
+            color = getBeadColor(...getPosScreenToGrid(...mouse));
+
+            if (toReplace != -1) {
+              replaceBead(toReplace, color);
+              toReplace = -1;
+            }
+          }
+          // FIXME:
+          setTool(lastTool);
+
+          break;
+      }
+
+      // return if color picker if used
+      if (tool != 4) {
+        lastTool = tool;
+      }
+      break;
+
+    case 1:
+      console.log('pan')
       panZoomFrom = [mouse[0] - xOffset * scale, mouse[1] - yOffset * scale];
       panZoomTo = [mouse[0] - xOffset * scale, mouse[1] - yOffset * scale];
       isDragging = true;
       break;
-    // pencil
-    case 1:
-      isDrawing = true;
-      if (
-        getBeadColor(...getPosScreenToGrid(...mouse)) != color &&
-        !isInInfo(...mouse)
-      ) {
-        setBeadColor(...getPosScreenToGrid(...mouse),color)
-        oldMouse=mouse
-        //new Audio('./bead.mp3').play()
-      }
-      break;
-    // full
-    case 2:
-      if (isInside(...getPosScreenToGrid(mouse[0], mouse[1]))) {
-        fillBaseColor = getBeadColor(...getPosScreenToGrid(mouse[0], mouse[1]));
-        fill(...getPosScreenToGrid(...mouse));
-        matrix=[...Array(height)].map(k=>[...Array(width)].fill(0))
-      }
-      break;
-    // eracer
-    case 3:
-      isDrawing = true;
-      setBeadColor(...getPosScreenToGrid(...mouse), 0);
-      break;
-
-    // color picker
-    case 4:
-      let newcolor = getBeadColor(...getPosScreenToGrid(...mouse));
-
-      if (newcolor != 0) {
-        color = getBeadColor(...getPosScreenToGrid(...mouse));
-
-        if (toReplace != -1) {
-          replaceBead(toReplace, color);
-          toReplace = -1;
-        }
-      }
-      // FIXME:
-      setTool(lastTool);
-
-      break;
   }
-
-  // return if color picker if used
-  if (tool != 4) {
-    lastTool = tool;
-  }
-};
+}
 
 function mouseUp(e) {
   click = false;
   clickUp = true;
-
+  isDragging = false;
   switch (tool) {
-    case 0:
-      isDragging = false;
-      break;
-
     case 1:
       isDrawing = false;
       oldMouse = false;
@@ -315,40 +326,33 @@ function mouseUp(e) {
     case 3:
       isDrawing = false;
       oldMouse = false;
-       break;
+      break;
   }
 
-   if (!isOverPanel() && isInside(...getPosScreenToGrid(e.pageX, e.pageY))) {
+  if (!isOverPanel() && isInside(...getPosScreenToGrid(e.pageX, e.pageY))) {
     save();
   }
 
   // ???
-};
+}
 
 function mouseMove(e) {
   mouse = getMousePos(e);
 
-  if(isOverPanel() || isInInfo(...mouse)) return
+  if (isOverPanel() || isInInfo(...mouse)) return;
+
 
   switch (tool) {
-    case 0:
-      if (isDragging) {
-        panZoomTo = mouse;
-        xOffset = (panZoomTo[0] - panZoomFrom[0]) / scale;
-        yOffset = (panZoomTo[1] - panZoomFrom[1]) / scale;
-      }
-      break;
-
     case 1:
       if (isDrawing) {
         setBeadColor(...getPosScreenToGrid(...mouse), color);
-        if(oldMouse){
-        var [x1, y1, x2, y2] = [
-          ...getPosScreenToGrid(...oldMouse),
-          ...getPosScreenToGrid(...mouse),
-        ];
-         line(x1,y1,x2,y2,color)
-          }
+        if (oldMouse) {
+          var [x1, y1, x2, y2] = [
+            ...getPosScreenToGrid(...oldMouse),
+            ...getPosScreenToGrid(...mouse),
+          ];
+          line(x1, y1, x2, y2, color);
+        }
 
         oldMouse = mouse;
       }
@@ -357,19 +361,26 @@ function mouseMove(e) {
     case 3:
       if (isDrawing) {
         setBeadColor(...getPosScreenToGrid(...mouse), 0);
-     
-      if(oldMouse){
-        var [x1, y1, x2, y2] = [
-          ...getPosScreenToGrid(...oldMouse),
-          ...getPosScreenToGrid(...mouse),
-        ];
-         line(x1,y1,x2,y2,0)
-          }
 
-        oldMouse = mouse; }
+        if (oldMouse) {
+          var [x1, y1, x2, y2] = [
+            ...getPosScreenToGrid(...oldMouse),
+            ...getPosScreenToGrid(...mouse),
+          ];
+          line(x1, y1, x2, y2, 0);
+        }
+
+        oldMouse = mouse;
+      }
       break;
   }
-};
+  if (isDragging) {
+    panZoomTo = mouse;
+    xOffset = (panZoomTo[0] - panZoomFrom[0]) / scale;
+    yOffset = (panZoomTo[1] - panZoomFrom[1]) / scale;
+  }
+}
+
 /*
 function keyPress(e) {
   if (e.key == "w") {
@@ -381,7 +392,7 @@ function keyPress(e) {
     save();
   }*/
 
-  /* if (e.key == "n" && isDevMode) {
+/* if (e.key == "n" && isDevMode) {
     panels.unshift(
       new Panel(
         "_",
@@ -402,7 +413,6 @@ function keyPress(e) {
 */
 
 function keyDown(e) {
-
   if (e.ctrlKey && e.key === "z") {
     undo();
   }
@@ -425,10 +435,10 @@ function keyDown(e) {
       yOffset -= 2;
       break;
     case "q":
-      rotateLeft()
+      rotateLeft();
       break;
     case "w":
-      rotateRight()
+      rotateRight();
       break;
   }
 
@@ -449,8 +459,7 @@ function keyDown(e) {
   tools.forEach((t, i) => {
     if (t == e.key) setTool(i);
   });
-};
-
+}
 
 if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   const { remote, contextBridge } = require("electron");
@@ -473,15 +482,15 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
         if (isInside(...getPosScreenToGrid(...mouse))) {
           let mouseOnPanel = false;
 
-          if(isOverPanel()) return
+          if (isOverPanel()) return;
 
           if (mouseOnPanel) return;
 
           const menu = new Menu(); // FIXME: mover afuera si se agrega menu global
 
-          let color = getBeadColor(...getPosScreenToGrid(...mouse))
+          let color = getBeadColor(...getPosScreenToGrid(...mouse));
 
-        //  console.log(color);
+          //  console.log(color);
 
           menu.append(
             new MenuItem({
@@ -498,8 +507,8 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
             new MenuItem({
               label: "Borrar color",
               click: function () {
-                replaceBead(color,0);
-                save()
+                replaceBead(color, 0);
+                save();
               },
             })
           );
@@ -528,7 +537,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
             ) *
               pensPerCol;
           if (index < colorPalette.length) {
-        //    console.log(index);
+            //    console.log(index);
             const menu = new Menu();
 
             menu.append(
@@ -546,7 +555,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
               new MenuItem({
                 label: "Borrar color",
                 click: function () {
-                  replaceBead(colors.indexOf(colorPalette[index])+1, 0);
+                  replaceBead(colors.indexOf(colorPalette[index]) + 1, 0);
                 },
               })
             );

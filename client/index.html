@@ -527,6 +527,9 @@
                                             <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen"
                                                 id="file-image" onclick="downloadTable()"><i id="img-icon"
                                                     class="far fa-file-image"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen"
+                                                id="file-image" onclick="downloadTable()"><i id="img-icon"
+                                                    class="far fa-file-image"></i></button>
                                         </th>
                                     </tr>
                                 </thead>
@@ -553,8 +556,7 @@
                                         <td style="width: 120px;">{{total}}</td>
                                     </tr>
                                     <tr id="publicTr" data-html2canvas-ignore="True">
-                                        <td><i class="fas fa-cloud-upload-alt"></i> {{publicState ? 'Publico' :
-                                            'Privado'}}</td>
+                                        <td><i class="fas fa-cloud-upload-alt"></i> Publicar</td>
                                         <td style="width: 120px;"><input id="public" type="checkbox"
                                                 onclick="event.preventDefault()" uk-toggle="target: #modal-publish"
                                                 class="toggle"></td>
@@ -641,7 +643,6 @@
                         <thead>
                             <tr class="heading">
                                 <th><i id="info-icon" class="header-icon fas fa-paint-brush"></i> Imagen</th>
-
                             </tr>
                         </thead>
 

@@ -563,7 +563,8 @@ canvas {
 }
 
 #pdf-icon,
-#img-icon {
+#img-icon, 
+#printeable-icon,{
   font-size: 18px;
 }
 

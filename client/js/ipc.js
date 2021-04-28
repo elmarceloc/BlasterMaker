@@ -143,7 +143,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
     img = new Image();
     img.onload = function() {
-      updatePreview(img, img.width)
+      updatePreview(img, Math.min(img.width,100))
 
     } 
     img.src = src//src;
@@ -156,9 +156,9 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
       document.querySelector("#scale").max = this.width;
 
-      document.querySelector("#scale").value = this.width;
+      document.querySelector("#scale").value = Math.min(this.width,100);
 
-      document.querySelector("#showrange").innerHTML = this.width;
+      document.querySelector("#showrange").innerHTML = Math.min(this.width,100);
 
     };
 
