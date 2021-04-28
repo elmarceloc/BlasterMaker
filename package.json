@@ -50,7 +50,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "client/img/installer.ico",
+      "icon": "/icon.ico",
       "legalTrademarks": "Copyright © 2020 BlasterChile.cl"
     },
     "linux": {

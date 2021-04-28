@@ -3,6 +3,7 @@ const yElement = document.querySelector("#y");
 const wElement = document.querySelector("#width");
 const hElement = document.querySelector("#height");
 const sElement = document.querySelector("#scale");
+const sizeElement = document.querySelector("#size");
 
 var canvas2 = document.createElement("canvas");
 var canvas3 = document.createElement("canvas");
@@ -15,30 +16,87 @@ var ctx1 = canvas3.getContext("2d");
 
 
 
-
 colors = [
-    { "rgb": [0, 0, 0], "id": "C-02", "name": "Black" },
-    { "rgb": [155, 155, 155], "id": "C-33", "name": "Gray 2" },
-    { "rgb": [92, 71, 56], "id": "C-32", "name": "Brown" },
-    { "rgb": [123, 77, 53], "id": "C-31", "name": "Light Brown" },
-    { "rgb": [255, 255, 255], "id": "C-01", "name": "White" },
-    { "rgb": [0, 124, 88], "id": "C-15", "name": "Green Tea" },
-    { "rgb": [135, 216, 57], "id": "C-13", "name": "Pastel Green" },
-    { "rgb": [20, 123, 209], "id": "C-37", "name": "True Blue" },
-    { "rgb": [65, 182, 230], "id": "C-19", "name": "Baby Blue" },
-    { "rgb": [74, 31, 135], "id": "C-52", "name": "Royal Purple" },
-    { "rgb": [252, 191, 169], "id": "C-22", "name": "Bubble Gum" },
-    { "rgb": [250, 224, 83], "id": "C-42", "name": "Sandstone" },
-    { "rgb": [219, 33, 82], "id": "C-09", "name": "Magneta" },
-    { "rgb": [255, 103, 31], "id": "C-17", "name": "Orange" },
-    { "rgb": [186, 12, 47], "id": "C-06", "name": "Red" }
-  ]
+  { rgb: [255, 255, 255], id: "S-1", name: "White" },
+  { rgb: [255, 163, 139], id: "S-2", name: "Burning Sand" },
+  { rgb: [246, 176, 76], id: "S-3", name: "Tangerine" },
+  { rgb: [255, 103, 31], id: "S-4", name: "Orange" },
+  { rgb: [225, 6, 0], id: "S-5", name: "Tall Poppy" },
+  { rgb: [236, 134, 208], id: "S-6", name: "Raspberry Pink" },
+  { rgb: [155, 155, 155], id: "S-7", name: "Gray 2" },
+  { rgb: [36, 222, 91], id: "S-8", name: "Emerald" },
+  { rgb: [0, 104, 94], id: "S-9", name: "Dark Green" },
+  { rgb: [65, 182, 230], id: "S-1O", name: "Baby Blue" },
+  { rgb: [0, 51, 153], id: "S-11", name: "Dark Blue" },
+  { rgb: [160, 94, 191], id: "S-12", name: "Pastel Lavender" },
+  { rgb: [0, 0, 0], id: "S-13", name: "Black" },
+  { rgb: [250, 224, 83], id: "S-14", name: "Sandstone" },
+  { rgb: [122, 62, 44], id: "S-15", name: "Redwood" },
+  { rgb: [92, 71, 56], id: "S-16", name: "Brown" },
+  { rgb: [123, 77, 53], id: "S-17", name: "Light Brown" },
+  { rgb: [252, 191, 169], id: "S-19", name: "Bubble Gum" },
+  { rgb: [36, 158, 107], id: "S-20", name: "Green" },
+  { rgb: [135, 216, 57], id: "S-21", name: "Pastel Green" },
+  { rgb: [51, 0, 114], id: "S-22", name: "Purple" },
+  { rgb: [100, 53, 155], id: "S-23", name: "Royal Purple" },
+  { rgb: [20, 123, 209], id: "S-24", name: "True Blue" },
+  { rgb: [255, 52, 179], id: "S-25", name: "Hot Pink" },
+  { rgb: [219, 33, 82], id: "S-26", name: "Magenta" },
+  { rgb: [255, 209, 0], id: "S-27", name: "Yellow" },
+  { rgb: [234, 184, 228], id: "S-28", name: "Lily Pink" },
+  { rgb: [255, 231, 128], id: "S-32", name: "Beeswax" },
+  { rgb: [197, 180, 227], id: "S-33", name: "Maverick" },
+  { rgb: [186, 12, 47], id: "S-34", name: "Red" },
+  { rgb: [201, 128, 158], id: "S-36", name: "Old Pink" },
+  { rgb: [113, 216, 191], id: "S-37", name: "Blue Green" },
+  { rgb: [171, 37, 86], id: "S-38", name: "Burgundy" },
+  { rgb: [247, 139, 0], id: "S-39", name: "Yellow Orange" },
+  { rgb: [241, 167, 220], id: "S-40", name: "Carnation Pink" },
+  { rgb: [154, 85, 22], id: "S-41", name: "Copper" },
+  { rgb: [160, 159, 157], id: "S-42", name: "Silver" },
+  { rgb: [118, 119, 119], id: "S-43", name: "Gray 3" },
+  { rgb: [170, 220, 235], id: "S-44", name: "Sky Blue" },
+  { rgb: [0, 178, 169], id: "S-45", name: "Medium Turquoise" },
+  { rgb: [115, 211, 60], id: "S-46", name: "Bright Green" },
+  { rgb: [180, 126, 0], id: "S-47", name: "Marigold" },
+  { rgb: [255, 199, 44], id: "S-48", name: "Corn" },
+  { rgb: [114, 25, 95], id: "S-49", name: "Mulberry Wood" },
+  { rgb: [252, 251, 205], id: "S-51", name: "Spring Sun" },
+  { rgb: [242, 240, 161], id: "S-52", name: "Picasso" },
+  { rgb: [105, 179, 231], id: "S-53", name: "Blue Enchantress" },
+  { rgb: [0, 144, 218], id: "S-54", name: "Light Blue" },
+  { rgb: [173, 220, 145], id: "S-55", name: "Pistachio" },
+  { rgb: [255, 106, 19], id: "S-56", name: "Outrageous Orange" },
+  { rgb: [164, 73, 61], id: "S-57", name: "Buccaneer" },
+  { rgb: [165, 0, 52], id: "S-58", name: "Paprika" },
+  { rgb: [74, 31, 135], id: "S-59", name: "Butterfly Bush" },
+  { rgb: [167, 123, 202], id: "S-60", name: "Lavander" },
+  { rgb: [206, 220, 0], id: "S-61", name: "Key Lemon Pie" },
+  { rgb: [88, 87, 53], id: "S-63", name: "Metallic Gold" },
+  { rgb: [5, 8, 73], id: "S-64", name: "Black Rock" },
+  { rgb: [243, 207, 179], id: "S-67", name: "Vainilla" },
+  { rgb: [225, 192, 120], id: "S-68", name: "Tan" },
+  { rgb: [35, 40, 43], id: "S-69", name: "Mine Shaft" },
+  { rgb: [155, 188, 17], id: "S-70", name: "Drark Algae" },
+  { rgb: [0, 133, 43], id: "S-71", name: "Jade Green" },
+  { rgb: [89, 213, 216], id: "S-72", name: "Light Sea Blue" },
+  { rgb: [239, 239, 239], id: "S-77", name: "Ghost White" },
+  { rgb: [209, 209, 209], id: "S-78", name: "Ash Gray" },
+  { rgb: [187, 188, 188], id: "S-79", name: "Gray 1" },
+  { rgb: [153, 155, 48], id: "S-80", name: "Dark Olive" },
+  { rgb: [205, 178, 119], id: "S-81", name: "Deer" },
+  { rgb: [184, 97, 37], id: "S-83", name: "Siena" },
+  { rgb: [170, 87, 97], id: "S-84", name: "Deep Chestnut" },
+  { rgb: [92, 19, 27], id: "S-85", name: "Red Wine" },
+  { rgb: [234, 170, 0], id: "S-86", name: "Goldenrod" },
+  { rgb: [255, 109, 106], id: "S-87", name: "Goldenrod" },
+];
   
 
 var panX = 0; // scaled image pan
 var panY = 0;
 
-function updateScale(img, width) {
+function updatePreview(img, width) {
 
     
     var w = img.width
@@ -187,9 +245,28 @@ hElement.addEventListener("change", (event) => {
 sElement.addEventListener("change", (event) => {
   const s = document.querySelector("#scale").value;
 
-  updateScale(img, s)
+  updatePreview(img, s)
 
 });
+
+
+
+
+for (let el of document.querySelectorAll('#myform input'))
+el.addEventListener('change', () => {
+   var size = document.querySelector('input[name=sizeBeads]:checked', '#myform').value
+
+   var kit = $('input[name=kit]:checked', '#myform').val()
+
+   const s = document.querySelector("#scale").value;
+
+   setColorPalete(size, kit)
+
+   
+   updatePreview(img, s)
+
+});
+
 
 document.getElementById("closecropper").onclick = function () {
   ipc.send("closecropper");

@@ -788,11 +788,13 @@ input[type="checkbox"]:focus {
 }
 
 #project img{
-  width: 200px;
+  height: 100px;
   image-rendering: auto;
   image-rendering: crisp-edges;
   image-rendering: pixelated;
   border-radius: 3px;
+  display: block;
+  margin: 0 auto;
 }
 
 .img-full{
@@ -854,4 +856,9 @@ input[type="checkbox"]:focus {
   border-radius: 4px;
   color: white;
   padding: 5px;
+}
+
+
+#projectName{
+  display: none;
 }

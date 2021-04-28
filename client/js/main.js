@@ -204,7 +204,7 @@ function save() {
   temp.push(generate());
   localStorage.setItem("code", JSON.stringify(generate()));
 
-  //console.log(temp)
+  //console.log('save',temp)
 }
 
 /**
@@ -394,8 +394,11 @@ function loadFromWeb() {
     size: app.selected.size
   }
 
+  UIkit.modal(document.getElementById('modal-project')).hide();
+
   initProject()
 
+  
   load(JSON.stringify(file))
 
   app.setPublish(app.selected.type == 'public' && app.personal ? true: false )
@@ -420,19 +423,21 @@ function loadFromWeb() {
  */
 
 function undo() {
-  if (temp.length <= 0) return;
-
-
-  load(JSON.stringify(temp[temp.length-2]));
-
-  temp.splice(temp.length-2,1)
+  if (temp.length <= 1) return;
 
   if (temp.length == 0) {
     temp = [generate()];
   }
+
+  temp.splice(-1,1)
+
+  load(JSON.stringify(temp[temp.length-1]));
+
+
+
  // console.log('-------------------------------')
 
-  //console.log(temp)
+ // console.log('undo',temp)
 
   localStorage.setItem("code", JSON.stringify(generate()));
   // localStorage.setItem("saves", temp);

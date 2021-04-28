@@ -99,6 +99,27 @@ function getPosScreenToGrid(x, y) {
   return toGrid(getPosScreenToTable(x, y));
 }
 
+
+/**
+ * Gets the total amount of beads
+ *
+ * @return {number} amount of beads
+
+*/
+
+function getColorsAmount() {
+  let count = 0;
+
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < height; j++) {
+      if (isBead(i, j)) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
 /**
    * Checks if bead is inside the screen
    *
@@ -379,7 +400,7 @@ function drawTooltip(ctx, x, y, text, width) {
 
 
 
-function setColorPalete(size,kit, grid) {
+function setColorPalete(size,kit) {
   colors = []
 
   palette = kit
@@ -421,8 +442,7 @@ function makeid(length) {
   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
   for ( var i = 0; i < length; i++ ) {
-    result.push(characters.charAt(Math.floor(Math.random() * 
-charactersLength)));
- }
+    result.push(characters.charAt(Math.floor(Math.random() *  charactersLength)));
+  }
  return result.join('');
 }

@@ -36,7 +36,6 @@
     <script>if (window.module) module = window.module;</script>
 
 
-
 </head>
 
 <body id="body">
@@ -120,12 +119,12 @@
                                 </a>
                             </li>
 
-                            <li>
+                           <!-- <li>
                                 <a onclick="crop()">
                                     Recortar
                                 </a>
                             </li>
-
+                        -->
                             <li>
                                 <a onclick="newDraw(width,height)">
                                     Limpiar
@@ -388,7 +387,7 @@
                                         <tbody>
                                             <tr v-if="selected.type == 'public'">
                                                 <td><i class="fas fa-eye-dropper"></i> Categoria</td>
-                                                <td style="width: 120px;">{{selected.category}} </td>
+                                                <td style="width: 120px;">{{selected.category ? 'Juego' : 'Anime'}} </td>
                                             </tr>
                                             <tr>
                                                 <td><i class="fas fa-eye-dropper"></i> Paleta</td>
@@ -445,7 +444,7 @@
                                             <h3 class="uk-card-title">{{project.name}}</h3>
                                         </div>
                                     </div>
-
+                             
 
 
 
@@ -535,7 +534,7 @@
                                 <tbody>
                                     <tr>
                                         <td><i class="fas fa-file-alt"></i> Nombre</td>
-                                        <td style="width: 120px;"><input id="nameInput" type="text" :value="name"></input></td>
+                                        <td style="width: 120px;"><input data-html2canvas-ignore="True" id="nameInput" type="text" v-model="name" :value="name"></input> <span id="projectName">{{name}}</span>  </td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-eye-dropper"></i> Paleta</td>

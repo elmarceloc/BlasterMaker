@@ -194,10 +194,10 @@ function updateScreenSize() {
   panels["tools"].x = window.innerWidth / 2 - 96*2;
   panels["tools"].y = window.innerHeight - 40 - navbarSize;
 
-  panels["transform"].x = window.innerWidth / 2 + 400;
-  panels["transform"].y = window.innerHeight - 80 - navbarSize;
+ // panels["transform"].x = window.innerWidth / 2 + 400;
+ // panels["transform"].y = window.innerHeight - 80 - navbarSize;
 
-  panels["palete"].y = window.innerHeight - 150 - navbarSize;
+ // panels["palete"].y = window.innerHeight - 150 - navbarSize;
 
 
   
@@ -427,7 +427,7 @@ function keyDown(e) {
     case "q":
       rotateLeft()
       break;
-    case "e":
+    case "w":
       rotateRight()
       break;
   }
@@ -499,6 +499,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
               label: "Borrar color",
               click: function () {
                 replaceBead(color,0);
+                save()
               },
             })
           );

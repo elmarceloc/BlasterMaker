@@ -143,7 +143,8 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
     img = new Image();
     img.onload = function() {
-      updateScale(img, img.width)
+      updatePreview(img, img.width)
+
     } 
     img.src = src//src;
 
@@ -167,12 +168,16 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     //showCtrls()
   });
 
-  function exportImageData() {
+  function exportImageData(event) {
+
+
+    event.preventDefault()
+
     const x = document.querySelector("#x").value;
     const y = document.querySelector("#y").value;
     const w = document.querySelector("#width").value;
     const h = document.querySelector("#height").value;
-    const size = document.querySelector('input[name="size"]:checked').value;
+    const size = document.querySelector('input[name="sizeBeads"]:checked').value;
     const kit = document.querySelector('input[name="kit"]:checked').value;
     const url = document.querySelector("#previewCropOriginal").src;
     const scaleFac = document.querySelector("#scale").value;
@@ -223,7 +228,7 @@ function printTable() {
   <html>
   <head>
       <meta charset="utf-8">
-      <title>${projectName}</title>
+      <title>${app.name}</title>
       
       <style>
       .invoice-box {
@@ -314,10 +319,14 @@ function printTable() {
 
       @media print
       {    
-        #pdf,#file-image,#publicTr,#modal-publish
+        #pdf,#file-image,#publicTr,#modal-publish,#nameInput
           {
               display: none !important;
           }
+      }
+
+      #nameInput{
+        display: none !important;
       }
       
       /** RTL **/
@@ -346,7 +355,7 @@ function printTable() {
                       <table>
                           <tr>
                               <td>
-                                  Nombre: ${projectName}<br>
+                                  Nombre: ${app.name}<br>
                                   Fecha: ${formatDate}<br>
                                   
                               </td>
@@ -374,7 +383,7 @@ function printTable() {
       <html>
       <head>
           <meta charset="utf-8">
-          <title>${projectName}</title>
+          <title>${app.name}</title>
           
           <style>
           .invoice-box {
@@ -465,7 +474,7 @@ function printTable() {
 
           @media print
           {    
-              #pdf,#file-image,#publicTr,#modal-publish
+              #pdf,#file-image,#publicTr,#modal-publish,#nameInput
               {
                   display: none !important;
               }
@@ -497,7 +506,7 @@ function printTable() {
                           <table>
                               <tr>
                                   <td>
-                                      Nombre: ${projectName}<br>
+                                      Nombre: ${app.name}<br>
                                       Fecha: ${formatDate}<br>
                                       
                                   </td>

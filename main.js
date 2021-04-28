@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
 const electron = require('electron')
 
+
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
@@ -25,7 +26,6 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 var sizeOf = require('image-size');
-
 
 
 var mainWindow;
@@ -535,7 +535,8 @@ app.whenReady().then(() => {
         //  accelerator: process.platform == 'darwin' ? 'cmd + z' : 'ctrl + z',
           click: function() {
             mainWindow.webContents.send('action', 'crop')
-          }
+          },
+          enabled:false,
         },
 
         {
