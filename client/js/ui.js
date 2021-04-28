@@ -639,8 +639,9 @@ function printToScale(){
     
       console.log(dataURL)
 
+      images += `<img src="${dataURL}"> </img>`;
 
-      images += tempCanvas.outerHTML;
+      printReal(images)
     }
   }
 
