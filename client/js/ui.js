@@ -595,76 +595,6 @@ function importImg(url, x, y, w, h, size, kit, newWidth) {
   });
 }
 
-/*
-function importImg(url, x, y, w, h, size, kit, scale) {
-
-  temp= [generate()];
-
-  setColorPalete(size, kit)
-
-
-  loadImg(url,x,y,w,h,function(data, width, height) {
-
-    for (var i = 0; i < data.length; i+=4) {
-        // get color of pixel
-        var r = data[i]; // Red
-        var g = data[i+1]; // Green
-        var b = data[i+2]; // Blue
-        var a = data[i+3]; // Alpha
-      
-        
-        min = 9999999;
-        idMin = 0;
-        
-        for(let j in colors){
-          rgb = colors[j].rgb;
-          dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 1)
-          
-          if(dis < min){
-            min = dis
-            idMin = j
-          }
-        }
-        
-        if (a == 0){
-          idMin = -1
-        }
-
-        setBeadColor(
-          (i / 4) % width,
-          Math.floor(i / 4 / width),
-          parseInt(idMin) + 1
-        );
-      }
-
-      save()
-
-      //TODO: ver si es compatible con pack basico y medio
-    
-      previewScale = preview.width / width
-
-      checkKits()
-
-
-      
-      app.size = width/gridSize + 'x' + height/gridSize + ' ('+ width + 'x' + height +')'
-      
-      color = 1
-
-      xOffset = 0
-      yOffset = 0
-    
-      scale = 12
-
-      showLayout('main')
-
-  
-      //dis=( Math.abs(rgb[0]-r) + Math.abs(rgb[1]-g) + Math.abs(rgb[2]-b) )
-});
-
-}
-*/
-
 setInterval(updateSave,60*1000*3)
 
 function downloadTable() {
@@ -683,6 +613,38 @@ function downloadTable() {
     link.target = "_blank";
     link.click();
   });
+}
+
+function printToScale(){
+
+  images = ''
+
+  for (let i = 0; i < width / gridSize; i++) {
+    
+    for (let j = 0; j < height / gridSize; j++) {
+    
+      var tempCanvas = document.createElement('canvas');
+      tempCanvas.width = gridSize
+      tempCanvas.height = gridSize
+    
+      tempCtx    = tempCanvas.getContext('2d'),
+      image  = document.getElementById('previewCanvas'),
+      clip   = getClippedRegion(image, i * gridSize, j * gridSize, gridSize, gridSize);
+  
+    
+      // draw the clipped image onto the on-screen canvas
+      tempCtx.drawImage(clip, 0, 0);
+    
+      var dataURL = tempCanvas.toDataURL();
+    
+      console.log(dataURL)
+
+
+      images += tempCanvas.outerHTML;
+    }
+  }
+
+
 }
 
 function fullscreen() {

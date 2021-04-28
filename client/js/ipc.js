@@ -530,4 +530,48 @@ function printTable() {
   }
 }
 
+
+function printReal(images) {
+
+
+  var page = `
+  <!doctype html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <title></title>
+     
+  </head>
+  
+  <body>
+     ${images}
+  </body>
+  </html>`;
+
+  if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
+    ipc.send("printPDF", page);
+  } else {
+    var w = window.open();
+
+    w.document.write(
+      `<!doctype html>
+      <html>
+      <head>
+          <meta charset="utf-8">
+          <title>${app.name}</title>
+         
+      </head>
+      
+      <body>
+         ${images}
+      </body>
+      </html>`
+    );
+    w.window.print();
+    w.document.close();
+    return false;
+  }
+}
+
+
 //ipc.send('invokeAction', 'someData');

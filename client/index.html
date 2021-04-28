@@ -527,9 +527,9 @@
                                             <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen"
                                                 id="file-image" onclick="downloadTable()"><i id="img-icon"
                                                     class="far fa-file-image"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen"
-                                                id="file-image" onclick="downloadTable()"><i id="img-icon"
-                                                    class="far fa-file-image"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala"
+                                                id="file-image" onclick="printToScale()"><i id="printeable-icon"
+                                                    class="fas fa-hat-wizard"></i></button>
                                         </th>
                                     </tr>
                                 </thead>
@@ -537,7 +537,7 @@
                                 <tbody>
                                     <tr>
                                         <td><i class="fas fa-file-alt"></i> Nombre</td>
-                                        <td style="width: 120px;"><input data-html2canvas-ignore="True" id="nameInput" type="text" v-model="name" :value="name"></input> <span id="projectName">{{name}}</span>  </td>
+                                        <td style="width: 120px;"><input data-html2canvas-ignore="True" id="nameInput" type="text" v-model="name"></input> <span id="projectName">{{name}}</span>  </td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-eye-dropper"></i> Paleta</td>
