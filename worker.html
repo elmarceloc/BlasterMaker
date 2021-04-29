@@ -5,7 +5,7 @@
 
         ipcRenderer.on("printPDF", (event, content) => {
             document.body.innerHTML = content;
-            print()
+            setTimeout(() => print(),500)
         });
     </script>
 </body>

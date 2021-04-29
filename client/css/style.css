@@ -5,6 +5,8 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
+[v-cloak] {display: none}
+
 body,
 html {
   background-color: rgb(34 34 34) !important;
@@ -204,6 +206,9 @@ h1 span {
     rgba(15, 15, 15, 0.2) 0px 2px 4px;
 
   z-index: 10;
+}
+#openinfo{
+  background: rgb(255, 23, 68)!important;
 }
 
 #previewContainer {
@@ -550,8 +555,7 @@ canvas {
   padding-left: 80px;
 }
 
-#pdf,
-#file-image {
+.icon-reset {
   background: none;
   color: inherit;
   border: none;
@@ -559,12 +563,13 @@ canvas {
   font: inherit;
   cursor: pointer;
   outline: inherit;
-  padding-right: 10px;
+  padding-right: 8px;
 }
 
 #pdf-icon,
 #img-icon, 
-#printeable-icon{
+#printeable-icon,
+#fullimage{
   font-size: 18px;
 }
 

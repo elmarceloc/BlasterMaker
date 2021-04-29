@@ -429,16 +429,33 @@ function printReal(images) {
 
   var style = `
     <style>
-    body{    margin: 27mm 16mm 27mm 16mm; }
+      body{    margin: 10mm 10mm 10mm 10mm; }
       img{
         image-rendering: auto;
         image-rendering: crisp-edges;
         image-rendering: pixelated;
 
-        width: calc(${gridSize == 29 ? 5 : 2.6}mm * ${gridSize})
+        width: calc(${gridSize == 29 ? 5 : 2.6}mm * ${gridSize});
+        border: 1px dashed black;
       }
+      .piece{
+        margin: 0.5cm;
+        float: left;
+      }
+      .piece img{
+        margin-top: 30px;
+      }
+      .number{ 
+        position: absolute;
+        font-family: sans-serif;
+        height: 29px;
+        width: 40px;
+        vertical-align: baseline;
+        font-weight: bold;
+        
+        border: black solid 1px;
+        text-align: center;
     </style>
-  
   `
 
   var page = `
@@ -459,7 +476,6 @@ function printReal(images) {
     ipc.send("printPDF", page);
   } else {
     var w = window.open();
-
     w.document.write(
       `<!doctype html>
       <html>

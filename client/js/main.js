@@ -204,7 +204,7 @@ function save() {
   temp.push(generate());
   localStorage.setItem("code", JSON.stringify(generate()));
 
-  //console.log('save',temp)
+  console.log('saved')
 }
 
 /**
@@ -396,12 +396,13 @@ function loadFromWeb() {
 
   UIkit.modal(document.getElementById('modal-project')).hide();
 
-  initProject()
-
   
   load(JSON.stringify(file))
 
+  initProject()
+  
   app.setPublish(app.selected.type == 'public' && app.personal ? true: false )
+
 
   if (app.personal) {
     initialSave()

@@ -521,15 +521,14 @@
                                         <th><i id="info-icon" class="header-icon fas fa-info"></i> Informacion General
                                         </th>
                                         <th id="pdf-container">
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir" id="pdf"
-                                                onclick="printTable()"><i id="pdf-icon"
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir" class="icon-reset" onclick="printTable()"><i id="pdf-icon"
                                                     class="far fa-file-pdf"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen"
-                                                id="file-image" onclick="downloadTable()"><i id="img-icon"
-                                                    class="far fa-file-image"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala"
-                                                id="file-image" onclick="printToScale()"><i id="printeable-icon"
-                                                    class="fas fa-hat-wizard"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen" class="icon-reset" onclick="downloadTable()"><i
+                                                    id="img-icon" class="far fa-file-image"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar Imagen" class="icon-reset" onclick="downloadImage()"><i
+                                                    id="fullimage" class="fas fa-image"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala" class="icon-reset" onclick="printToScale()"><i
+                                                    id="printeable-icon" class="fas fa-hat-wizard"></i></button>
                                         </th>
                                     </tr>
                                 </thead>

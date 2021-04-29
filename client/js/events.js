@@ -329,7 +329,7 @@ function mouseUp(e) {
       break;
   }
 
-  if (!isOverPanel() && isInside(...getPosScreenToGrid(e.pageX, e.pageY))) {
+  if (!isOverPanel() /*&& isInside(...getPosScreenToGrid(e.pageX, e.pageY))*/) { // ?? 👀
     save();
   }
 

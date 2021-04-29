@@ -59,13 +59,13 @@ function createWindow () {
       
       enableRemoteModule: true,
       nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
 
     },
   });
 
-  workerWindow.hide();
-
- // workerWindow.hide();
+ workerWindow.hide();
 
   workerWindow.loadURL("file://" + __dirname + "/worker.html");
   //workerWindow.webContents.openDevTools();
@@ -103,7 +103,8 @@ function createWindow () {
 
 // retransmit it to workerWindow
 ipc.on("printPDF", (event, content) => {
-  console.log(content);
+  console.log('print')
+
   workerWindow.webContents.send("printPDF", content);
 });
 
@@ -596,6 +597,13 @@ app.whenReady().then(() => {
             open("https://www.instagram.com/blaster.chile");
           }
         },
+        {
+          label: 'Discord de la Comunidad',
+          click: function() {
+            open("https://discord.gg/FpSxx6FZkF");
+          }
+        },
+        
         /*{
           label: 'Unirse al servidor de Discord',
           click: function() {
