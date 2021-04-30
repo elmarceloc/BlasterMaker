@@ -55,6 +55,12 @@
     },
     "linux": {
       "target": "deb"
-    }
+    },
+    "fileAssociations": [{
+      "ext": "bm",
+      "name": "BlasterMaker",
+      "role": "Editor",
+      "icon": "../icon.ico"
+    }]
   }
 }
