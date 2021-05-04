@@ -86,8 +86,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
       data.scale
     );
 
-    ipc.send("setProgress",0.3)
-
   });
 
 
