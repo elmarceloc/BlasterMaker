@@ -65,7 +65,7 @@ function createWindow () {
     },
   });
 
- workerWindow.hide();
+  workerWindow.hide();
 
   workerWindow.loadURL("file://" + __dirname + "/worker.html");
   //workerWindow.webContents.openDevTools();
@@ -922,6 +922,16 @@ ipc.on('exportImageData', (event, data) => {
     mainWindow.webContents.send('importImg', {url: data.url, x: data.x, y: data.y, w: data.w, h: data.h, size: data.size, kit: data.kit, scale:data.scale}) //???????
 
   })
+
+})
+
+
+ipc.on('setProgress', (event, value) => {
+
+//  tsrWindow.close();
+
+  mainWindow.setProgressBar(value)
+
 
 })
 

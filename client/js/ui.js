@@ -552,9 +552,9 @@ function importImg(url, x, y, w, h, size, kit, newWidth) {
 
     ctx1.putImageData(dest, 0, 0); // put the pixels onto the destination canvas
 
-    //document.getElementById("app").appendChild(canvas);     // Append <li> to <ul> with id="myList"
-    //document.getElementById("app").appendChild(canvas2);     // Append <li> to <ul> with id="myList"
-    //document.getElementById("app").appendChild(canvas3);     // Append <li> to <ul> with id="myList"
+    //document.getElementById("app").appendChild(canvas);     
+    //document.getElementById("app").appendChild(canvas2);     
+    //document.getElementById("app").appendChild(canvas3);     
 
     for (var i = 0; i < dest.data.length; i += 4) {
       // get color of pixel

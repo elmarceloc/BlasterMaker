@@ -85,11 +85,11 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
       data.kit,
       data.scale
     );
+
+    ipc.send("setProgress",0.3)
+
   });
 
-  ipc.on("importImgSimple", (event, url) => {
-    importImgSimple(url);
-  });
 
   ipc.on("save", (event) => {
     save();
@@ -107,10 +107,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
   ipc.on("newBead", (event) => {
     showLayout("new");
-  });
-
-  ipc.on("updateScreenSize", (event) => {
-    updateScreenSize();
   });
 
   ipc.on("action", (event, action) => {
@@ -139,12 +135,21 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   ipc.on("loadPreview", (event, src) => {
     document.getElementById("previewCropOriginal").src = src;
 
-
+    ipc.send("setProgress",0.5)
 
     img = new Image();
     img.onload = function() {
+
       updatePreview(img, Math.min(img.width,100))
 
+      document.querySelector("#loading-container").style.visibility = 'hidden';
+
+
+      ipc.send("setProgress",1)
+
+      setTimeout(function() {
+        ipc.send("setProgress",0)
+      },500)
     } 
     img.src = src//src;
 
@@ -158,7 +163,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
       document.querySelector("#scale").value = Math.min(this.width,100);
 
-      document.querySelector("#showrange").innerHTML = Math.min(this.width,100);
+      document.querySelector("#showrange").value = Math.min(this.width,100);
 
     };
 
@@ -192,6 +197,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
       url: url,
       scale: scaleFac,
     });
+
   }
 
   ipc.on("tsrMain", (event) => {

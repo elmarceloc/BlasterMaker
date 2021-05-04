@@ -305,7 +305,6 @@ function mouseDown(e) {
       break;
 
     case 1:
-      console.log('pan')
       panZoomFrom = [mouse[0] - xOffset * scale, mouse[1] - yOffset * scale];
       panZoomTo = [mouse[0] - xOffset * scale, mouse[1] - yOffset * scale];
       isDragging = true;

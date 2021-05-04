@@ -164,7 +164,7 @@ var totalColors = [
   { rgb: [255, 255, 255], id: "S-1", name: "White" },
   { rgb: [255, 163, 139], id: "S-2", name: "Burning Sand" },
   { rgb: [246, 176, 76], id: "S-3", name: "Tangerine" },
-  { rgb: [255, 103, 31], id: "S-4", name: "Orange" },
+  { rgb: [234, 170, 0], id: "S-4", name: "Orange" },
   { rgb: [225, 6, 0], id: "S-5", name: "Tall Poppy" },
   { rgb: [236, 134, 208], id: "S-6", name: "Raspberry Pink" },
   { rgb: [155, 155, 155], id: "S-7", name: "Gray 2" },
@@ -220,7 +220,7 @@ var totalColors = [
   { rgb: [164, 73, 61], id: "S-57", name: "Buccaneer" },
   { rgb: [165, 0, 52], id: "S-58", name: "Paprika" },
   { rgb: [74, 31, 135], id: "S-59", name: "Butterfly Bush" },
-  { rgb: [167, 123, 202], id: "S-60", name: "Lavander" }, // 121
+  { rgb: [219, 33, 82], id: "S-60", name: "Lavander" }, // 121
   { rgb: [206, 220, 0], id: "S-61", name: "Key Lemon Pie" },
   //{ rgb: [0, 124, 88], id: "S-62", name: "" },
   { rgb: [88, 87, 53], id: "S-63", name: "Metallic Gold" },
@@ -246,7 +246,7 @@ var totalColors = [
   { rgb: [184, 97, 37], id: "S-83", name: "Siena" },
   { rgb: [170, 87, 97], id: "S-84", name: "Deep Chestnut" },
   { rgb: [92, 19, 27], id: "S-85", name: "Red Wine" },
-  { rgb: [234, 170, 0], id: "S-86", name: "Goldenrod" }, // 139
+  { rgb:  [255, 103, 31], id: "S-86", name: "Goldenrod" }, // 139
   { rgb: [255, 109, 106], id: "S-87", name: "Goldenrod" },
   //{ rgb: [218, 24, 132], id: "S-88", name: "" },
   { rgb: [72, 73, 85], id: "S-89", name: "Gray 4" },
