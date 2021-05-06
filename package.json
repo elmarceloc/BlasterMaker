@@ -20,7 +20,7 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^10.1.3",
+    "electron": "^10.4.5",
     "electron-builder": "^22.8.1"
   },
   "dependencies": {
@@ -56,11 +56,13 @@
     "linux": {
       "target": "deb"
     },
-    "fileAssociations": [{
-      "ext": "bm",
-      "name": "BlasterMaker",
-      "role": "Editor",
-      "icon": "../icon.ico"
-    }]
+    "fileAssociations": [
+      {
+        "ext": "bm",
+        "name": "BlasterMaker",
+        "role": "Editor",
+        "icon": "../icon.ico"
+      }
+    ]
   }
 }
