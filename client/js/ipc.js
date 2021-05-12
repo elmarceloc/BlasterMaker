@@ -8,6 +8,13 @@
 if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   var ipc = require("electron").ipcRenderer;
 
+  var bmdata = ipc.sendSync('get-file-data');
+
+  if (bmdata != null){
+    load(bmdata);
+    initProject()
+  }
+
   function createNotification(body) {
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
@@ -205,6 +212,10 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     document.documentElement.style.overflow = "visible";
   });
 
+}
+
+function importFromMenu(){
+  ipc.send("loadFromMenu")
 }
 
 /**

@@ -946,3 +946,19 @@ ipc.on('closecropper', (event) => {
 
 
 
+ipc.on('loadFromMenu', (event) => {
+  console.log('menu')
+  importImg()
+})
+  
+// TODO: test on mac/linux
+
+// read the file and send data to the render process
+ipc.on('get-file-data', function(event) {
+  var data = null;
+  if (process.platform == 'win32' && process.argv.length >= 2 && process.argv[1] != '.') {
+    var openFilePath = process.argv[1];
+    data = fs.readFileSync(openFilePath, 'utf-8');
+  }
+  event.returnValue = data;
+});

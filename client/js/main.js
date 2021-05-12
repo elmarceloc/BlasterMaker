@@ -349,31 +349,31 @@ function initialSave() {
             pos: "top-center",
           });
           break;
-      
-        case '2':
+          // TODO: activar esto cuando este el online ready
+       /* case '2':
           UIkit.notification({
             message: "Error al subir el proyecto a la nube",
             pos: "top-center",
           });
-          break;
+          break;*/
 
-        case '3':
+      /* case '3':
           UIkit.notification({
             message: "Proyecto guardado exitosamente en la nube",
             pos: "top-center",
           });
-          break;  
+          break;  */
       }
 
     }).catch(function (error) {
 
-      if (!error.response) {
+     /* if (!error.response) {
         // network error
         UIkit.notification({
           message: "Error al subir el proyecto a la nube.",
           pos: "top-center",
         });
-    }
+    }*/
 
     
     });
