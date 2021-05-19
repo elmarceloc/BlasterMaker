@@ -208,7 +208,7 @@ function save() {
 }
 
 /**
- * Draws a bead in spesific position
+ * Draws a bead in spesific position (for the color sidebar)
  *
  * @param {number} `x` - the x position of the bead
  * @param {number} `y` - the y position of the bead
@@ -231,7 +231,10 @@ function drawBead2(X, Y, radius, color, selected) {
   uiCtx.stroke();
 }
 
-// https://drive.google.com/file/d/1tfHGNlUtgrbUE3j-1UQhfM-zZUppQSyv/view
+/**
+ * Label every color by its id
+ *
+*/
 
 function drawIds() {
   if (showIds) {
@@ -279,6 +282,276 @@ function drawIds() {
     uiCtx.font = "12px Arial";
     uiCtx.textAlign = "initial";
   }
+}
+
+function drawGrid() {
+  if (showGrid) {
+    if (Math.log(scale) * 0.3 > 0) {
+      uiCtx.font = scale / 2 + "px Arial";
+      uiCtx.textBaseline = "middle";
+      uiCtx.textAlign = "center";
+
+      var fixedScale = Math.min(scale, 25);
+
+      for (let i = 0; i <= height; i++) {
+        uiCtx.fillStyle = "#aaaaaa";
+
+        if (i % gridSize == 0 && !(i == height || i == 0)) {
+          // ????
+          uiCtx.beginPath();
+          uiCtx.lineWidth = scale / 8;
+          uiCtx.moveTo(...getPosTableToScreen(0, i));
+          uiCtx.lineTo(...getPosTableToScreen(width, i));
+          uiCtx.stroke();
+        } else if (viewMode == 3) {
+          // uiCtx.lineWidth = Math.log(scale) * 0.3;
+        }
+
+        if (i > 0 && scale > 8) {
+          let value = i % gridSize == 0 ? gridSize : i % gridSize;
+
+          for (let j = 0; j < 2; j++) {
+            var [ruleX, ruleY] = getPosTableToScreen(width * j, i - 0.5);
+
+            switch (j) {
+              case 0:
+                ruleX = Math.max(panels["colors"].width, ruleX - fixedScale);
+                break;
+
+              case 1:
+                ruleX = Math.min(uiCanvas.width - fixedScale, ruleX);
+                break;
+            }
+
+            uiCtx.beginPath();
+
+            if (!(i % gridSize) && height / gridSize > 1){
+              uiCtx.fillStyle = "rgba(60,60,60,0.9)";
+            }else{
+              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
+            }
+
+            uiCtx.rect(
+              ruleX - 1,
+              ruleY - scale / 2 - 1,
+              fixedScale + 2,
+              1 * scale + 2
+            );
+            uiCtx.fill();
+
+            if (!(i % gridSize) && height / gridSize > 1){
+              uiCtx.fillStyle = "rgb(200,200,200)";
+            }else{
+              uiCtx.fillStyle = "#aaaaaa";
+            }
+
+            uiCtx.font = fixedScale / 2 + "px Arial";
+
+            uiCtx.fillText(value, ruleX + fixedScale / 2, ruleY);
+          }
+        }
+      }
+
+      for (let i = 0; i <= width; i++) {
+        uiCtx.fillStyle = "#aaaaaa";
+
+        if (i % gridSize == 0 && !(i == width || i == 0)) {
+          uiCtx.beginPath();
+          uiCtx.lineWidth = scale / 8;
+          uiCtx.moveTo(...getPosTableToScreen(i, 0));
+          uiCtx.lineTo(...getPosTableToScreen(i, height));
+          uiCtx.stroke();
+        } else if (viewMode == 3) {
+          //  uiCtx.lineWidth = Math.log(scale) * 0.3;
+        }
+
+        if (i > 0 && scale > 8) {
+          let value = i % gridSize == 0 ? gridSize : i % gridSize;
+
+          for (let j = 0; j < 2; j++) {
+            var [ruleX, ruleY] = getPosTableToScreen(i - 0.5, height * j);
+
+            switch (j) {
+              case 0:
+                ruleY = Math.max(ruleY - fixedScale, 0);
+                break;
+
+              case 1:
+                ruleY = Math.min(ruleY, uiCanvas.height - fixedScale);
+                break;
+            }
+
+            uiCtx.beginPath();
+
+            if (!(i % gridSize) && width / gridSize > 1){
+              uiCtx.fillStyle = "rgba(60,60,60,0.9)";
+            }else{
+              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
+            }
+
+            uiCtx.rect(
+              ruleX - scale / 2 - 1,
+              ruleY - 1,
+              1 * scale + 2,
+              1 * fixedScale + 2
+            );
+            uiCtx.fill();
+
+            if (!(i % gridSize) && width / gridSize > 1){
+              uiCtx.fillStyle = "rgb(200,200,200)";
+            }else{
+              uiCtx.fillStyle = "#aaaaaa";
+            }
+            uiCtx.font = fixedScale / 2 + "px Arial";
+
+            uiCtx.fillText(value, ruleX, ruleY + fixedScale / 2);
+          }
+        }
+      }
+    }
+  }
+}
+
+function drawCursor(){
+  if (isInside(...getPosScreenToGrid(...mouse)) && tool != 0) {
+    //TODO: volver funccion
+    if (!isOverPanel()) {
+      uiCtx.beginPath();
+
+      switch (viewMode) {
+        case 1:
+
+          switch (tool) {
+            case 3:
+              uiCtx.strokeStyle = "rgb(255,0,0)";
+              uiCtx.lineWidth =  scale/10;
+
+              [eracerX, eracerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
+                scale / 2,
+                scale / 2,
+              ])]
+
+              uiCtx.beginPath();
+              uiCtx.moveTo(eracerX - scale /5, eracerY - scale /5);
+              uiCtx.lineTo(eracerX + scale/5, eracerY + scale/5);
+              uiCtx.stroke();
+
+              uiCtx.beginPath();
+              uiCtx.moveTo(eracerX + scale /5, eracerY - scale /5);
+              uiCtx.lineTo(eracerX - scale/5, eracerY + scale/5);
+              uiCtx.stroke();
+              break;
+            case 4:
+              uiCtx.fillStyle = "rgba(0,0,0,0)";
+              uiCtx.strokeStyle = "rgb(255,64,101)";
+              uiCtx.lineWidth =  scale/10;
+
+              [pickerX, pickerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
+                scale / 2,
+                scale / 2,
+              ])]
+
+              uiCtx.beginPath();
+              uiCtx.arc(
+                pickerX, pickerY,
+                (scale * 0.5) - scale / 6 ,
+                0,
+                6.29,
+                0
+              );
+              uiCtx.stroke()
+
+              uiCtx.beginPath();
+              uiCtx.arc(
+                pickerX, pickerY,
+                (scale * 0.5) - scale / 3  ,
+                0,
+                6.29,
+                0
+              );
+              uiCtx.stroke()
+
+
+              break;
+            
+            default:
+              if (color - 1 < colors.length) {
+                uiCtx.fillStyle =
+                  "rgb(" +
+                    colors[color - 1].rgb[0] +
+                  "," +
+                    colors[color - 1].rgb[1] +
+                  "," +
+                    colors[color - 1].rgb[2] +
+                  ")";
+              }
+
+              uiCtx.rect(
+                ...getPosGridToScreen(...getPosScreenToGrid(...mouse)),
+                scale,
+                scale
+              );
+              break;
+          }
+          break;
+
+        case 2:
+          uiCtx.arc(
+            ...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
+              scale / 2,
+              scale / 2,
+            ]),
+            scale * 0.5,
+            0,
+            6.29,
+            0
+          );
+          break;
+      }
+
+      uiCtx.globalAlpha = 0.6;
+      uiCtx.fill();
+      uiCtx.globalAlpha = 1;
+    }
+  }
+}
+
+
+function drawBackground() {
+  
+    // resizes the background and render canvases
+
+    renderCanvas.style.width = scale * width + "px";
+    renderCanvas.style.height = scale * height + "px";
+  
+    backgroundCanvas.style.width = scale * width + "px";
+    backgroundCanvas.style.height = scale * height + "px";
+  
+    // reposicionates the background and render canvases
+  
+    renderCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
+    renderCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
+  
+    backgroundCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
+    backgroundCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
+  
+    //canvas4.style.width = scale * width + "px";
+    //canvas4.style.height = scale * height + "px";
+  
+    //canvas4.style.left = getPosTableToScreen(0, 0)[0] + "px";
+    //canvas4.style.top = getPosTableToScreen(0, 0)[1] + "px";
+  
+    // draw the ui
+  
+    uiCtx.clearRect(0, 0, uiCanvas.width, uiCanvas.height);
+  
+    renderCanvas.width = width;
+    renderCanvas.height = height;
+  
+    backgroundCanvas.width = width;
+    backgroundCanvas.height = height;
+
+    backgroundCtx.putImageData(background, 0, 0);
 }
 
 
@@ -566,225 +839,21 @@ for (let j = 0; j < height; j++) {
 
 function draw() {
 
-  // resizes the background and render canvases
+  drawBackground()
 
-  renderCanvas.style.width = scale * width + "px";
-  renderCanvas.style.height = scale * height + "px";
-
-  backgroundCanvas.style.width = scale * width + "px";
-  backgroundCanvas.style.height = scale * height + "px";
-
-  // reposicionates the background and render canvases
-
-  renderCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
-  renderCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
-
-  backgroundCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
-  backgroundCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
-
-  //canvas4.style.width = scale * width + "px";
-  //canvas4.style.height = scale * height + "px";
-
-  //canvas4.style.left = getPosTableToScreen(0, 0)[0] + "px";
-  //canvas4.style.top = getPosTableToScreen(0, 0)[1] + "px";
-
-  // draw the ui
-
-  uiCtx.clearRect(0, 0, uiCanvas.width, uiCanvas.height);
-
-  renderCanvas.width = width;
-  renderCanvas.height = height;
-
-  backgroundCanvas.width = width;
-  backgroundCanvas.height = height;
-
-  backgroundCtx.putImageData(background, 0, 0);
-
+  // render the beads
   renderCtx.putImageData(grid2, 0, 0);
 
+  
   if (scale > 20) {
     drawIds();
   }
 
-  if (showGrid) {
-    if (Math.log(scale) * 0.3 > 0) {
-      uiCtx.font = scale / 2 + "px Arial";
-      uiCtx.textBaseline = "middle";
-      uiCtx.textAlign = "center";
-
-      var fixedScale = Math.min(scale, 25);
-
-      for (let i = 0; i <= height; i++) {
-        uiCtx.fillStyle = "#aaaaaa";
-
-        if (i % gridSize == 0 && !(i == height || i == 0)) {
-          // ????
-          uiCtx.beginPath();
-          uiCtx.lineWidth = scale / 8;
-          uiCtx.moveTo(...getPosTableToScreen(0, i));
-          uiCtx.lineTo(...getPosTableToScreen(width, i));
-          uiCtx.stroke();
-        } else if (viewMode == 3) {
-          // uiCtx.lineWidth = Math.log(scale) * 0.3;
-        }
-
-        if (i > 0 && scale > 8) {
-          let value = i % gridSize == 0 ? gridSize : i % gridSize;
-
-          for (let j = 0; j < 2; j++) {
-            var [ruleX, ruleY] = getPosTableToScreen(width * j, i - 0.5);
-
-            switch (j) {
-              case 0:
-                ruleX = Math.max(panels["colors"].width, ruleX - fixedScale);
-                break;
-
-              case 1:
-                ruleX = Math.min(uiCanvas.width - fixedScale, ruleX);
-                break;
-            }
-
-            uiCtx.beginPath();
-
-            if (!(i % gridSize) && height / gridSize > 1){
-              uiCtx.fillStyle = "rgba(60,60,60,0.9)";
-            }else{
-              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
-            }
-
-            uiCtx.rect(
-              ruleX - 1,
-              ruleY - scale / 2 - 1,
-              fixedScale + 2,
-              1 * scale + 2
-            );
-            uiCtx.fill();
-
-            if (!(i % gridSize) && height / gridSize > 1){
-              uiCtx.fillStyle = "rgb(200,200,200)";
-            }else{
-              uiCtx.fillStyle = "#aaaaaa";
-            }
-
-            uiCtx.font = fixedScale / 2 + "px Arial";
-
-            uiCtx.fillText(value, ruleX + fixedScale / 2, ruleY);
-          }
-        }
-      }
-
-      for (let i = 0; i <= width; i++) {
-        uiCtx.fillStyle = "#aaaaaa";
-
-        if (i % gridSize == 0 && !(i == width || i == 0)) {
-          uiCtx.beginPath();
-          uiCtx.lineWidth = scale / 8;
-          uiCtx.moveTo(...getPosTableToScreen(i, 0));
-          uiCtx.lineTo(...getPosTableToScreen(i, height));
-          uiCtx.stroke();
-        } else if (viewMode == 3) {
-          //  uiCtx.lineWidth = Math.log(scale) * 0.3;
-        }
-
-        if (i > 0 && scale > 8) {
-          let value = i % gridSize == 0 ? gridSize : i % gridSize;
-
-          for (let j = 0; j < 2; j++) {
-            var [ruleX, ruleY] = getPosTableToScreen(i - 0.5, height * j);
-
-            switch (j) {
-              case 0:
-                ruleY = Math.max(ruleY - fixedScale, 0);
-                break;
-
-              case 1:
-                ruleY = Math.min(ruleY, uiCanvas.height - fixedScale);
-                break;
-            }
-
-            uiCtx.beginPath();
-
-            if (!(i % gridSize) && width / gridSize > 1){
-              uiCtx.fillStyle = "rgba(60,60,60,0.9)";
-            }else{
-              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
-            }
-
-            uiCtx.rect(
-              ruleX - scale / 2 - 1,
-              ruleY - 1,
-              1 * scale + 2,
-              1 * fixedScale + 2
-            );
-            uiCtx.fill();
-
-            if (!(i % gridSize) && width / gridSize > 1){
-              uiCtx.fillStyle = "rgb(200,200,200)";
-            }else{
-              uiCtx.fillStyle = "#aaaaaa";
-            }
-            uiCtx.font = fixedScale / 2 + "px Arial";
-
-            uiCtx.fillText(value, ruleX, ruleY + fixedScale / 2);
-          }
-        }
-      }
-    }
-  }
-
+  drawCursor()
+  
+  drawGrid()
+  
   // TODO: arreglar el font de arriba
-
-  // draw the pencil,eraser,etc
-  // TODO: change for eraser,etc
-
-  if (isInside(...getPosScreenToGrid(...mouse)) && tool != 0) {
-    //TODO: volver funccion
-    if (!isOverPanel()) {
-      uiCtx.beginPath();
-
-      switch (viewMode) {
-        case 1:
-          uiCtx.arc(
-            ...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
-              scale / 2,
-              scale / 2,
-            ]),
-            scale * 0.5,
-            0,
-            6.29,
-            0
-          );
-          break;
-
-        case 2:
-          uiCtx.rect(
-            ...getPosGridToScreen(...getPosScreenToGrid(...mouse)),
-            scale,
-            scale
-          );
-          break;
-      }
-
-      if (tool == 3) {
-        uiCtx.fillStyle = "rgb(255,255,255)";
-      } else {
-        //console.log(colors[color - 1].rgb)
-        if (color - 1 < colors.length) {
-          uiCtx.fillStyle =
-            "rgb(" +
-            colors[color - 1].rgb[0] +
-            "," +
-            colors[color - 1].rgb[1] +
-            "," +
-            colors[color - 1].rgb[2] +
-            ")";
-        }
-      }
-      uiCtx.globalAlpha = 0.6;
-      uiCtx.fill();
-      uiCtx.globalAlpha = 1;
-    }
-  }
 
   for (k in panels) {
     panels[k].controller();
@@ -794,7 +863,6 @@ function draw() {
   clickUp = false;
 
 	//meter.tick();
-
 
   requestAnimationFrame(draw);
 }

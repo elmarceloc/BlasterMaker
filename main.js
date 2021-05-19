@@ -452,7 +452,7 @@ app.whenReady().then(() => {
           ]
         },*/
         {
-          label: 'Rejilla',
+          label: 'Reglas',
           click: function() {
             mainWindow.webContents.send('showGrid')
           }

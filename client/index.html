@@ -555,7 +555,7 @@
                                         <td><i class="fas fa-circle"></i> Beads usados</td>
                                         <td style="width: 120px;">{{total}}</td>
                                     </tr>
-                                    <tr id="publicTr" data-html2canvas-ignore="True">
+                                    <tr v-if="beta" id="publicTr" data-html2canvas-ignore="True">
                                         <td><i class="fas fa-cloud-upload-alt"></i> Publicar</td>
                                         <td style="width: 120px;"><input id="public" type="checkbox"
                                                 onclick="event.preventDefault()" uk-toggle="target: #modal-publish"

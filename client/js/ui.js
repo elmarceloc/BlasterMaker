@@ -23,6 +23,7 @@ var app = new Vue({
     publicState: false,
     query: '',
     category: 0,
+    beta: false,
   },
   methods: {
     toggleLogin: function (value) {

@@ -201,6 +201,10 @@ function updateScreenSize() {
   panels["tools"].x = window.innerWidth / 2 - 96 * 2;
   panels["tools"].y = window.innerHeight - 74 - navbarSize;
 
+  panels["palete"].x = panels.colors.width + 10;
+  
+  document.getElementById('search').style.width = panels.colors.width + 6;
+
   // panels["transform"].x = window.innerWidth / 2 + 400;
   // panels["transform"].y = window.innerHeight - 80 - navbarSize;
 
@@ -523,6 +527,8 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
       );
       pensPerRow = Math.ceil(colorPalette.length / pensPerCol) - 1;
 
+      const menu = new Menu();
+
       if (isBead(...getPosScreenToGrid(...mouse), width)) {
         if (isInside(...getPosScreenToGrid(...mouse))) {
           let mouseOnPanel = false;
@@ -530,8 +536,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
           if (isOverPanel()) return;
 
           if (mouseOnPanel) return;
-
-          const menu = new Menu(); // FIXME: mover afuera si se agrega menu global
 
           let color = getBeadColor(...getPosScreenToGrid(...mouse));
 
@@ -551,6 +555,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
           menu.append(
             new MenuItem({
               label: "Borrar color",
+              toolTip: 'Borra todas las apariciones de este color.',
               click: function () {
                 replaceBead(color, 0);
                 save();
@@ -558,7 +563,12 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
             })
           );
 
-          menu.popup({ window: remote.getCurrentWindow() });
+          menu.append(
+            new MenuItem({
+              type: 'separator'
+            })
+          );
+
         }
       }
       // FIXME: no cubre toda la box
@@ -605,6 +615,12 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
               })
             );
 
+            menu.append(
+              new MenuItem({
+                type: 'separator'
+              })
+            );
+
             menu.popup({ window: remote.getCurrentWindow() });
           }
         } else {
@@ -621,7 +637,32 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
           }
         }
       }
-      // mostrar "selecionar color" al darle click derecho a un color en pantalla...
+
+      menu.append(
+        new MenuItem({
+          label: "Reglas",
+          type: 'checkbox',
+          checked: showGrid,
+          click: function () {
+            showGrid = !showGrid;
+          }
+        })
+      );
+
+      menu.append(
+        new MenuItem({
+          label: "Colores",
+          type: 'checkbox',
+          checked: showIds,
+          click: function () {
+            showIds = !showIds;
+          }
+        })
+      );
+
+      menu.popup({ window: remote.getCurrentWindow() });
+
+      //TODO: mostrar "selecionar color" al darle click derecho a un color en pantalla...
     },
     false
   );
