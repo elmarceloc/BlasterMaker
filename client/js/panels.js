@@ -574,7 +574,7 @@ Panel = function (
   
 
 
-  panels["palete"]=(new Panel('',90,1000,120,100,0,0,16,0,0,0,0,30,120,120,true,(x,y,mL,mR,mU,mD,width,height)=>{
+  panels["palete"]=(new Panel('',160,1000,120,100,0,0,16,0,0,0,0,30,120,120,true,(x,y,mL,mR,mU,mD,width,height)=>{
     //al hacer click
     pensPerCol = Math.floor((width - mL - mR) / uiScale);
     pensPerRow = Math.ceil(colorPalette.length / pensPerCol) - 1;
@@ -797,4 +797,3 @@ panels["rotateRight"]=(new Panel(panels["transform"],48*2,0,50,50,0,0,0,0,0,0,0,
 panels["rotateLeft"]=(new Panel(panels["transform"],48*3,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{rotateLeft()},(x,y,mL,mR,mU,mD,width,height)=>{
     uiCtx.drawImage(ui, 48*9, 0, 48, 48, x + mL, y + mU, 48, 48);
 }))
-

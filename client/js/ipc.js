@@ -55,8 +55,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     initProject()
   });
 
-  //TODO: guardar estas cosas en la version web tambien
-
   ipc.on("viewmode", (event, mode) => {
     setViewMode(mode);
   });

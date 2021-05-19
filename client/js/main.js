@@ -414,7 +414,6 @@ function drawGrid() {
 
 function drawCursor(){
   if (isInside(...getPosScreenToGrid(...mouse)) && tool != 0) {
-    //TODO: volver funccion
     if (!isOverPanel()) {
       uiCtx.beginPath();
 

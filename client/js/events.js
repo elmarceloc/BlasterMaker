@@ -201,8 +201,6 @@ function updateScreenSize() {
   panels["tools"].x = window.innerWidth / 2 - 96 * 2;
   panels["tools"].y = window.innerHeight - 74 - navbarSize;
 
-  panels["palete"].x = panels.colors.width + 10;
-  
   document.getElementById('search').style.width = panels.colors.width + 6;
 
   // panels["transform"].x = window.innerWidth / 2 + 400;
@@ -518,9 +516,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     "contextmenu",
     (e) => {
       e.preventDefault();
-
-      // TODO: apendiar mas opciones
-      //menu.append(new MenuItem(new MenuItem({label: "This menu item is always shown"})));
 
       pensPerCol = Math.floor(
         (height - panels.palete.marginU - panels.palete.marginD) / uiScale
