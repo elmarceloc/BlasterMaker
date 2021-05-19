@@ -436,9 +436,8 @@ function undo() {
 
 
 
- // console.log('-------------------------------')
+  console.log('undo'+'|'+temp.length)
 
- // console.log('undo',temp)
 
   localStorage.setItem("code", JSON.stringify(generate()));
   // localStorage.setItem("saves", temp);
@@ -646,7 +645,14 @@ function draw() {
             }
 
             uiCtx.beginPath();
-            uiCtx.fillStyle = "rgba(40,40,40,0.9)";
+
+            if (i % gridSize){
+              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
+              
+            }else{
+              uiCtx.fillStyle = "rgba(255,64,101,0.9)";
+            }
+
             uiCtx.rect(
               ruleX - 1,
               ruleY - scale / 2 - 1,
@@ -692,7 +698,14 @@ function draw() {
             }
 
             uiCtx.beginPath();
-            uiCtx.fillStyle = "rgba(40,40,40,0.9)";
+            
+            if (i % gridSize){
+              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
+              
+            }else{
+              uiCtx.fillStyle = "rgba(255,64,101,0.9)";
+            }
+
             uiCtx.rect(
               ruleX - scale / 2 - 1,
               ruleY - 1,

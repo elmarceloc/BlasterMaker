@@ -208,7 +208,10 @@ h1 span {
   z-index: 10;
 }
 #openinfo{
-  background: rgb(255, 23, 68)!important;
+  background: #ff1744!important;
+}
+#closenew, #closeinfo{
+  background: #ff1744
 }
 
 #previewContainer {
@@ -917,4 +920,8 @@ input[type="checkbox"]:focus {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.uk-navbar-dropdown{
+  width:230px!important;
 }

@@ -88,6 +88,7 @@ function createWindow () {
           message: '¿Estas segúro que deseas salir?'
         });
       if (choice === 1) {
+        conosole.log('close',choice)
         e.preventDefault();
       }
     });

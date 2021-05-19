@@ -2,6 +2,8 @@ toReplace = -1;
 
 navbarSize = 60;
 
+overDropDown = false;
+
 if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   navbarSize = 0;
 } else {
@@ -239,7 +241,6 @@ function mouseDown(e) {
   /* if (isInside(...getPosScreenToGrid(e.pageX, e.pageY))) {
     save();
   }*/
-  console.log('click')
   switch (e.button ) {
     case 0:
       switch (tool) {
@@ -328,8 +329,9 @@ function mouseUp(e) {
       break;
   }
 
-  if (!isOverPanel() /*&& isInside(...getPosScreenToGrid(e.pageX, e.pageY))*/) { // ?? 👀
+  if (!isOverPanel() && !overDropDown /*&& isInside(...getPosScreenToGrid(e.pageX, e.pageY))*/) { // ?? 👀
     save();
+
   }
 
   // ???
@@ -380,6 +382,40 @@ function mouseMove(e) {
   }
 }
 
+
+
+
+
+
+
+
+
+var navbars = document.getElementsByClassName("uk-navbar-dropdown");
+for (var i = 0; i < navbars.length; i++) {
+    navbars[i].addEventListener("mouseover", function(event){
+      event.stopPropagation()
+    
+      overDropDown = true
+    
+      console.log('in')
+    
+    }, false);
+    
+    navbars[i].addEventListener("mouseout", function(event){
+        event.stopPropagation()
+    
+        overDropDown = false
+    
+        console.log('out')
+    
+    }, false);
+}
+
+
+
+
+
+
 /*
 function keyPress(e) {
   if (e.key == "w") {
@@ -412,6 +448,8 @@ function keyPress(e) {
 */
 
 function keyDown(e) {
+  if (e.repeat) { return }
+
   if (e.ctrlKey && e.key === "z") {
     undo();
   }

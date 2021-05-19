@@ -556,11 +556,12 @@ Panel = function (
         var dy = mouse[1] - yPos ;
 
         
-        if (dx * dx + dy * dy < (uiScale * uiScale)/ (2.5 * 2.5) ) {
+        if (dx * dx + dy * dy < (uiScale * uiScale)/ (2.5 ** 2) ) {
           colorId = colors[i].id
         }
 
       }
+
 
       if (colorId /*&& search == ''*/) {
         drawTooltip(uiCtx, mouse[0], mouse[1],  colorId, 50)

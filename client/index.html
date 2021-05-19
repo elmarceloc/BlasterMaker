@@ -65,17 +65,17 @@
 
                             <li>
                                 <a onclick="toggleGrid()">
-                                    Rejilla
+                                    <i class="fas fa-border-all"></i>  Rejilla
                                 </a>
                             </li>
                             <li>
                                 <a onclick="toggleIds()">
-                                    Colores
+                                    <i class="fas fa-eye-dropper"></i>  Colores
                                 </a>
                             </li>
                             <li>
                                 <a onclick="launchFullScreen(document.documentElement)">
-                                    Pantalla completa
+                                    <i class="fas fa-expand"></i>  Pantalla completa
                                 </a>
                             </li>
 
@@ -91,43 +91,43 @@
 
                             <li>
                                 <a onclick="undo()">
-                                    Deshacer
+                                    <i class="fas fa-reply"></i>  Deshacer
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="rotateRight()">
-                                    Rotar a la derecha
+                                    <i class="fas fa-redo"></i>  Rotar a la derecha
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="rotateLeft()">
-                                    Rotar a la izquierda
+                                    <i class="fas fa-undo"></i>  Rotar a la izquierda
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="flipHorizontal()">
-                                    Invertir horizontalmente
+                                    <i class="fas fa-arrows-alt-h"></i>  Invertir horizontalmente
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="flipVertical()">
-                                    Invertir verticalmente
+                                    <i class="fas fa-arrows-alt-v"></i>  Invertir verticalmente
                                 </a>
                             </li>
 
                            <!-- <li>
                                 <a onclick="crop()">
-                                    Recortar
+                                    <i class="fas fa-crop"></i>  Recortar
                                 </a>
                             </li>
                         -->
                             <li>
                                 <a onclick="newDraw(width,height)">
-                                    Limpiar
+                                    <i class="fas fa-trash-alt"></i>  Limpiar
                                 </a>
                             </li>
 
@@ -150,7 +150,7 @@
         <div id="new">
 
             <div class="btnfloat" id="closenew">
-                <div role="button" tabindex="0">x</div>
+                <div role="button" tabindex="0"><i style="color: white" class="fas fa-times"></i></div>
             </div>
 
             <div id="new-grid" class="uk-grid-small" uk-grid>
@@ -228,7 +228,7 @@
                     <button onclick="importFromMenu()" class="uk-button uk-button-secondary uk-width-1-1 uk-button-large"><i class="fas fa-magic"></i>  Crear a partir de Imagen</button>
                 </div>
                 </div>
-                <div class="uk-width-2-3m uk-width-1-2@s uk-visible@s">
+                <div class="uk-padding uk-width-2-3m uk-width-1-2@s uk-visible@s">
 
                     <div v-if="onLine" id="online-section">
                         <div v-if="sidemenu == 1 || sidemenu == 2"
@@ -507,7 +507,7 @@
 
         <div id="info" style="visibility: hidden;">
             <div class="btnfloat" id="closeinfo">
-                <div role="button" tabindex="0">x</div>
+                <div role="button" tabindex="0"><i style="color: white" class="fas fa-times"></i></div>
             </div>
             <div class="uk-grid-small" uk-grid>
                 <div class="uk-width-1-2@s" id="colorsheet-container">
@@ -663,7 +663,7 @@
 
     <div id="main" style="visibility: hidden;">
         <div class="btnfloat" id="openinfo">
-            <div role="button" tabindex="0">i</div>
+            <div role="button" tabindex="0"> <i class="fas fa-arrow-right"></i> </div>
         </div>
 
         <input id="search" placeholder="Buscar" type="number">
