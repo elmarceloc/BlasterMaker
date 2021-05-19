@@ -646,11 +646,10 @@ function draw() {
 
             uiCtx.beginPath();
 
-            if (i % gridSize){
-              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
-              
+            if (!(i % gridSize) && height / gridSize > 1){
+              uiCtx.fillStyle = "rgba(60,60,60,0.9)";
             }else{
-              uiCtx.fillStyle = "rgba(255,64,101,0.9)";
+              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
             }
 
             uiCtx.rect(
@@ -660,7 +659,13 @@ function draw() {
               1 * scale + 2
             );
             uiCtx.fill();
-            uiCtx.fillStyle = "#aaaaaa";
+
+            if (!(i % gridSize) && height / gridSize > 1){
+              uiCtx.fillStyle = "rgb(200,200,200)";
+            }else{
+              uiCtx.fillStyle = "#aaaaaa";
+            }
+
             uiCtx.font = fixedScale / 2 + "px Arial";
 
             uiCtx.fillText(value, ruleX + fixedScale / 2, ruleY);
@@ -698,12 +703,11 @@ function draw() {
             }
 
             uiCtx.beginPath();
-            
-            if (i % gridSize){
-              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
-              
+
+            if (!(i % gridSize) && width / gridSize > 1){
+              uiCtx.fillStyle = "rgba(60,60,60,0.9)";
             }else{
-              uiCtx.fillStyle = "rgba(255,64,101,0.9)";
+              uiCtx.fillStyle = "rgba(40,40,40,0.9)";
             }
 
             uiCtx.rect(
@@ -713,7 +717,12 @@ function draw() {
               1 * fixedScale + 2
             );
             uiCtx.fill();
-            uiCtx.fillStyle = "#aaaaaa";
+
+            if (!(i % gridSize) && width / gridSize > 1){
+              uiCtx.fillStyle = "rgb(200,200,200)";
+            }else{
+              uiCtx.fillStyle = "#aaaaaa";
+            }
             uiCtx.font = fixedScale / 2 + "px Arial";
 
             uiCtx.fillText(value, ruleX, ruleY + fixedScale / 2);

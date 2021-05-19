@@ -225,7 +225,19 @@ function getMousePos(e) {
 }
 
 function wheel(e) {
+
+  if (scale >= 150){
+    scale = 149
+    return  
+  }
+
+  if (scale <= 1){
+    scale = 1.01
+    return
+  }
+  
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
+  
 }
 
 var oldMouse = false;
@@ -396,18 +408,14 @@ for (var i = 0; i < navbars.length; i++) {
       event.stopPropagation()
     
       overDropDown = true
-    
-      console.log('in')
-    
+        
     }, false);
     
     navbars[i].addEventListener("mouseout", function(event){
         event.stopPropagation()
     
         overDropDown = false
-    
-        console.log('out')
-    
+        
     }, false);
 }
 

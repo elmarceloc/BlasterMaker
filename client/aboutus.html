@@ -9,37 +9,49 @@
     <script src="js/lib/uikit-icons.min.js"></script>
     <link rel="stylesheet" href="css/lib/uikit.min.css" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+        crossorigin="anonymous" />
+
     <link rel="stylesheet" href="css/style.css">
 
 </head>
 
 <body id="body">
 
+    <style>
+        i {
+            color: rgb(255,64,101)
+        }
+    </style>
+
     <div id="app" class="uk-container uk-light uk-background-secondary uk-padding">
 
-            <h1 class="uk-article-title">Blaster Maker 0.6</h1>
-         <!--   <p class="uk-article-meta">Desarrollado por <a href="#">[[Nombre]]</a>. </p>-->  <!-- Verción <span id="version">0.7</span> en <span id="system"></span> -->
-
+        <h1 class="uk-article-title"><img width="34px" src="img/blaster.png"> Blaster Maker <SUP id="version"></SUP></h1>
+        <hr>
         <h4>
-            Programación
+            <i class="fas fa-code"></i> Desarrollo
         </h4>
 
         <ul class="uk-list">
-            <li>Marcelo Cornejo</li>
-            <li>Rodrigo Cornejo</li>
+            <li><i class="fas fa-user"></i> Marcelo Cornejo</li>
+            <li><i class="fas fa-user"></i> Rodrigo Cornejo</li>
+            <li><i class="fas fa-user"></i> PRODY</li>
         </ul>
 
         <h4>
-            Q&A
+            <i class="fas fa-question-circle"></i> Q&A
         </h4>
 
         <ul class="uk-list">
-            <li>Felipe Blast (Blaster Chile)</li>
+            <li><i class="fas fa-users"></i> Felipe Blast (Blaster Chile) y la comunidad de su discord <i class="fas fa-heart"></i> </li>
         </ul>
 
-        <p> Blaster Chile ® 2020 todos los derechos recervados </p>
+        <p><i class="far fa-copyright"></i>  Blaster Chile ® 2020-2021 todos los derechos reservados </p>
 
-       <!-- <a href="">Leer licencia</a> -->
+        <script>
+            document.getElementById('version').innerHTML = require("electron").remote.app.getVersion();
+        </script>
 
     </div>
 

@@ -42,11 +42,9 @@ function createWindow () {
     minWidth:400,
     minHeight:400,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       enableRemoteModule: true,
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
     },
     icon: __dirname + '/client/img/blaster.ico',
   })
@@ -60,7 +58,6 @@ function createWindow () {
       enableRemoteModule: true,
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
 
     },
   });
@@ -118,7 +115,6 @@ function createIdeasWindow () {
     minWidth:400,
     minHeight:400,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       enableRemoteModule: true,
       nodeIntegration: true,
       webviewTag: true
@@ -215,7 +211,6 @@ function createTSRWindow () {
     minWidth:400,
     minHeight:400,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       enableRemoteModule: true,
       nodeIntegration: true,
       webviewTag: true
@@ -310,7 +305,6 @@ function createPaletteWindow (palette) {
     width: 470,
     height: 860,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
       enableRemoteModule: true,
       nodeIntegration: true,
 
@@ -638,20 +632,23 @@ app.whenReady().then(() => {
   function openaboutus(){
     aboutus = new BrowserWindow({
       width: 640,
-      height: 480,
+      height: 520,
       parent: mainWindow,
       center: true,
       resizable:false,
-      movable:false,
+      movable:true,
       alwaysOnTop: true,
       fullscreenable: false,
-      nodeIntegration: true,
-      enableRemoteModule: true,
       icon: __dirname + '/client/img/blaster.ico',
+      webPreferences: {
+        enableRemoteModule: true,
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
     /* frame :false*/
     });
     aboutus.show();
-    aboutus.setMenu(null)
+   // aboutus.setMenu(null)
     aboutus.loadFile('client/aboutus.html')
 
     aboutus.setAlwaysOnTop(true);
