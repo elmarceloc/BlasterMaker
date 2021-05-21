@@ -18,10 +18,10 @@
     "tutorial",
     "demo"
   ],
-  "bugs": {
+  "author": {
+    "name": "Marcelo Cornejo",
     "email" : "untipollamadomarcelo@gmail.com"
   },
-  "author": "Marcelo Cornejo <untipollamadomarcelo@gmail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^10.4.6",
@@ -61,7 +61,8 @@
       "legalTrademarks": "Copyright © 2020 BlasterChile.cl"
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+
     },
     "fileAssociations": [
       {
