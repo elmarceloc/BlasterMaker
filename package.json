@@ -19,6 +19,9 @@
     "demo"
   ],
   "author": "Marcelo Cornejo untipollamadomarcelo@gmail.com",
+  "contributors": [
+    "Marcelo Cornejo untipollamadomarcelo@gmail.com"
+  ],
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^10.4.6",
