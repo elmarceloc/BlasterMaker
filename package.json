@@ -25,7 +25,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^10.4.6",
-    "electron-builder": "^22.8.1",
+    "electron-builder": "^22.8.1", 
     "minami": "^1.2.3"
   },
   "dependencies": {
@@ -59,10 +59,6 @@
       "target": "nsis",
       "icon": "/icon.ico",
       "legalTrademarks": "Copyright © 2020 BlasterChile.cl"
-    },
-    "linux": {
-      "target": "deb",
-
     },
     "fileAssociations": [
       {
