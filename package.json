@@ -1,6 +1,5 @@
 {
   "name": "BlasterMaker",
-  "author": "John Doe <marcelo.cornejo.m@usach.cl>",
   "version": "0.7.4",
   "description": "A minimal Electron application",
   "main": "main.js",
@@ -19,7 +18,7 @@
     "tutorial",
     "demo"
   ],
-  "author": "GitHub",
+  "author": "Marcelo Cornejo <marcelo.cornejo.m@usach.cl>",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^10.4.6",
