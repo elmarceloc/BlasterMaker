@@ -18,6 +18,9 @@
     "tutorial",
     "demo"
   ],
+  "bugs": {
+    "email" : "untipollamadomarcelo@gmail.com"
+  },
   "author": "Marcelo Cornejo <untipollamadomarcelo@gmail.com>",
   "license": "CC0-1.0",
   "devDependencies": {
