@@ -543,7 +543,7 @@ Panel = function (
           
 
 
-          drawBead2(
+          drawBead(
             xPos,
             yPos,
             uiScale,
@@ -661,7 +661,7 @@ Panel = function (
           var dy = mouse[1] - yPos ;
   
         
-          drawBead2(
+          drawBead(
             xPos,
             yPos,
             uiScale,
@@ -675,7 +675,7 @@ Panel = function (
           }
 
         } else {
-          drawBead2(
+          drawBead(
             Math.floor(i / pensPerCol) * uiScale + 15 + x + mL,
             (i % pensPerCol) * uiScale + 15 + y + mU,
             uiScale,

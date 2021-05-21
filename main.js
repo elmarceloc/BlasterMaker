@@ -381,7 +381,8 @@ app.whenReady().then(() => {
         },
         {
           label: 'Guardar',
-          //accelerator: process.platform == 'darwin' ? 'cmd + s' : 'ctrl + s',
+          accelerator: process.platform == 'darwin' ? 'cmd + s' : 'ctrl + s',
+          /*acele*/
           click: function() {
             save()
           }
@@ -648,7 +649,7 @@ app.whenReady().then(() => {
     /* frame :false*/
     });
     aboutus.show();
-   // aboutus.setMenu(null)
+    aboutus.setMenu(null)
     aboutus.loadFile('client/aboutus.html')
 
     aboutus.setAlwaysOnTop(true);
@@ -795,8 +796,11 @@ function openControls() {
      // movable:false,
       alwaysOnTop: true,
       fullscreenable: false,
-      nodeIntegration: true,
-      enableRemoteModule: true,
+      webPreferences: {
+        enableRemoteModule: true,
+        nodeIntegration: true,
+        contextIsolation: false,
+      },
       icon: __dirname + '/client/img/blaster.ico',
     /* frame :false*/
     });

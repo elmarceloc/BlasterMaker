@@ -7,7 +7,8 @@
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --x64",
-    "gh-publish": "electron-builder --x64 -p always"
+    "gh-publish": "electron-builder --x64 -p always",
+    "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -21,10 +22,12 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^10.4.5",
-    "electron-builder": "^22.8.1"
+    "electron-builder": "^22.8.1",
+    "minami": "^1.2.3"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "clean-jsdoc-theme": "^3.2.7",
     "custom-electron-titlebar": "^3.2.4",
     "dialogs": "^2.0.1",
     "electron-google-analytics": "^1.0.2",

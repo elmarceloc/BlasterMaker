@@ -4,8 +4,6 @@ var app = new Vue({
     name: "",
     colorPalette: "",
     beadSize: "",
-    ctrl: false,
-    cmd: false,
     total: 3,
     onLine: navigator.onLine,
     sidemenu: 3,

@@ -76,9 +76,9 @@ var meter = new FPSMeter({
 
 
 /**
- * Loads the data saved with generate
+ * Loads data in JSON format
  *
- * @return {string} encoded data 
+ * @param {string} file - file data as Stringified JSON
 
 */
 
@@ -133,7 +133,7 @@ function load(file) {
 /**
  * Generates the data for save in file,temp,etc
  *
- * @return {string} encoded data 
+ * @return {string} encoded data as object
 
 */
 
@@ -156,8 +156,8 @@ function generate() {
  *  Apply Run-Length-Encoding to an spaced-string draw
  *
  *
- * @param {string} `str` - data
- * @return {string} `str` - encoded data
+ * @param {string} input data - data
+ * @return {string} encoded data - encoded data as string
 
 */
 
@@ -208,14 +208,14 @@ function save() {
 }
 
 /**
- * Draws a bead in spesific position (for the color sidebar)
+ * Draws a bead in spesific position
  *
- * @param {number} `x` - the x position of the bead
- * @param {number} `y` - the y position of the bead
+ * @param {number} X - the x position of the bead
+ * @param {number} Y - the y position of the bead
 
 */
 
-function drawBead2(X, Y, radius, color, selected) {
+function drawBead(X, Y, radius, color, selected) {
   uiCtx.beginPath();
   uiCtx.lineWidth = selected ? 8 : 5;
   uiCtx.arc(
