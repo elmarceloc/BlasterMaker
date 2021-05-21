@@ -138,7 +138,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   ipc.on("loadPreview", (event, src) => {
     document.getElementById("previewCropOriginal").src = src;
 
-    ipc.send("setProgress",0.5)
+  //  ipc.send("setProgress",0.5)
 
     img = new Image();
     img.onload = function() {
@@ -147,6 +147,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
       document.querySelector("#loading-container").style.visibility = 'hidden';
 
+      document.querySelector("previewCrop").style.visibility = 'visible';
 
       ipc.send("setProgress",1)
 
@@ -154,7 +155,8 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
         ipc.send("setProgress",0)
       },500)
     } 
-    img.src = src//src;
+
+    img.src = src;
 
 
 
@@ -170,10 +172,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
     };
 
-  });
-
-  ipc.on("ctrls", (event, src) => {
-    //showCtrls()
   });
 
   function exportImageData(event) {

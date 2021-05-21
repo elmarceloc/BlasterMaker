@@ -231,9 +231,6 @@ h1 span {
   -ms-interpolation-mode: nearest-neighbor;
   max-width: 100%;
   background-color: rgb(255 255 255 / 6%);
-}
-
-#previewCrop {
   width: 100%;
 }
 

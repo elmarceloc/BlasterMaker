@@ -112,6 +112,7 @@ function updatePreview(img, width, angle = 0) {
    // document.getElementById("previewContainer").appendChild(canvas2);
 
     document.querySelector("#loading-container").style.visibility = 'hidden';
+  //  document.querySelector("previewCrop").style.visibility = 'visible';
 
 
 /*    var $image = $('#previewCrop');
