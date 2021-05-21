@@ -18,10 +18,7 @@
     "tutorial",
     "demo"
   ],
-  "author": {
-    "name": "Marcelo Cornejo",
-    "email" : "untipollamadomarcelo@gmail.com"
-  },
+  "author": "Marcelo Cornejo untipollamadomarcelo@gmail.com",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^10.4.6",
