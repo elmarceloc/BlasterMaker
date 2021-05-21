@@ -88,6 +88,12 @@ function getPosGridToScreen(x, y) {
   return getPosTableToScreen(...toGrid([x, y]));
 }
 
+/**
+ * Gets the grid position of a bead by its cordenates
+ *
+ * @return {array} the cordinates of the bead in grid terms
+
+*/
 function getPosScreenToTable(x, y) {
   return [
     (x - uiCanvas.width / 2) / scale + width / 2 - xOffset,
@@ -451,7 +457,7 @@ function setColorPalete(size,kit) {
   var img = new Image();
 
   img.onload = function () {
-    callback(img, data.x, data.y, data.w, data.h);
+    callback(img, data.x, data.y, img.width, img.height);
   };
   img.src = data.url;
   
@@ -495,4 +501,49 @@ function getClippedRegion(image, x, y, width, height) {
   ctx.drawImage(image, x, y, width, height,  0, 0, width, height);
 
   return canvas;
+}
+
+
+/**
+ *  Apply Run-Length-Encoding to an spaced-string draw
+ *
+ *
+ * @param {string} input data - data
+ * @return {string} encoded data - encoded data as string
+
+*/
+
+function compress(str) {
+  var output = "";
+  var count = 0;
+  S = str.split(" ");
+  for (var i = 0; i < S.length; i++) {
+    count++;
+    if (S[i] != S[i + 1]) {
+      output += " " + S[i] + "_" + count;
+      count = 0;
+    }
+  }
+  return output.substring(1);
+}
+
+/**
+ *  Decompress Run-Length-Encoding of an spaced-string encoded draw
+ *
+ *
+ * @param {string} `str` - data encoded
+ * @return {string} `str` - decoded data
+
+*/
+
+function decompress(str) {
+  S = str.split(" ").map((k) => k.split("_"));
+  var output = "";
+  for (let i = 0; i < S.length; i++) {
+    output += i ? " " : "";
+    for (let j = 0; j < S[i][1]; j++) {
+      output += (j ? " " : "") + S[i][0];
+    }
+  }
+  return output;
 }

@@ -10,6 +10,8 @@ const sizeOf = require('image-size');
 
 const ipc = require('electron').ipcMain;
 
+const fs = require('fs')
+
 const { openAboutUs } = require("./aboutus");
 const { openControls } = require("./controls");
 const { openTSRWindow } = require("./tsr");
@@ -33,6 +35,13 @@ function openMainWindow() {
 
     mainWindow.setBackgroundColor('#222222') // ???
 
+    mainWindow.on('blur', function(){
+        mainWindow.webContents.send('onToggleBlur',true);
+    });
+
+    mainWindow.on('focus', function(){
+        mainWindow.webContents.send('onToggleBlur',false);
+    });
 
     workerWindow = new BrowserWindow({
         webPreferences: {
@@ -194,7 +203,7 @@ function openMainWindow() {
                     type: 'separator'
                 },
                 { role: 'togglefullscreen' },
-                { role: 'toggledevtools' },
+                ...(process.env.DEV == 'true') ?[{ role: 'toggledevtools' }] : [],
             ]
         },
         {
@@ -346,7 +355,6 @@ function openMainWindow() {
 }
 
 
-
 function showOpenImageDialog() {
     electron.dialog.showOpenDialog({
         filters: [
@@ -393,7 +401,7 @@ function showOpenImageDialog() {
 }
 
 ipc.on('exportImageData', (event, data) => {
-    console.log('Exporting image data')
+    console.log('Exporting image data',data)
 
     mainWindow.loadFile('client/index.html')
 
@@ -508,6 +516,9 @@ ipc.on('closecropper', (event) => {
 
 // read the file and send data to the render process
 ipc.on('get-file-data', function (event) {
+
+    mainWindow.webContents.send('debug', process.env.DEV  == 'true')
+
     var data = null;
     console.log(process.argv)
     if (process.platform == 'win32' && process.argv.length >= 2 && process.argv[1] != '.' && !process.argv[1].includes('electron.exe')) {
@@ -521,6 +532,7 @@ ipc.on('get-file-data', function (event) {
         }
     }
     event.returnValue = data;
+
 });
 
 module.exports = { openMainWindow };

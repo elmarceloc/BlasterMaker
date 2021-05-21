@@ -196,11 +196,23 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     document.documentElement.style.overflow = "visible";
   });
 
+  ipc.on("onToggleBlur", (event, blur) => {
+    blur ? stop() : start()
+  });
+
+
+  function importFromMenu() {
+    ipc.send("loadFromMenu")
+  }
 }
 
-function importFromMenu() {
-  ipc.send("loadFromMenu")
-}
+
+ipc.on("debug", (event, debug) => {
+  isDebug = debug
+
+  console.log('Debug Mode set to', debug)
+});
+
 
 /**
  * Downloads the page as image

@@ -239,7 +239,7 @@ function wheel(e) {
   }
   
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
-  
+  start()
 }
 
 var oldMouse = false;

@@ -446,10 +446,6 @@ function createNew() {
 
   resize(x * gridSize, y * gridSize);
 
-  localStorage.setItem("palette", palette);
-
-  localStorage.setItem("gridSize", gridSize);
-
   initProject();
 
   initialSave()
@@ -459,10 +455,6 @@ function createNew() {
 function openRecent() {
   if (localStorage.getItem("code")) {
     load(localStorage.getItem("code"));
-
-    palette = localStorage.getItem("palette");
-
-    gridSize = localStorage.getItem("gridSize");
 
     initProject();
       

@@ -18,15 +18,15 @@ var path = ''
 var palette = "all";
 var colorPalette = [];
 
-var isDevMode = true;
+var isDebug = false;
 
 var width = 29;
 var height = 29;
 
-var viewMode = 1;
+var viewMode = parseInt(localStorage.getItem("viewMode"));
 
-var showGrid = true;
-var showIds = false;
+var showGrid = localStorage.getItem("showGrid") == "true";
+var showIds = localStorage.getItem("showIds") == "true";
 
 var scale = 12;
 var xOffset = 0;
@@ -64,16 +64,21 @@ var panels = [];
 
 var gridSize = 29;
 
-/*
+
 var meter = new FPSMeter({
   left:'80px',
   heat:  0,
   graph:   1, // Whether to show history graph.
 	history: 20 // How many history states to show in a graph.
 })
-*/
 
+// resize canvas size
 
+renderCanvas.style.width = width + "px";
+renderCanvas.style.height = height + "px";
+
+backgroundCanvas.style.width = width + "px";
+backgroundCanvas.style.height = height + "px";
 
 /**
  * Loads data in JSON format
@@ -150,50 +155,6 @@ function generate() {
   }
 
   //return width + "," + height + "," + savedData + "," +  projectName  + "," +   palette + "," + gridSize;
-}
-
-/**
- *  Apply Run-Length-Encoding to an spaced-string draw
- *
- *
- * @param {string} input data - data
- * @return {string} encoded data - encoded data as string
-
-*/
-
-function compress(str) {
-  var output = "";
-  var count = 0;
-  S = str.split(" ");
-  for (var i = 0; i < S.length; i++) {
-    count++;
-    if (S[i] != S[i + 1]) {
-      output += " " + S[i] + "_" + count;
-      count = 0;
-    }
-  }
-  return output.substring(1);
-}
-
-/**
- *  Decompress Run-Length-Encoding of an spaced-string encoded draw
- *
- *
- * @param {string} `str` - data encoded
- * @return {string} `str` - decoded data
-
-*/
-
-function decompress(str) {
-  S = str.split(" ").map((k) => k.split("_"));
-  var output = "";
-  for (let i = 0; i < S.length; i++) {
-    output += i ? " " : "";
-    for (let j = 0; j < S[i][1]; j++) {
-      output += (j ? " " : "") + S[i][0];
-    }
-  }
-  return output;
 }
 
 function save() {
@@ -515,6 +476,31 @@ function drawCursor(){
   }
 }
 
+function drawInfo(){
+
+  let baseX = panels['colors'].x + panels['colors'].width + 20
+  let baseY = 30
+
+  uiCtx.fillStyle = "rgba(196, 196, 174 ,255)";
+  uiCtx.font = "14px Arial";
+  uiCtx.textAlign = "left";
+
+  // General
+  let [x,y] = [...getPosScreenToGrid(...mouse)]
+
+
+  if(isInside(x,y)) uiCtx.fillText(`Pos: ${x+1} x ${y+1}`, baseX, baseY);
+  
+  uiCtx.fillText(`Color: ${color}`, baseX, baseY + 20);
+  uiCtx.fillText(`Tool: ${tool}`, baseX, baseY + 40);
+  uiCtx.fillText(`Scale: ${Math.floor(scale)}`, baseX, baseY + 60);
+
+  // Local storage
+
+  uiCtx.fillText(`showGrid: ${localStorage.getItem('showGrid')}`, baseX, baseY + 100);
+  uiCtx.fillText(`showIds: ${localStorage.getItem('showIds')}`, baseX, baseY + 120);
+}
+
 
 function drawBackground() {
   
@@ -772,11 +758,6 @@ function newDraw(w, h) {
 //canvas4.width = width * beadSize;
 //canvas4.height = height * beadSize;
 
-renderCanvas.style.width = width + "px";
-renderCanvas.style.height = height + "px";
-
-backgroundCanvas.style.width = width + "px";
-backgroundCanvas.style.height = height + "px";
 
 //canvas4.style.width = width * beadSize + "px";
 //canvas4.style.height = height * beadSize + "px";
@@ -787,14 +768,16 @@ for (let j = 0; j < height; j++) {
   }
 }*/
 
+var requestId;
+
 function draw() {
+  requestId = undefined;
 
   drawBackground()
 
   // render the beads
   renderCtx.putImageData(grid2, 0, 0);
 
-  
   if (scale > 20) {
     drawIds();
   }
@@ -812,20 +795,34 @@ function draw() {
   clickDown = false;
   clickUp = false;
 
-	//meter.tick();
+  if (isDebug){
+    drawInfo()
+    meter.tick();
+  }
 
-  requestAnimationFrame(draw);
-}
-requestAnimationFrame(draw);
-
-if (localStorage.getItem("showGrid")) {
-  showGrid = localStorage.getItem("showGrid") == "true";
+  start();
 }
 
-if (localStorage.getItem("showIds")) {
-  showIds = localStorage.getItem("showIds") == "true";
+start()
+
+function start() {
+  if (!requestId) {
+     requestId = window.requestAnimationFrame(draw);
+     document.getElementById('pausedOverlay').style.opacity = '0%'
+     document.getElementById('search').style.opacity = '100%'
+     document.getElementById('openinfo').style.opacity = '100%'
+
+  }
 }
 
-if (localStorage.getItem("viewMode")) {
-  viewMode = parseInt(localStorage.getItem("viewMode"));
+function stop() {
+  if (requestId) {
+     window.cancelAnimationFrame(requestId);
+     requestId = undefined;
+
+     document.getElementById('search').style.opacity = '0%'
+     document.getElementById('pausedOverlay').style.opacity = '100%'
+     document.getElementById('openinfo').style.opacity = '0%'
+     
+  }
 }

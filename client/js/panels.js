@@ -430,7 +430,7 @@ Panel = function (
         this.height
       );
   
-      if (isDevMode) {
+      if (isDebug) {
         //rect(...this.panZoomFrom,2,2)
         //rect(...this.panZoomTo,2,2)
         //rect(this.x+this.parentX,this.y+this.parentY,this.width,this.height)
