@@ -10,7 +10,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
   var bmdata = ipc.sendSync('get-file-data');
 
-  if (bmdata != null){
+  if (bmdata != null) {
     load(bmdata);
     initProject()
   }
@@ -79,18 +79,8 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     //}
   });
 
-  ipc.on("importImg", (event, data) => {
-    importImg(
-      data.url,
-      data.x,
-      data.y,
-      data.w,
-      data.h,
-      data.size,
-      data.kit,
-      data.scale
-    );
-
+  ipc.on("createFromImage", (event, data) => {
+    createFromImage(data);
   });
 
 
@@ -138,23 +128,21 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   ipc.on("loadPreview", (event, src) => {
     document.getElementById("previewCropOriginal").src = src;
 
-  //  ipc.send("setProgress",0.5)
+    //  ipc.send("setProgress",0.5)
 
     img = new Image();
-    img.onload = function() {
+    img.onload = function () {
 
-      updatePreview(img, Math.min(img.width,100))
+      updatePreview(img, Math.min(img.width, 100))
 
       document.querySelector("#loading-container").style.visibility = 'hidden';
 
-      document.querySelector("previewCrop").style.visibility = 'visible';
+      ipc.send("setProgress", 1)
 
-      ipc.send("setProgress",1)
-
-      setTimeout(function() {
-        ipc.send("setProgress",0)
-      },500)
-    } 
+      setTimeout(function () {
+        ipc.send("setProgress", 0)
+      }, 500)
+    }
 
     img.src = src;
 
@@ -166,9 +154,9 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
       document.querySelector("#scale").max = this.width;
 
-      document.querySelector("#scale").value = Math.min(this.width,100);
+      document.querySelector("#scale").value = Math.min(this.width, 100);
 
-      document.querySelector("#showrange").value = Math.min(this.width,100);
+      document.querySelector("#showrange").value = Math.min(this.width, 100);
 
     };
 
@@ -210,7 +198,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
 }
 
-function importFromMenu(){
+function importFromMenu() {
   ipc.send("loadFromMenu")
 }
 
@@ -227,14 +215,14 @@ function printTable() {
   let day = date.getDate()
   let month = date.getMonth() + 1
   let year = date.getFullYear()
-  
-  if(month < 10){
+
+  if (month < 10) {
     formatDate = `${day}-0${month}-${year}`
-  }else{
+  } else {
     formatDate = `${day}-${month}-${year}`
   }
 
-  var style =  `<style>
+  var style = `<style>
   .invoice-box {
       max-width: 800px;
       margin: auto;
@@ -501,10 +489,10 @@ function printReal(images) {
       </body>
       </html>`
     );
-    setTimeout(() =>{
+    setTimeout(() => {
       w.window.print();
       w.document.close();
-    },500)
+    }, 500)
 
     return false;
   }

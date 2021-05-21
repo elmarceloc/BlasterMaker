@@ -471,22 +471,21 @@ function openRecent() {
   }
 }
 
-function importImg(url, x, y, w, h, size, kit, newWidth) {
-  // ??
+function createFromImage(data) {
 
-  setColorPalete(size, kit);
+  setColorPalete(data.size, data.kit);
 
-  loadImg(url, x, y, w, h, function (img, x, y, width, height) {
+  loadImg(data, function (newImg, newX, newY, newWidth, newHeight) { // TODO: rotation.etc
     var canvas2 = document.createElement("canvas");
     var canvas3 = document.createElement("canvas");
 
     var ctx = canvas2.getContext("2d");
     var ctx1 = canvas3.getContext("2d");
 
-    ctx.canvas.width = w;
-    ctx.canvas.height = h;
+    ctx.canvas.width = newWidth;
+    ctx.canvas.height = newHeight;
 
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(newImg, 0, 0);
 
     // scales the image using neirest neighbourn algorithm
 
@@ -496,11 +495,11 @@ function importImg(url, x, y, w, h, size, kit, newWidth) {
     var wd = ctx.canvas.width; // destination image
     var hd = ctx.canvas.height;
 
-    ctx1.canvas.width = w; // ??
-    ctx1.canvas.height = h; // ??
+    ctx1.canvas.width = newWidth; 
+    ctx1.canvas.height = newHeight; 
 
     // use 32bit ints as we are not interested in the channels
-    var src = ctx.getImageData(0, 0, w, h);
+    var src = ctx.getImageData(0, 0, newWidth, newHeight);
 
     var data = new Uint32Array(src.data.buffer); // source
     var dest = ctx1.createImageData(wd, hd);
@@ -513,15 +512,15 @@ function importImg(url, x, y, w, h, size, kit, newWidth) {
     resize(newWidth, hd / (wd / newWidth));
 
 
-    for (var y = 0; y < hd; y++) {
-      for (var x = 0; x < wd; x++) {
+    for (var newY = 0; newY < hd; newY++) {
+      for (var newX = 0; newX < wd; newX++) {
         // transform point
-        xx = x * xdx - y * xdy + panX;
-        yy = x * xdy + y * xdx + panY;
+        xx = newX * xdx - newY * xdy + panX;
+        yy = newX * xdy + newY * xdx + panY;
         // is the lookup pixel in bounds
-        if (xx >= 0 && xx < w && yy >= 0 && yy < h) {
+        if (xx >= 0 && xx < newWidth && yy >= 0 && yy < newHeight) {
           // use the nearest pixel to set the new pixel
-          zoomData[ind++] = data[(xx | 0) + (yy | 0) * w]; // set the pixel
+          zoomData[ind++] = data[(xx | 0) + (yy | 0) * newWidth]; // set the pixel
         } else {
           zoomData[ind++] = 0; // pixels outside bound are transparent
         }

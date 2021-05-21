@@ -437,15 +437,50 @@ function setColorPalete(size,kit) {
 }
 
 
-function makeid(length) {
-  var result           = [];
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-    result.push(characters.charAt(Math.floor(Math.random() *  charactersLength)));
-  }
- return result.join('');
+
+/**
+ * load an image from url
+ * @param {str} `data` -  {x, y, w, h, size, kit, url, scaleFac}
+ */
+
+ function loadImg(data, callback) {
+  // TODO: CREAR CROP ROTATE AND REESCALE, newX, newW..etc
+
+  colorPalette = [];
+
+  var img = new Image();
+
+  img.onload = function () {
+    callback(img, data.x, data.y, data.w, data.h);
+  };
+  img.src = data.url;
+  
+  /*colorPalette = [];
+
+  var img = new Image();
+  console.log(img)
+  img.onload = function () {
+    var renderCanvas = document.createElement("canvas");
+    var tempctx = uiCanvas.getContext("2d");
+    tempctx.uiCanvas.width = w;
+    tempctx.uiCanvas.height = h;
+    tempctx.drawImage(img, 0, 0);
+    newDraw(
+      Math.ceil(w / gridSize) * gridSize,
+      Math.ceil(h / gridSize) * gridSize
+    ); //???
+
+    tempctx.putImageData(tempctx.getImageData(x, y, w, h)) 
+
+    var img = document.createElement("img");
+    img.src = tempctx.toDataURL("image/png");
+
+    console.log(img)
+    callback(img, w, h);
+  };
+  img.src = url;*/
 }
+
 
 
 function getClippedRegion(image, x, y, width, height) {

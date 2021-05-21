@@ -82,21 +82,13 @@ function openTSRWindow (parent) {
       }
     ]
   
-  
-  
     const tsrMenuBar = Menu.buildFromTemplate(tsrMenu);
   
-  
     tsrWindow.setMenu(tsrMenuBar);
-  
-  
-    // and load the index.html of the app.
-    
-    //tsrWindow.loadURL('https://www.spriters-resource.com')
+      
     tsrWindow.loadFile('client/tsr.html')
   
   }
-
 
 var base_url = 'https://www.spriters-resource.com';
 
@@ -146,9 +138,6 @@ ipc.on('openTSR', (event, tsrURL) => {
 
     
       })
-
-  //    tsrWindow.close();
-
       console.log(img_url)
     })
 

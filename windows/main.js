@@ -122,7 +122,7 @@ function openMainWindow() {
                 {
                     label: 'Importar Imagen',
                     click: function () {
-                        importImg()
+                        showOpenImageDialog()
                     },
                     enabled: true
                 },
@@ -254,24 +254,24 @@ function openMainWindow() {
                     label: 'Limpiar',
                     click: function () {
                         /*
-                                    electron.dialog.showMessageBox(mainWindow, {
-                                      title: 'Limpiar',
-                                      buttons: ['Yes', 'No'],
-                                      message: '¿Estas seguro que quieres vaciar el proyecto? Esto borrara tu progreso',
-                                      type: 'warning',
-                                    }, (response) => {
-                                      if (response === 0){
-                                        //Yes button pressed
-                                        mainWindow.webContents.send('clear')
-                                       }
-                                       else if (response === 1) {
-                                        //No button pressed
-                                       }
-                                       else if (response === 2){
-                                        //Cancel button pressed
-                                       }
-                                     })
-                                  */
+                            electron.dialog.showMessageBox(mainWindow, {
+                                title: 'Limpiar',
+                                buttons: ['Yes', 'No'],
+                                message: '¿Estas seguro que quieres vaciar el proyecto? Esto borrara tu progreso',
+                                type: 'warning',
+                            }, (response) => {
+                                if (response === 0){
+                                //Yes button pressed
+                                mainWindow.webContents.send('clear')
+                                }
+                                else if (response === 1) {
+                                //No button pressed
+                                }
+                                else if (response === 2){
+                                //Cancel button pressed
+                                }
+                                })
+                            */
 
                         mainWindow.webContents.send('clear')
 
@@ -347,10 +347,10 @@ function openMainWindow() {
 
 
 
-function importImg() {
+function showOpenImageDialog() {
     electron.dialog.showOpenDialog({
         filters: [
-            { name: 'Imágenes', extensions: ["png", "jpg", "jpeg", 'bmp', 'gif'] },
+            { name: 'Imágenes', extensions: ["png", "jpg", "jpeg", 'bmp', 'gif', 'svg'] },
         ],
         properties: ['openFile']
     }).then(result => {
@@ -385,14 +385,31 @@ function importImg() {
 
         })
 
-
         // }
-
 
     }).catch(err => {
         console.log(err)
     })
 }
+
+ipc.on('exportImageData', (event, data) => {
+    console.log('Exporting image data')
+
+    mainWindow.loadFile('client/index.html')
+
+    mainWindow.webContents.once('did-finish-load', () => {
+        console.log('createFromImage called from main process')
+
+        mainWindow.webContents.send('createFromImage', data ) 
+
+    })
+
+})
+
+ipc.on('loadFromMenu', (event) => {
+    console.log('Loading image from menu')
+    showOpenImageDialog()
+})
 
 
 function newBead() {
@@ -423,8 +440,6 @@ function openBead() {
                 }
                 console.log(data);
 
-                // send data to client
-
                 mainWindow.webContents.send("loadBeads", data, result.filePaths[0]);
             });
         })
@@ -436,8 +451,6 @@ function openBead() {
 
 // retransmit it to workerWindow
 ipc.on("printPDF", (event, content) => {
-    console.log('print')
-
     workerWindow.webContents.send("printPDF", content);
 });
 
@@ -478,21 +491,6 @@ ipc.on('saveFile', (event, data, path) => {
 
 
 
-ipc.on('exportImageData', (event, data) => {
-    console.log(data)
-
-    mainWindow.loadFile('client/index.html')
-
-
-    mainWindow.webContents.once('did-finish-load', () => {
-
-        mainWindow.webContents.send('importImg', { url: data.url, x: data.x, y: data.y, w: data.w, h: data.h, size: data.size, kit: data.kit, scale: data.scale }) //???????
-
-    })
-
-})
-
-
 ipc.on('setProgress', (event, value) => {
 
     mainWindow.setProgressBar(value)
@@ -504,13 +502,6 @@ ipc.on('closecropper', (event) => {
 
     mainWindow.loadFile('client/index.html')
 
-})
-
-
-
-ipc.on('loadFromMenu', (event) => {
-    console.log('menu')
-    importImg()
 })
 
 // TODO: test on mac/linux

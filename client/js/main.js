@@ -769,55 +769,6 @@ function newDraw(w, h) {
   resize(w, h);
 }
 
-/**
- * load an image from url
- * @param {str} `url` - the url of an image
- */
-
-function loadImg(url, x, y, w , h, callback) {
-
-  colorPalette = [];
-  var img = new Image();
-  img.onload = function () {
-    callback(img, x, y, img.width, img.height);
-  };
-  img.src = url;
-
-  /*colorPalette = [];
-
-  var img = new Image();
-  console.log(img)
-  img.onload = function () {
-    var renderCanvas = document.createElement("canvas");
-    var tempctx = uiCanvas.getContext("2d");
-    tempctx.uiCanvas.width = w;
-    tempctx.uiCanvas.height = h;
-    tempctx.drawImage(img, 0, 0);
-    newDraw(
-      Math.ceil(w / gridSize) * gridSize,
-      Math.ceil(h / gridSize) * gridSize
-    ); //???
-
-    tempctx.putImageData(tempctx.getImageData(x, y, w, h)) 
-
-    var img = document.createElement("img");
-    img.src = tempctx.toDataURL("image/png");
-
-    console.log(img)
-    callback(img, w, h);
-  };
-  img.src = url;*/
-}
-
-function loadImgSimple(url, callback) {
-  colorPalette = [];
-  var img = new Image();
-  img.onload = function () {
-    callback(img, img.width, img.height);
-  };
-  img.src = url;
-}
-
 //canvas4.width = width * beadSize;
 //canvas4.height = height * beadSize;
 
