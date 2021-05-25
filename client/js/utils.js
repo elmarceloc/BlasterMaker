@@ -349,6 +349,51 @@ function crop() {
   grid2 = newGrid2;
 }
 
+/**
+ *  Apply Run-Length-Encoding to an spaced-string draw
+ *
+ *
+ * @param {string} input data - data
+ * @return {string} encoded data - encoded data as string
+
+*/
+
+function compress(str) {
+  var output = "";
+  var count = 0;
+  S = str.split(" ");
+  for (var i = 0; i < S.length; i++) {
+    count++;
+    if (S[i] != S[i + 1]) {
+      output += " " + S[i] + "_" + count;
+      count = 0;
+    }
+  }
+  return output.substring(1);
+}
+
+/**
+ *  Decompress Run-Length-Encoding of an spaced-string encoded draw
+ *
+ *
+ * @param {string} `str` - data encoded
+ * @return {string} `str` - decoded data
+
+*/
+
+function decompress(str) {
+  S = str.split(" ").map((k) => k.split("_"));
+  var output = "";
+  for (let i = 0; i < S.length; i++) {
+    output += i ? " " : "";
+    for (let j = 0; j < S[i][1]; j++) {
+      output += (j ? " " : "") + S[i][0];
+    }
+  }
+  return output;
+}
+
+
 
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === 'undefined') {
@@ -400,8 +445,6 @@ function drawTooltip(ctx, x, y, text, width) {
   
   ctx.fillText(text, x + 10, y - 6);
   ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
 }
 
 
@@ -501,49 +544,4 @@ function getClippedRegion(image, x, y, width, height) {
   ctx.drawImage(image, x, y, width, height,  0, 0, width, height);
 
   return canvas;
-}
-
-
-/**
- *  Apply Run-Length-Encoding to an spaced-string draw
- *
- *
- * @param {string} input data - data
- * @return {string} encoded data - encoded data as string
-
-*/
-
-function compress(str) {
-  var output = "";
-  var count = 0;
-  S = str.split(" ");
-  for (var i = 0; i < S.length; i++) {
-    count++;
-    if (S[i] != S[i + 1]) {
-      output += " " + S[i] + "_" + count;
-      count = 0;
-    }
-  }
-  return output.substring(1);
-}
-
-/**
- *  Decompress Run-Length-Encoding of an spaced-string encoded draw
- *
- *
- * @param {string} `str` - data encoded
- * @return {string} `str` - decoded data
-
-*/
-
-function decompress(str) {
-  S = str.split(" ").map((k) => k.split("_"));
-  var output = "";
-  for (let i = 0; i < S.length; i++) {
-    output += i ? " " : "";
-    for (let j = 0; j < S[i][1]; j++) {
-      output += (j ? " " : "") + S[i][0];
-    }
-  }
-  return output;
 }

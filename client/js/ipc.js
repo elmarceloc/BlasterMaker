@@ -197,7 +197,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   });
 
   ipc.on("onToggleBlur", (event, blur) => {
-    blur ? stop() : start()
+    //blur ? stop() : start()
   });
 
 
@@ -209,6 +209,16 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
 ipc.on("debug", (event, debug) => {
   isDebug = debug
+
+
+ /* if(isDebug){
+    var meter = new FPSMeter({
+      left:'80px',
+      heat:  0,
+      graph:   1, // Whether to show history graph.
+      history: 20 // How many history states to show in a graph.
+    })
+  }*/
 
   console.log('Debug Mode set to', debug)
 });

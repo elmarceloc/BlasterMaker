@@ -2,7 +2,18 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "..\\..\\Pruebas\\server\\mods\\deathmatch\\resources"
+		},
+		{
+			"path": "C:\\Users\\elmarceloc\\Downloads\\html"
+		},
+		{
+			"path": "..\\opencsv-laser"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "resources"
+	}
 }

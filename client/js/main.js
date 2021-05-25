@@ -64,14 +64,6 @@ var panels = [];
 
 var gridSize = 29;
 
-
-var meter = new FPSMeter({
-  left:'80px',
-  heat:  0,
-  graph:   1, // Whether to show history graph.
-	history: 20 // How many history states to show in a graph.
-})
-
 // resize canvas size
 
 renderCanvas.style.width = width + "px";
@@ -497,8 +489,10 @@ function drawInfo(){
 
   // Local storage
 
-  uiCtx.fillText(`showGrid: ${localStorage.getItem('showGrid')}`, baseX, baseY + 100);
-  uiCtx.fillText(`showIds: ${localStorage.getItem('showIds')}`, baseX, baseY + 120);
+  //uiCtx.fillText(`showGrid: ${localStorage.getItem('showGrid')}`, baseX, baseY + 100);
+  //uiCtx.fillText(`showIds: ${localStorage.getItem('showIds')}`, baseX, baseY + 120);
+
+
 }
 
 
@@ -797,7 +791,7 @@ function draw() {
 
   if (isDebug){
     drawInfo()
-    meter.tick();
+    //meter.tick();
   }
 
   start();

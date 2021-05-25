@@ -1,6 +1,6 @@
 {
-  "name": "Blaster Maker",
-  "version": "0.7.4",
+  "name": "BlasterMaker",
+  "version": "0.7.41",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {

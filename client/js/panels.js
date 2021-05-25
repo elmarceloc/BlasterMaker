@@ -472,7 +472,7 @@ Panel = function (
     uiCtx.fillStyle = "#aaaaaa";
     uiCtx.font = "12px Arial";
     uiCtx.textAlign = "center";
-    uiCtx.textBaseline = "initial";
+    uiCtx.textBaseline = "middle";
   
     uiCtx.fillText(text, x, y + 10);
 
