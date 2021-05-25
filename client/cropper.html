@@ -135,10 +135,11 @@
 
                 <div>
                     <div class="color-selector" 
-                         :class="{colordisabled: color.enabled}" 
                          @click="color.enabled = !color.enabled" 
+                         :class="{colordisabled: colors[index].enabled}" 
                          :style="'background-color: rgb('+ color.rgb[0] +','+ color.rgb[1] +','+ color.rgb[2] +')'"  
-                         v-for="(color,index) in colors"></div>
+                         v-for="(color,index) in colors">
+                    </div>
                 </div>
 
                 <button onclick="exportImageData(event)" class="uk-margin uk-button uk-button-secondary">Importar</button>
