@@ -29,7 +29,7 @@
     
     <script>if (window.module) module = window.module;</script>
 
-    <link rel="stylesheet" href="css/style.css?a=34s">
+    <link rel="stylesheet" href="css/style.css?a=234">
 </head>
 
 <body id="body">
@@ -133,6 +133,13 @@
 
                 </div>
 
+                <div>
+                    <div class="color-selector" 
+                         :class="{colordisabled: color.enabled}" 
+                         @click="color.enabled = !color.enabled" 
+                         :style="'background-color: rgb('+ color.rgb[0] +','+ color.rgb[1] +','+ color.rgb[2] +')'"  
+                         v-for="(color,index) in colors"></div>
+                </div>
 
                 <button onclick="exportImageData(event)" class="uk-margin uk-button uk-button-secondary">Importar</button>
                 

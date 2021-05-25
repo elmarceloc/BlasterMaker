@@ -16,9 +16,18 @@ var ctx1 = canvas3.getContext("2d");
 document.getElementById("previewContainer").appendChild(canvas3);
 
 
-colors = []
+var app = new Vue({
+  el: '#app',
+  data: {
+    colors: []
+  }
+})
 
-palettes.five.map(v => colors.push(totalColors[v]))
+palettes.five.map(v => app.colors.push(totalColors[v]))
+
+app.colors.map(color => {
+  color.enabled = false
+});
 
 var panX = 0; // scaled image pan
 var panY = 0;
@@ -87,8 +96,8 @@ function updatePreview(img, width, angle = 0) {
         min = 9999999;
         idMin = 0;
         
-        for(let j in colors){
-          rgb = colors[j].rgb;
+        for(let j in app.colors){
+          rgb = app.colors[j].rgb;
           dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
 
           if(dis < min){
@@ -98,9 +107,9 @@ function updatePreview(img, width, angle = 0) {
         }
         
         if (a != 0){
-            dest.data[i] = colors[parseInt(idMin)].rgb[0]
-            dest.data[i+1] = colors[parseInt(idMin)].rgb[1]
-            dest.data[i+2] = colors[parseInt(idMin)].rgb[2]
+            dest.data[i] = app.colors[parseInt(idMin)].rgb[0]
+            dest.data[i+1] = app.colors[parseInt(idMin)].rgb[1]
+            dest.data[i+2] = app.colors[parseInt(idMin)].rgb[2]
         }
 
       }
