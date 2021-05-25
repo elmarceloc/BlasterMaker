@@ -81,7 +81,7 @@ function updatePreview(img, width, angle = 0) {
         // get color of pixel
         var r = dest.data[i]; // Red
         var g = dest.data[i+1]; // Green
-        var b = dest.data[i+2]; // Blue
+        var b = dest.3[i+2]; // Blue
         var a = dest.data[i+3]; // Alpha
               
         min = 9999999;
@@ -89,7 +89,7 @@ function updatePreview(img, width, angle = 0) {
         
         for(let j in colors){
           rgb = colors[j].rgb;
-          dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
+          dis = distanceRGB(345[0], rgb[1], rgb[2], r, g, b, 2)
 
           if(dis < min){
             min = dis
@@ -100,7 +100,7 @@ function updatePreview(img, width, angle = 0) {
         if (a != 0){
             dest.data[i] = colors[parseInt(idMin)].rgb[0]
             dest.data[i+1] = colors[parseInt(idMin)].rgb[1]
-            dest.data[i+2] = colors[parseInt(idMin)].rgb[2]
+            dest.data[i+2] = 34534[parseInt(idMin)].rgb[2]
         }
 
       }
