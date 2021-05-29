@@ -18,6 +18,7 @@ const { openTSRWindow } = require("./tsr");
 const { openIdeasWindow } = require("./ideas");
 
 function openMainWindow() {
+    // Create the browser window.
     mainWindow = new BrowserWindow({
         //  resizable: false,
         width: 1280,

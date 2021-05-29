@@ -4,6 +4,7 @@ const Menu = electron.Menu
 const BrowserWindow = electron.BrowserWindow
 
 function openIdeasWindow() {
+
   ideasWindow = new BrowserWindow({
     //  resizable: false,
     width: 932,

@@ -8,6 +8,7 @@ const cheerio = require('cheerio');
 const request = require('request');
 
 function openTSRWindow (parent) {
+
     tsrWindow = new BrowserWindow({
     //  resizable: false,
       width: 932,

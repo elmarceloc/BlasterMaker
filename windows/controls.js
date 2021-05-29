@@ -3,6 +3,7 @@ const electron = require('electron')
 const BrowserWindow = electron.BrowserWindow
 
 function openControls() {
+
     ctrlsWindow = new BrowserWindow({
         width: 800,
         height: 520,

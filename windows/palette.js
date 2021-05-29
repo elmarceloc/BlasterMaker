@@ -4,6 +4,7 @@ const Menu = electron.Menu
 const BrowserWindow = electron.BrowserWindow
 
 function openPaletteWindow(palette) {
+    // Create the browser window.
     paletteWindow = new BrowserWindow({
         //  resizable: false,
         width: 470,
