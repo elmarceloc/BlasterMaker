@@ -342,17 +342,17 @@ function showLayout(layout) {
       document.getElementById("x").value = 1;
       document.getElementById("y").value = 1;
 
-      document.getElementById("new").style.visibility = "visible";
-      document.getElementById("info").style.visibility = "hidden";
-      document.getElementById("main").style.visibility = "hidden";
+      document.getElementById("new").style.display = "block";
+      document.getElementById("info").style.display = "none";
+      document.getElementById("main").style.display = "none";
       break;
 
     case "info":
       toggleEvents(false);
 
-      document.getElementById("new").style.visibility = "hidden";
-      document.getElementById("info").style.visibility = "visible";
-      document.getElementById("main").style.visibility = "hidden";
+      document.getElementById("new").style.display = "none";
+      document.getElementById("info").style.display = "block";
+      document.getElementById("main").style.display = "none";
 
       document.getElementById("body").style.overflowY = "visible !important"; // poner important
       break;
@@ -360,9 +360,9 @@ function showLayout(layout) {
     case "main":
       toggleEvents(true);
 
-      document.getElementById("new").style.visibility = "hidden";
-      document.getElementById("info").style.visibility = "hidden";
-      document.getElementById("main").style.visibility = "visible";
+      document.getElementById("new").style.display = "none";
+      document.getElementById("info").style.display = "none";
+      document.getElementById("main").style.display = "block";
 
       document.getElementById("body").style.overflowY = "hidden"; // poner important
       break;

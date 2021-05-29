@@ -69,6 +69,7 @@ input[type="number"] {
 }
 
 #main {
+  display: none;
   background-color: rgb(40 40 40) !important;
   height: 100%;
   position: relative;
@@ -101,11 +102,13 @@ input[type="number"] {
 }
 
 #info {
+  display: none;
   position: absolute;
   background-color: #222;
   padding: 10px;
   width: 100%;
   height: 100%;
+  
 }
 #new {
   position: absolute;
