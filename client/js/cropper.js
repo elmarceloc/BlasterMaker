@@ -1,5 +1,5 @@
-const xElement = document.querySelector("#x");
-const yElement = document.querySelector("#y");
+/*const xElement = document.querySelector("#x");
+const yElement = document.querySelector("#y");*/
 const wElement = document.querySelector("#width");
 const hElement = document.querySelector("#height");
 const sElement = document.querySelector("#scale");
@@ -143,7 +143,7 @@ function updatePreview(img, width, angle = 0) {
   };
 
 
-xElement.addEventListener("change", (event) => {
+/*xElement.addEventListener("change", (event) => {
   const x = document.querySelector("#x").value;
 
     panX = x*1
@@ -155,8 +155,7 @@ yElement.addEventListener("change", (event) => {
 
   panX = y*1
 
-});
-
+});*/
 wElement.addEventListener("change", (event) => {
   const w = document.querySelector("#width").value;
 });

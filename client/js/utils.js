@@ -521,7 +521,7 @@ function setColorPalete(size,kit) {
 
 /**
  * load an image from url
- * @param {str} `data` -  {x, y, w, h, size, kit, url, scaleFac}
+ * @param {str} `data` -  {x, y, w, h, size, kit, url, scale}
  */
 
  function loadImg(data, callback) {
@@ -530,9 +530,9 @@ function setColorPalete(size,kit) {
   colorPalette = [];
 
   var img = new Image();
-
+  console.log(data)
   img.onload = function () {
-    callback(img, data.x, data.y, img.width, img.height);
+    callback(img, data.x, data.y, img.width, img.height, data.newWidth, data.newHeight);
   };
   img.src = data.url;
   

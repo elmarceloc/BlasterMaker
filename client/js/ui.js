@@ -454,69 +454,67 @@ function openRecent() {
 
 /**
  * Create a proyect from image
- * @param {str} `data` -  {x, y, w, h, size, kit, url, scaleFac}
+ * @param {str} `data` -  {x, y, w, h, size, kit, url, scale}
  */
 
 function createFromImage(data) {
   setColorPalete(data.size, data.kit);
   
-  loadImg(data, function (newImg, newX, newY, newWidth, newHeight) { // TODO: rotation.etc
+  loadImg(data, function (newImg, newX, newY, oldWidth, oldHeight, newWidth, newHeight ) { // TODO: rotation.etc
     var canvas2 = document.createElement("canvas");
     var canvas3 = document.createElement("canvas");
 
-    var ctx = canvas2.getContext("2d");
-    var ctx1 = canvas3.getContext("2d");
+    var oldCtx = canvas2.getContext("2d");
+    var newCtx = canvas3.getContext("2d");
 
-    ctx.canvas.width = newWidth;
-    ctx.canvas.height = newHeight;
+    oldCtx.canvas.width = oldWidth;
+    oldCtx.canvas.height = oldHeight;
 
-    ctx.drawImage(newImg, 0, 0);
+    oldCtx.drawImage(newImg, 0, 0);
 
     // scales the image using neirest neighbourn algorithm
 
     var panX = 0; // scaled image pan
     var panY = 0;
     var ang = 0;
-    var wd = ctx.canvas.width; // destination image
-    var hd = ctx.canvas.height;
 
-    ctx1.canvas.width = newWidth; 
-    ctx1.canvas.height = newHeight; 
+    newCtx.canvas.width = newWidth; 
+    newCtx.canvas.height = newHeight; 
 
     // use 32bit ints as we are not interested in the channels
-    var src = ctx.getImageData(0, 0, newWidth, newHeight);
+    var src = oldCtx.getImageData(0, 0, oldWidth, oldHeight);
 
     var data = new Uint32Array(src.data.buffer); // source
-    var dest = ctx1.createImageData(wd, hd);
+    var dest = newCtx.createImageData(newWidth, newHeight);
     var zoomData = new Uint32Array(dest.data.buffer); // destination
-    var xdx = (Math.cos(ang) * wd) / newWidth; // xAxis vector x
-    var xdy = (Math.sin(ang) * hd) / newWidth; // xAxis vector y
+    var xdx = (Math.cos(ang) * oldWidth) / newWidth; // xAxis vector x
+    var xdy = (Math.sin(ang) * oldHeight) / newWidth; // xAxis vector y
     var ind = 0;
     var xx, yy;
 
-    resize(newWidth, hd / (wd / newWidth));
+    resize(newWidth, newHeight);
 
+    console.log(oldWidth, oldHeight,newWidth,newHeight)
 
-    for (var newY = 0; newY < hd; newY++) {
-      for (var newX = 0; newX < wd; newX++) {
+    for (var newY = 0; newY < newHeight; newY++) {
+      for (var newX = 0; newX < newWidth; newX++) {
         // transform point
         xx = newX * xdx - newY * xdy + panX;
         yy = newX * xdy + newY * xdx + panY;
         // is the lookup pixel in bounds
-        if (xx >= 0 && xx < newWidth && yy >= 0 && yy < newHeight) {
+        if (xx >= 0 && xx < oldWidth && yy >= 0 && yy < oldHeight) {
           // use the nearest pixel to set the new pixel
-          zoomData[ind++] = data[(xx | 0) + (yy | 0) * newWidth]; // set the pixel
+          zoomData[ind++] = data[(xx | 0) + (yy | 0) * oldWidth]; // set the pixel
         } else {
           zoomData[ind++] = 0; // pixels outside bound are transparent
         }
       }
     }
 
-    ctx1.putImageData(dest, 0, 0); // put the pixels onto the destination canvas
+    newCtx.putImageData(dest, 0, 0); // put the pixels onto the destination canvas
 
-    //document.getElementById("app").appendChild(canvas);     
-    //document.getElementById("app").appendChild(canvas2);     
-    //document.getElementById("app").appendChild(canvas3);     
+   // document.getElementById("app").appendChild(canvas2);     
+   // document.getElementById("app").appendChild(canvas3);     
 
     for (var i = 0; i < dest.data.length; i += 4) {
       // get color of pixel
@@ -542,7 +540,7 @@ function createFromImage(data) {
         idMin = -1;
       }
 
-      setBeadColor((i / 4) % wd, Math.floor(i / 4 / wd), parseInt(idMin) + 1);
+      setBeadColor((i / 4) % newWidth, Math.floor(i / 4 / newWidth), parseInt(idMin) + 1);
     }
 
     //    }

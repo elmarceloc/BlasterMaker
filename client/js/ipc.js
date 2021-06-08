@@ -167,26 +167,26 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
     event.preventDefault()
 
-    const x = document.querySelector("#x").value;
-    const y = document.querySelector("#y").value;
+/*    const x = document.querySelector("#x").value;
+    const y = document.querySelector("#y").value;*/
     const w = document.querySelector("#width").value;
     const h = document.querySelector("#height").value;
     const size = document.querySelector('input[name="sizeBeads"]:checked').value;
     const kit = document.querySelector('input[name="kit"]:checked').value;
     const url = document.querySelector("#previewCropOriginal").src;
-    const scaleFac = document.querySelector("#scale").value;
+    const newWidth = document.querySelector("#scale").value;
 
     ipc.send("exportImageData", {
-      x: x,
-      y: y,
+      x: 0,
+      y: 0,
       w: w,
       h: h,
       size: size,
       kit: kit,
       url: url,
-      scale: scaleFac,
+      newWidth: parseInt(newWidth),
+      newHeight: (newWidth * h) / w,
     });
-
   }
 
   ipc.on("tsrMain", (event) => {
