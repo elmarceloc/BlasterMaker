@@ -39,7 +39,6 @@
 </head>
 
 <body id="body">
-
     <nav id="navbar" class="uk-navbar-container uk-margin" uk-navbar>
         <div class="uk-navbar-left">
 
@@ -146,6 +145,35 @@
     <!-- TODO: cambiar a canvas -->
 
     <div id="app">
+
+        <div id="modal-magic-print" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Generar PDF a escala real 🧙‍♂️</h2>
+                <p>
+                    
+                    
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-stacked-select">¿Usar Color o Codigo?</label>
+                        <div class="uk-form-controls">
+
+                            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                                <label><input value="yes" class="uk-radio" type="radio" name="colorOrCode" checked> color</label>
+                                <label><input value="no" class="uk-radio" type="radio" name="colorOrCode"> codigo</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close"
+                        type="button">Cancelar</button>
+                    <button class="uk-button uk-button-secondary uk-modal-close"
+                        onclick="printToScale()" type="button">Generar PDF</button>
+                </p>
+            </div>
+        </div>
 
         <div id="new">
 
@@ -254,8 +282,8 @@
                                                     id="img-icon" class="far fa-file-image"></i></button>
                                             <button data-html2canvas-ignore="True" uk-tooltip="Descargar Imagen" class="icon-reset" onclick="downloadImage()"><i
                                                     id="fullimage" class="fas fa-image"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala" class="icon-reset" onclick="printToScale()"><i
-                                                    id="printeable-icon" class="fas fa-hat-wizard"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala" class="icon-reset"><i
+                                                    id="printeable-icon" class="fas fa-hat-wizard" uk-toggle="target: #modal-magic-print"></i></button>
                                         </th>
                                     </tr>
                                 </thead>

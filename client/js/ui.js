@@ -186,17 +186,6 @@ var app = new Vue({
 
 app.onlogin();
 
-/*
-
-  
-document.getElementById("closeCtrls").onclick = function () {
-    document.getElementById("main").style.visibility = "visible";
-
-    document.getElementById("controls").style.visibility = "hidden";
-
-}
-*/
-
 closenew.style.top = navbarSize + 20 + "px";
 
 openinfo.style.top = navbarSize + 20 + "px";
@@ -463,10 +452,14 @@ function openRecent() {
   }
 }
 
+/**
+ * Create a proyect from image
+ * @param {str} `data` -  {x, y, w, h, size, kit, url, scaleFac}
+ */
+
 function createFromImage(data) {
-
   setColorPalete(data.size, data.kit);
-
+  
   loadImg(data, function (newImg, newX, newY, newWidth, newHeight) { // TODO: rotation.etc
     var canvas2 = document.createElement("canvas");
     var canvas3 = document.createElement("canvas");
@@ -565,7 +558,7 @@ function createFromImage(data) {
   });
 }
 
-setInterval(updateSave,60*1000*3)
+//setInterval(updateSave,60*1000*3) // TODO: online version
 
 function downloadTable() {
   window.scrollTo(0, 0);
@@ -628,17 +621,14 @@ function downloadImage() {
   a[0].click();
 
   a.remove();
-
-
-  
-
-
   
 }
 
 
 
 function printToScale(){
+  var colorOrCode = document.querySelector('input[name="colorOrCode"]:checked').value;
+
   var images = `<div>`
 
   const circleRadius = 32
@@ -647,8 +637,6 @@ function printToScale(){
     
     for (let j = 0; j < height / gridSize; j++) {
     
-      console.log(i,j)
-
       var tempCanvas = document.createElement('canvas');
 
       var finalCanvas = document.createElement('canvas');
@@ -667,8 +655,6 @@ function printToScale(){
 
 
       clip   = getClippedRegion(image, i * gridSize, j * gridSize, gridSize, gridSize);
-
-      console.log( j * gridSize, i * gridSize, gridSize, gridSize)
 
       tempCtx.drawImage(clip, 0, 0);
 
@@ -690,37 +676,55 @@ function printToScale(){
 
       if(!isEmpty){      
 
-    for (row = 0; row <   gridSize; row++) {
-      for (col = 0; col <   gridSize; col++) {
-        index = (col + (row *  gridSize)) * 4;
+        for (row = 0; row <   gridSize; row++) {
+          for (col = 0; col <   gridSize; col++) {
+            index = (col + (row *  gridSize)) * 4;
 
-        let r = imageData.data[index]
-        let g = imageData.data[index + 1] 
-        let b = imageData.data[index + 2] 
-        let a = imageData.data[index + 3]
+            let r = imageData.data[index]
+            let g = imageData.data[index + 1] 
+            let b = imageData.data[index + 2] 
+            let a = imageData.data[index + 3]
+            
+            let [hue, saturation, lightness] = [...rgbToHsl(r,g,b)]
 
-        finalCtx.beginPath();
-        finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/2 -1, 0, 2 * Math.PI, false);
-        finalCtx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
-        finalCtx.fill();
-      }
-    }
+            if (a > 0){
+              
+              if(colorOrCode == 'color'){
+                finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/2 -1, 0, 2 * Math.PI, false);
+                finalCtx.beginPath();
+                finalCtx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + 255 + ")";
+                finalCtx.fill();
+              }else{
+                finalCtx.font = "25px Arial";
+                finalCtx.textBaseline = "middle";
+                finalCtx.textAlign = "center";
+                finalCtx.fillText(colors[getColorId([r, g, b], colors) - 1].id.substr(2), circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2);
+              }
+            }
+
+            finalCtx.beginPath();
+
+            if(a == 0 ) {
+              finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 255 + ")";
+              finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
+            }else if(lightness > 0.5 && colorOrCode == 'color'){
+              finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 0 + ")";
+              finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
+            }else if(lightness < 0.5 && colorOrCode == 'color'){
+              finalCtx.fillStyle = "rgba(" + 255 + "," + 255 + "," + 255 + "," + 255 + ")";
+              finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
+            }
+            finalCtx.fill();
+
+          }
+        }
       var dataURL = finalCanvas.toDataURL();
-
-    //  console.log(dataURL)
-
-    //  if (!isEmpty) {
-        
-        // draw the clipped image onto the on-screen canvas
-  
-  
-
+        // draws the clipped image onto the on-screen canvas
   
         images += `<div class="piece"> <span  class="number">${j+1}-${i+1}</span> <img src="${dataURL}"> </img>  <div class="mask">  </div>   </div>`;
-    //  }
 
     
-  }
+      }
 
 
     }

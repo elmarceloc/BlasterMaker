@@ -196,16 +196,16 @@ function drawIds() {
     uiCtx.font = scale / 3 + "px Arial";
     uiCtx.textBaseline = "middle";
     uiCtx.textAlign = "center";
-    posicionInicio = getPosScreenToGrid(0, 0);
-    posicionFinal = getPosScreenToGrid(uiCanvas.width, uiCanvas.height);
+    startPos = getPosScreenToGrid(0, 0);
+    finalPos = getPosScreenToGrid(uiCanvas.width, uiCanvas.height);
 
-    diferenciaX = posicionFinal[0] - posicionInicio[0];
-    diferenciaY = posicionFinal[1] - posicionInicio[1];
+    xDiff = finalPos[0] - startPos[0];
+    yDiff = finalPos[1] - startPos[1];
 
-    for (y = 0; y < diferenciaY; y++) {
+    for (y = 0; y < yDiff; y++) {
       for (
-        x = getBeadPos(...posicionInicio) + width * 4 * y;
-        x < getBeadPos(...posicionInicio) + diferenciaX * 4 + width * 4 * y;
+        x = getBeadPos(...startPos) + width * 4 * y;
+        x < getBeadPos(...startPos) + xDiff * 4 + width * 4 * y;
         x += 4
       ) {
         //    for (x = 0; x < 4 * width * height; x += 4) {
