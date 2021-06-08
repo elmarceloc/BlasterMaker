@@ -252,7 +252,7 @@ function openMainWindow() {
                     click: function () {
                         mainWindow.webContents.send('action', 'crop')
                     },
-                    enabled: false,
+                   // enabled: false,
                 },
 
                 {

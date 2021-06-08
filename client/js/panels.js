@@ -550,19 +550,18 @@ Panel = function (
             colors[i].rgb,
             color == i + 1 && !panels["colors"].inactive
           );
-        }
-
-        var dx = mouse[0] - xPos ;
-        var dy = mouse[1] - yPos ;
-
-        
-        if (dx * dx + dy * dy < (uiScale * uiScale)/ (2.5 ** 2) ) {
-          colorId = colors[i].id
-        }
-
+          
+          var dx = mouse[0] - xPos ;
+          var dy = mouse[1] - yPos ;
+          
+          
+          if (dx * dx + dy * dy < (uiScale * uiScale)/ (2.5 ** 2) ) {
+            colorId = colors[i].id
+          }
+          
+            }
       }
-
-
+      
       if (colorId /*&& search == ''*/) {
         drawTooltip(uiCtx, mouse[0], mouse[1],  colorId, 50)
       }
@@ -649,10 +648,8 @@ Panel = function (
     for (let i = 0; i < colorPalette.length; i++) { // FIXME: checkiar esto
       if (
         Math.floor(i / pensPerCol) * uiScale + 15 + x + mL <
-        x + width - mL - mR
+        x + height - (mD + mU) - uiScale / 2
       ) {
-        if ((isHorizontal == true)) {
-
 
           var xPos = (i % pensPerCol) * uiScale + 15 + x + mL
           var yPos = Math.floor(i / pensPerCol) * uiScale + 15 + y + mU
@@ -674,16 +671,6 @@ Panel = function (
             colorId = colorPalette[i].id
           }
 
-        } else {
-          drawBead(
-            Math.floor(i / pensPerCol) * uiScale + 15 + x + mL,
-            (i % pensPerCol) * uiScale + 15 + y + mU,
-            uiScale,
-            colorPalette[i].rgb,
-            colors.map((color) => color.rgb).indexOf(colorPalette[i].rgb) + 1 ==
-              color && !panels["palete"].inactive
-          );
-        }
       }
       
     }
@@ -691,6 +678,14 @@ Panel = function (
     if (colorId) {
       drawTooltip(uiCtx, mouse[0], mouse[1],  colorId, 46)
     }
+
+    uiCtx.beginPath()
+    uiCtx.fillStyle = '#4c4c4c'
+    uiCtx.moveTo(x + width, y + height)
+    uiCtx.lineTo(x + width - 12, y + height)
+    uiCtx.lineTo(x + width, y + height - 12)
+    uiCtx.lineTo(x + width, y + height)
+    uiCtx.fill()
 
   }))
   

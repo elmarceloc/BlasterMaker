@@ -133,7 +133,10 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     img = new Image();
     img.onload = function () {
 
+      changePalette(img,img.width,img.height)
+
       updatePreview(img, Math.min(img.width, 100))
+
 
       document.querySelector("#loading-container").style.visibility = 'hidden';
 

@@ -494,8 +494,6 @@ function createFromImage(data) {
 
     resize(newWidth, newHeight);
 
-    console.log(oldWidth, oldHeight,newWidth,newHeight)
-
     for (var newY = 0; newY < newHeight; newY++) {
       for (var newX = 0; newX < newWidth; newX++) {
         // transform point

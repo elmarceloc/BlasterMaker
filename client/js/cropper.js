@@ -10,8 +10,8 @@ var canvas3 = document.createElement("canvas");
 
 canvas3.id = 'previewCrop'
 
-var ctx = canvas2.getContext("2d");
-var ctx1 = canvas3.getContext("2d");
+var oldCtx = canvas2.getContext("2d");
+var newCtx = canvas3.getContext("2d");
 
 document.getElementById("previewContainer").appendChild(canvas3);
 
@@ -23,91 +23,92 @@ palettes.five.map(v => colors.push(totalColors[v]))
 var panX = 0; // scaled image pan
 var panY = 0;
 
+var imageData;
+
+var image;
+
+function changePalette(img, wd, hd){
+  oldCtx.canvas.width = wd;
+  oldCtx.canvas.height = hd;
+
+  oldCtx.drawImage(img, 0, 0);
+
+  imageData = oldCtx.getImageData(0, 0,wd,hd);
+
+  image = img
+
+  imageWidth = wd
+  imageHeight = hd
+
+  for (var i = 0; i < imageData.data.length; i+=4) {
+    // get color of pixel
+    var r = imageData.data[i]; // Red
+    var g = imageData.data[i+1]; // Green
+    var b = imageData.data[i+2]; // Blue
+    var a = imageData.data[i+3]; // Alpha
+          
+    min = 9999999;
+    idMin = 0;
+    
+    for(let j in colors){
+      rgb = colors[j].rgb;
+      dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
+
+      if(dis < min){
+        min = dis
+        idMin = j
+      }
+    }
+    
+    if (a != 0){
+      imageData.data[i] = colors[parseInt(idMin)].rgb[0]
+      imageData.data[i+1] = colors[parseInt(idMin)].rgb[1]
+      imageData.data[i+2] = colors[parseInt(idMin)].rgb[2]
+    }
+
+  }
+
+  oldCtx.putImageData(imageData, 0, 0);
+
+}
+
 function updatePreview(img, width, angle = 0) {
-
-    
-    var w = img.width
-
-    var h = img.height
-    
-    
-    ctx.canvas.width = w;
-    ctx.canvas.height = h;
-    
-    ctx.drawImage(img, 0, 0);
-
-    height = (ctx.canvas.height * width) / ctx.canvas.width;
-    
-
+    var height = (oldCtx.canvas.height * width) / oldCtx.canvas.width;
 
     var ang = angle;
-    var wd = ctx.canvas.width; // destination image
-    var hd = ctx.canvas.height;
-    
-    ctx1.canvas.width  = width;
-    ctx1.canvas.height = height;
-    
-    var src = ctx.getImageData(0, 0, w, h);
 
+    newCtx.canvas.width  = width;
+    newCtx.canvas.height = height;
+    
+    var src = oldCtx.getImageData(0, 0, oldCtx.canvas.width, oldCtx.canvas.height);
+ 
+  console.log(imageData.data)
 
     var data = new Uint32Array(src.data.buffer); // source
-    var dest = ctx1.createImageData(wd, hd);
+    var dest = newCtx.createImageData(width, height);
     var zoomData = new Uint32Array(dest.data.buffer); // destination
-    var xdx = Math.cos(ang) * wd / width; // xAxis vector x
-    var xdy = Math.sin(ang) * hd / width; // xAxis vector y
+    var xdx = Math.cos(ang) * oldCtx.canvas.width / width; // xAxis vector x
+    var xdy = Math.sin(ang) * oldCtx.canvas.height / width; // xAxis vector y
     var ind = 0;
     var xx, yy;
 
-    for(var y = 0; y < hd; y ++){
-        for(var x = 0; x < wd; x ++){
+    for(var y = 0; y < height; y ++){
+        for(var x = 0; x < width; x ++){
             // transform point
             xx = x * xdx - y * xdy + panX + xdy;
             yy = x * xdy + y * xdx + panY + xdx;
 
-
             // is the lookup pixel in bounds
-            if(xx >= 0 && xx < w && yy >= 0 && yy < h){                
+            if(xx >= 0 && xx < oldCtx.canvas.width && yy >= 0 && yy < oldCtx.canvas.height){                
                 // use the nearest pixel to set the new pixel
-                zoomData[ind++] = data[(xx | 0) + (yy | 0) * w]; // set the pixel
+                zoomData[ind++] = data[(xx | 0) + (yy | 0) * oldCtx.canvas.width]; // set the pixel
             }else{
                 zoomData[ind++] = 0; // pixels outside bound are transparent
             }
         }
     }
-
-
-
-    for (var i = 0; i < dest.data.length; i+=4) {
-        // get color of pixel
-        var r = dest.data[i]; // Red
-        var g = dest.data[i+1]; // Green
-        var b = dest.data[i+2]; // Blue
-        var a = dest.data[i+3]; // Alpha
-              
-        min = 9999999;
-        idMin = 0;
-        
-        for(let j in colors){
-          rgb = colors[j].rgb;
-          dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
-
-          if(dis < min){
-            min = dis
-            idMin = j
-          }
-        }
-        
-        if (a != 0){
-            dest.data[i] = colors[parseInt(idMin)].rgb[0]
-            dest.data[i+1] = colors[parseInt(idMin)].rgb[1]
-            dest.data[i+2] = colors[parseInt(idMin)].rgb[2]
-        }
-
-      }
-
-
-    ctx1.putImageData(dest, 0, 0);
-
+   // console.log(dest)
+    newCtx.putImageData(dest, 0, 0);
 
    // document.getElementById("previewContainer").appendChild(canvas2);
 
@@ -176,9 +177,9 @@ sElement.addEventListener("change", (event) => {
 });
 
 
+var oldSize;
 
-
-for (let el of document.querySelectorAll('#myform input'))
+for (let el of document.querySelectorAll('#palete'))
 el.addEventListener('change', () => {
 
    document.querySelector("#loading-container").style.visibility = 'visible';
@@ -187,12 +188,13 @@ el.addEventListener('change', () => {
 
    var kit = $('input[name=kit]:checked', '#myform').val()
 
-   const s = document.querySelector("#scale").value;
+   var newSize = document.querySelector("#scale").value;
 
    setColorPalete(size, kit)
 
+   changePalette(image, imageWidth, imageHeight);
 
-   updatePreview(img, s)
+   updatePreview(img, newSize)
 
 });
 

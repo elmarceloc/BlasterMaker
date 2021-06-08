@@ -361,7 +361,8 @@ function crop() {
     }
   }
 
-  
+  console.log(x1,y1,x2,y2);
+
   width2=Math.ceil((x2 - x1)/ gridSize) * gridSize
   height2=Math.ceil((y2 - y1)/ gridSize) * gridSize
   
@@ -371,7 +372,7 @@ function crop() {
     for (i = 0; i <= width2; i ++) {
       for (rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i * 4 + j * width2 * 4 + rgb] =
-          grid2.data[(i+x1)*4 + (j+y1) * width2 * 4 + rgb];
+          grid2.data[(i+x1)*4 + (j+y1) * width * 4 + rgb];
       }
     }
   }  
