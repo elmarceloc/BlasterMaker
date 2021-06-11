@@ -12,10 +12,14 @@ const ipc = require('electron').ipcMain;
 
 const fs = require('fs')
 
+const path = require('path')
+
 const { openAboutUs } = require("./aboutus");
 const { openControls } = require("./controls");
 const { openTSRWindow } = require("./tsr");
 const { openIdeasWindow } = require("./ideas");
+
+var workerWindow;
 
 function openMainWindow() {
     mainWindow = new BrowserWindow({
@@ -54,7 +58,7 @@ function openMainWindow() {
 
     workerWindow.hide();
 
-    workerWindow.loadURL("file://" + __dirname + "/worker.html");
+    workerWindow.loadURL("file://" +  path.join(__dirname, '../') + "/worker.html");
 
     if (process.env.DEV == 'true') mainWindow.webContents.openDevTools();
 
@@ -380,8 +384,6 @@ function showOpenImageDialog() {
             })
      
          }else{*/
-        // mainWindow.webContents.send('importImgSimple', result.filePaths[0],size)
-        // mainWindow.webContents.send('importImg', result.filePaths[0],size)
 
         mainWindow.loadFile('client/cropper.html')
 
@@ -420,7 +422,17 @@ ipc.on('loadFromMenu', (event) => {
 
 
 function newBead() {
-    mainWindow.webContents.send('newBead')
+    if(getPage() != 'index.html'){
+        mainWindow.loadFile('client/index.html')
+
+        mainWindow.webContents.once('did-finish-load', () => {
+    
+            mainWindow.webContents.send('newBead')
+    
+        })
+    }else{
+        mainWindow.webContents.send('newBead')
+    }
 }
 
 function saveBead() {
@@ -433,26 +445,18 @@ function save() {
 
 
 function openBead() {
-    electron.dialog
-        .showOpenDialog({
-            filters: [{ name: "Blaster Maker", extensions: ["bm"] }],
-            properties: ["openFile"],
-        })
-        .then((result) => {
-            if (result.canceled) return;
 
-            fs.readFile(result.filePaths[0], "utf8", function (err, data) {
-                if (err) {
-                    return console.log(err);
-                }
-                console.log(data);
+    if(getPage() != 'index.html'){
+        mainWindow.loadFile('client/index.html')
 
-                mainWindow.webContents.send("loadBeads", data, result.filePaths[0]);
-            });
+        mainWindow.webContents.once('did-finish-load', () => {
+    
+            openFile()
+    
         })
-        .catch((err) => {
-            console.log(err);
-        });
+    }else{
+        openFile()
+    }
 }
 
 
@@ -533,5 +537,31 @@ ipc.on('get-file-data', function (event) {
     event.returnValue = data;
 
 });
+
+function getPage(){
+    return mainWindow.webContents.getURL().split('/')[mainWindow.webContents.getURL().split('/').length -1]
+}
+
+function openFile(){
+    electron.dialog
+    .showOpenDialog({
+        filters: [{ name: "Blaster Maker", extensions: ["bm"] }],
+        properties: ["openFile"],
+    })
+    .then((result) => {
+        if (result.canceled) return;
+
+        fs.readFile(result.filePaths[0], "utf8", function (err, data) {
+            if (err) {
+                return console.log(err);
+            }
+
+            mainWindow.webContents.send("loadBeads", data, result.filePaths[0]);
+        });
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+}
 
 module.exports = { openMainWindow };
