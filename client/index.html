@@ -146,6 +146,38 @@
 
     <div id="app">
 
+        <a id="download" download="triangle.png">
+
+
+        <div id="modal-save-image" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title">Guardar como imagen</h2>
+                <p>
+                    
+                    
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="form-stacked-select">Escala</label>
+                        <div class="uk-form-controls">
+
+                            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                                <label><input value="original" class="uk-radio" type="radio" name="scale" checked> Original</label>
+                                <label><input value="hight" class="uk-radio" type="radio" name="scale"> Alta Definicion</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </p>
+                <p class="uk-text-right">
+                    <button class="uk-button uk-button-default uk-modal-close"
+                        type="button">Cancelar</button>
+                    <button class="uk-button uk-button-secondary uk-modal-close"
+                        onclick="downloadImage()" type="button">Guardar Imagen</button>
+                </p>
+            </div>
+        </div>
+
         <div id="modal-magic-print" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
                 <h2 class="uk-modal-title">Generar PDF a escala real 🧙‍♂️</h2>
@@ -157,8 +189,8 @@
                         <div class="uk-form-controls">
 
                             <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                                <label><input value="yes" class="uk-radio" type="radio" name="colorOrCode" checked> color</label>
-                                <label><input value="no" class="uk-radio" type="radio" name="colorOrCode"> codigo</label>
+                                <label><input value="color" class="uk-radio" type="radio" name="colorOrCode" checked> color</label>
+                                <label><input value="code" class="uk-radio" type="radio" name="colorOrCode"> codigo</label>
                             </div>
 
 
@@ -278,10 +310,10 @@
                                         <th id="pdf-container">
                                             <button data-html2canvas-ignore="True" uk-tooltip="Imprimir" class="icon-reset" onclick="printTable()"><i id="pdf-icon"
                                                     class="far fa-file-pdf"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar como Imagen" class="icon-reset" onclick="downloadTable()"><i
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar Plantilla" class="icon-reset" onclick="downloadTable()"><i
                                                     id="img-icon" class="far fa-file-image"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar Imagen" class="icon-reset" onclick="downloadImage()"><i
-                                                    id="fullimage" class="fas fa-image"></i></button>
+                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar Imagen" class="icon-reset"><i
+                                                    id="fullimage" class="fas fa-image" uk-toggle="target: #modal-save-image"></i></button>
                                             <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala" class="icon-reset"><i
                                                     id="printeable-icon" class="fas fa-hat-wizard" uk-toggle="target: #modal-magic-print"></i></button>
                                         </th>

@@ -577,9 +577,11 @@ function downloadTable() {
 
 function downloadImage() {
 
-    let imagePreview = document.getElementById('previewCanvas');
+    var imageScale = document.querySelector('input[name="scale"]:checked').value;
 
-    let c2 = document.createElement('canvas');
+    var imagePreview = document.getElementById('previewCanvas');
+
+    var c2 = document.createElement('canvas');
     let ctx2 = c2.getContext('2d');
 
     let zoom = 10
@@ -590,27 +592,33 @@ function downloadImage() {
 
     // scales the image using neirest neighbourn algorithm
 
-      var offtx = document.createElement('canvas').getContext('2d');
-      offtx.drawImage(imagePreview,0,0);
-      var imgData = offtx.getImageData(0,0,imagePreview.width, imagePreview.height).data;
+    var offtx = document.createElement('canvas').getContext('2d');
+    offtx.drawImage(imagePreview,0,0);
+    var imgData = offtx.getImageData(0,0,imagePreview.width, imagePreview.height).data;
 
-      // Draw the zoomed-up pixels to a different canvas context
-      for (var x=0;x<imagePreview.width;++x){
-        for (var y=0;y<imagePreview.height;++y){
-          // Find the starting index in the one-dimensional image data
-          let i = (y * imagePreview.width + x) * 4;
-          let r = imgData[i  ];
-          let g = imgData[i+1];
-          let b = imgData[i+2];
-          let a = imgData[i+3];
-          ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
-          ctx2.fillRect(x*zoom,y*zoom,zoom,zoom);
-        }
+    // Draw the zoomed-up pixels to a different canvas context
+    for (var x=0;x<imagePreview.width;++x){
+      for (var y=0;y<imagePreview.height;++y){
+        // Find the starting index in the one-dimensional image data
+        let i = (y * imagePreview.width + x) * 4;
+        let r = imgData[i  ];
+        let g = imgData[i+1];
+        let b = imgData[i+2];
+        let a = imgData[i+3];
+        ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+        ctx2.fillRect(x*zoom,y*zoom,zoom,zoom);
       }
+    }
+    var cnv = ''
 
-
+    if(imageScale == 'original'){
+      cnv = renderCanvas
+    }else if(imageScale == 'scale'){
+      cnv = c2
+    }
+    
     let a = $("<a>")
-      .attr("href", c2.toDataURL())
+      .attr("href",  cnv.toDataURL())
       .attr("download", app.name == '' ? 'imagen.png' : app.name + ".png")
       .appendTo("body");
 
@@ -686,11 +694,11 @@ function printToScale(){
             if (a > 0){
               
               if(colorOrCode == 'color'){ //??
-                finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/2 -1, 0, 2 * Math.PI, false);
                 finalCtx.beginPath();
                 finalCtx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + 255 + ")";
+                finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/2 -1, 0, 2 * Math.PI, false);
                 finalCtx.fill();
-              }else{
+              }else if(colorOrCode == 'code'){
                 finalCtx.font = "25px Arial";
                 finalCtx.textBaseline = "middle";
                 finalCtx.textAlign = "center";
