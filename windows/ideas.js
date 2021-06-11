@@ -24,7 +24,7 @@ function openIdeasWindow() {
 
   //ideasWindow.setAlwaysOnTop(true);
 
-  const tsrMenuBar = Menu.buildFromTemplate(null);
+  const tsrMenuBar = Menu.buildFromTemplate(null); // ??
 
 
   ideasWindow.setMenu(tsrMenuBar);

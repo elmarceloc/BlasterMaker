@@ -611,7 +611,7 @@ function downloadImage() {
 
     let a = $("<a>")
       .attr("href", c2.toDataURL())
-      .attr("download", app.name == '' ? 'imagen' : app.name + ".png")
+      .attr("download", app.name == '' ? 'imagen.png' : app.name + ".png")
       .appendTo("body");
 
   a[0].click();
@@ -685,7 +685,7 @@ function printToScale(){
 
             if (a > 0){
               
-              if(colorOrCode == 'color'){
+              if(colorOrCode == 'color'){ //??
                 finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/2 -1, 0, 2 * Math.PI, false);
                 finalCtx.beginPath();
                 finalCtx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + 255 + ")";
