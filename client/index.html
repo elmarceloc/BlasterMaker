@@ -154,19 +154,32 @@
                 <h2 class="uk-modal-title">Guardar como imagen</h2>
                 <p>
                     
-                    
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="form-stacked-select">Escala</label>
+                        <label class="uk-form-label" for="form-stacked-select">¿Pixeles o Beads?</label>
                         <div class="uk-form-controls">
 
                             <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                                <label><input value="original" class="uk-radio" type="radio" name="scale" checked> Original</label>
-                                <label><input value="hight" class="uk-radio" type="radio" name="scale"> Alta Definicion</label>
+                                <label><input v-model="renderMode" value="pixels" class="uk-radio" type="radio" checked> Pixeles</label>
+                                <label><input v-model="renderMode" value="beads" class="uk-radio" type="radio"> Beads</label>
                             </div>
 
 
                         </div>
                     </div>
+                    
+                    <div v-if="renderMode == 'pixels'" class="uk-margin">
+                        <label class="uk-form-label" for="form-stacked-select">Escala</label>
+                        <div class="uk-form-controls">
+
+                            <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+                                <label><input v-model="renderDefinition" value="hight" class="uk-radio" type="radio"  checked> Alta Definicion</label>
+                                <label><input v-model="renderDefinition" value="original" class="uk-radio" type="radio"> Original</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+
 
                 </p>
                 <p class="uk-text-right">
@@ -189,8 +202,8 @@
                         <div class="uk-form-controls">
 
                             <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                                <label><input value="color" class="uk-radio" type="radio" name="colorOrCode" checked> color</label>
-                                <label><input value="code" class="uk-radio" type="radio" name="colorOrCode"> codigo</label>
+                                <label><input value="color" class="uk-radio" type="radio" v-model="renderType" checked> Color</label>
+                                <label><input value="code" class="uk-radio" type="radio" v-model="renderType"> Código</label>
                             </div>
 
 

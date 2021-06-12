@@ -2,13 +2,9 @@ require('dotenv').config()
 
 const electron = require('electron')
 
-const BrowserWindow = electron.BrowserWindow
-
-const Menu = electron.Menu
+const {BrowserWindow, Menu, ipcMain} = require('electron')
 
 const sizeOf = require('image-size');
-
-const ipc = require('electron').ipcMain;
 
 const fs = require('fs')
 
@@ -401,7 +397,7 @@ function showOpenImageDialog() {
     })
 }
 
-ipc.on('exportImageData', (event, data) => {
+ipcMain.on('exportImageData', (event, data) => {
     console.log('Exporting image data',data)
 
     mainWindow.loadFile('client/index.html')
@@ -415,7 +411,7 @@ ipc.on('exportImageData', (event, data) => {
 
 })
 
-ipc.on('loadFromMenu', (event) => {
+ipcMain.on('loadFromMenu', (event) => {
     console.log('Loading image from menu')
     showOpenImageDialog()
 })
@@ -461,12 +457,12 @@ function openBead() {
 
 
 // retransmit it to workerWindow
-ipc.on("printPDF", (event, content) => {
+ipcMain.on("printPDF", (event, content) => {
     workerWindow.webContents.send("printPDF", content);
 });
 
 
-ipc.on('getBeads', (event, data) => {
+ipcMain.on('getBeads', (event, data) => {
 
     let options = {
         title: "Guardar Plantilla - Blaster Maker",
@@ -490,7 +486,7 @@ ipc.on('getBeads', (event, data) => {
 })
 
 
-ipc.on('saveFile', (event, data, path) => {
+ipcMain.on('saveFile', (event, data, path) => {
 
     if (typeof path === 'undefined') return;
 
@@ -502,14 +498,14 @@ ipc.on('saveFile', (event, data, path) => {
 
 
 
-ipc.on('setProgress', (event, value) => {
+ipcMain.on('setProgress', (event, value) => {
 
     mainWindow.setProgressBar(value)
 
 })
 
 
-ipc.on('closecropper', (event) => {
+ipcMain.on('closecropper', (event) => {
 
     mainWindow.loadFile('client/index.html')
 
@@ -518,7 +514,7 @@ ipc.on('closecropper', (event) => {
 // TODO: test on mac/linux
 
 // read the file and send data to the render process
-ipc.on('get-file-data', function (event) {
+ipcMain.on('get-file-data', function (event) {
 
     mainWindow.webContents.send('debug', process.env.DEV  == 'true')
 

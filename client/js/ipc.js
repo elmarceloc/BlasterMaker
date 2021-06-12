@@ -7,6 +7,8 @@
 
 if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   var ipc = require("electron").ipcRenderer;
+  var {dialog } = require('electron').remote;
+  var fs = require('fs');
 
   var bmdata = ipc.sendSync('get-file-data');
 
@@ -225,7 +227,38 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   });
 }
 
+function saveCanvasAsImage(canvas) {
+  /*if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
+
+    let options = {
+      title: "Guardar Imagen",
+      defaultPath:  '/nombre.png',
+      buttonLabel: "Guardar",
+      filters: [
+          { name: 'Imagenes', extensions: ['png'] },
+      ]
+    }
+
+
+    var path = dialog.showSaveDialogSync(options)
+    
+    saveCanvasAsPNG(path,canvas)
+   
+      
+    
+  }else{
+*/
+    let a = $("<a>")
+    .attr("href",  canvas.toDataURL())
+    .attr("download", app.name == '' ? 'imagen.png' : app.name + ".png")
+    .appendTo("body");
+    
+    a[0].click();
+    
+    a.remove();
+ // }
+}
 
 
 /**

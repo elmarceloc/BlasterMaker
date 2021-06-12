@@ -22,6 +22,10 @@ var app = new Vue({
     query: '',
     category: 0,
     beta: false,
+
+    renderMode: 'pixels',
+    renderDefinition:'hight',
+    renderType:'color'
   },
   methods: {
     toggleLogin: function (value) {
@@ -577,62 +581,103 @@ function downloadTable() {
 
 function downloadImage() {
 
-    var imageScale = document.querySelector('input[name="scale"]:checked').value;
-
     var imagePreview = document.getElementById('previewCanvas');
 
     var c2 = document.createElement('canvas');
     let ctx2 = c2.getContext('2d');
 
-    let zoom = 10
+    var c3 = document.createElement('canvas');
+    let ctx3 = c3.getContext('2d');
 
-    c2.width = width * zoom
-    c2.height = height * zoom
-
-
-    // scales the image using neirest neighbourn algorithm
-
-    var offtx = document.createElement('canvas').getContext('2d');
-    offtx.drawImage(imagePreview,0,0);
-    var imgData = offtx.getImageData(0,0,imagePreview.width, imagePreview.height).data;
-
-    // Draw the zoomed-up pixels to a different canvas context
-    for (var x=0;x<imagePreview.width;++x){
-      for (var y=0;y<imagePreview.height;++y){
-        // Find the starting index in the one-dimensional image data
-        let i = (y * imagePreview.width + x) * 4;
-        let r = imgData[i  ];
-        let g = imgData[i+1];
-        let b = imgData[i+2];
-        let a = imgData[i+3];
-        ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
-        ctx2.fillRect(x*zoom,y*zoom,zoom,zoom);
-      }
-    }
-    var cnv = ''
-
-    if(imageScale == 'original'){
-      cnv = renderCanvas
-    }else if(imageScale == 'scale'){
-      cnv = c2
-    }
+    switch (app.renderMode) {
+      case 'pixels':
     
-    let a = $("<a>")
-      .attr("href",  cnv.toDataURL())
-      .attr("download", app.name == '' ? 'imagen.png' : app.name + ".png")
-      .appendTo("body");
+        let zoom = 10
+    
+        c2.width = width * zoom
+        c2.height = height * zoom
+    
+    
+        // scales the image using neirest neighbourn algorithm
+    
+        var offtx = document.createElement('canvas').getContext('2d');
+        offtx.drawImage(imagePreview,0,0);
+        var imgData = offtx.getImageData(0,0,imagePreview.width, imagePreview.height).data;
+    
+        // Draw the zoomed-up pixels to a different canvas context
+        for (var x=0;x<imagePreview.width;++x){
+          for (var y=0;y<imagePreview.height;++y){
+            // Find the starting index in the one-dimensional image data
+            let i = (y * imagePreview.width + x) * 4;
+            let r = imgData[i  ];
+            let g = imgData[i+1];
+            let b = imgData[i+2];
+            let a = imgData[i+3];
+            ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+            ctx2.fillRect(x*zoom,y*zoom,zoom,zoom);
+          }
+        }
+        var cnv = ''
+    
+        if(app.renderDefinition == 'original'){
+          cnv = renderCanvas
+        }else if(app.renderDefinition == 'hight'){
+          cnv = c2
+        }
+        break;
+    
+      case 'beads':
 
-  a[0].click();
+        circleRadius = 8
 
-  a.remove();
+        c2.width = imagePreview.width * circleRadius;
+        c2.height = imagePreview.height * circleRadius;
+    
+        c3.width = imagePreview.width * circleRadius/2;
+        c3.height = imagePreview.height * circleRadius/2;
+
+        ctx2.drawImage(imagePreview, 0, 0);
+    
+        let imageData = ctx2.getImageData(0, 0, imagePreview.width, imagePreview.height);    
+    
+        for (row = 0; row < height * imagePreview.height; row++) {
+          for (col = 0; col < imagePreview.width; col++) {
+              index = (col + row * imagePreview.width) * 4;
+    
+              let r = imageData.data[index];
+              let g = imageData.data[index + 1];
+              let b = imageData.data[index + 2];
+              let a = imageData.data[index + 3];
+    
+              ctx3.beginPath();
+              ctx3.fillStyle = "rgba(0, 0, 0, 0";
+              ctx3.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
+              ctx3.lineWidth = circleRadius/3;
+              ctx3.arc(
+                  circleRadius * col + circleRadius / 2,
+                  circleRadius * row + circleRadius / 2,
+                  circleRadius / 2 - circleRadius/6,
+                  0,
+                  2 * Math.PI,
+                  false
+              );
+              ctx3.fill("evenodd");
+    
+              ctx3.stroke();
+    
+          }
+          cnv = c3
+        }
+        break;
+    }
+
+    saveCanvasAsImage(cnv)
   
 }
 
 
 
 function printToScale(){
-  var colorOrCode = document.querySelector('input[name="colorOrCode"]:checked').value;
-
   var images = `<div>`
 
   const circleRadius = 32
@@ -693,12 +738,12 @@ function printToScale(){
 
             if (a > 0){
               
-              if(colorOrCode == 'color'){ //??
+              if(app.renderType == 'color'){ //??
                 finalCtx.beginPath();
                 finalCtx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + 255 + ")";
                 finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/2 -1, 0, 2 * Math.PI, false);
                 finalCtx.fill();
-              }else if(colorOrCode == 'code'){
+              }else if(app.renderType == 'code'){
                 finalCtx.font = "25px Arial";
                 finalCtx.textBaseline = "middle";
                 finalCtx.textAlign = "center";
@@ -711,10 +756,10 @@ function printToScale(){
             if(a == 0 ) {
               finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 255 + ")";
               finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
-            }else if(lightness > 0.5 && colorOrCode == 'color'){
+            }else if(lightness > 0.5 && app.renderType == 'color'){
               finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 0 + ")";
               finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
-            }else if(lightness < 0.5 && colorOrCode == 'color'){
+            }else if(lightness < 0.5 && app.renderType == 'color'){
               finalCtx.fillStyle = "rgba(" + 255 + "," + 255 + "," + 255 + "," + 255 + ")";
               finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
             }

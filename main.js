@@ -5,6 +5,8 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
+const {openMainWindow} = require("./windows/main.js");
+
 // this should be placed at top of main.js to handle setup events quickly
 if (handleSquirrelEvent()) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
@@ -72,8 +74,6 @@ function handleSquirrelEvent() {
       return true;
   }
 };
-
-const {openMainWindow} = require("./windows/main.js");
 
 // hot reload for debugging purposes
 if (process.env.dev) {
