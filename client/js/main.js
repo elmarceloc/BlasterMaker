@@ -1,11 +1,14 @@
 uiCanvas = document.getElementById("uiCanvas");
 renderCanvas = document.getElementById("renderCanvas");
 backgroundCanvas = document.getElementById("backgroundCanvas");
+maskCanvas = document.getElementById("maskCanvas");
+
 //canvas4 = document.getElementById("canvas4");
 
 uiCtx = uiCanvas.getContext("2d");
 renderCtx = renderCanvas.getContext("2d");
 backgroundCtx = backgroundCanvas.getContext("2d");
+maskCtx = maskCanvas.getContext("2d");
 //context4 = canvas4.getContext("2d");
 
 uiCanvas.width = window.innerWidth;
@@ -31,6 +34,8 @@ var showIds = localStorage.getItem("showIds") == "true";
 var scale = 12;
 var xOffset = 0;
 var yOffset = 0;
+
+var maskScale = 10;
 
 var tool = 1;
 var lastTool = tool;
@@ -71,6 +76,9 @@ renderCanvas.style.height = height + "px";
 
 backgroundCanvas.style.width = width + "px";
 backgroundCanvas.style.height = height + "px";
+
+maskCanvas.style.width =( width * 60 ) + "px";
+maskCanvas.style.height = (height * 60 ) + "px";
 
 /**
  * Loads data in JSON format
@@ -495,6 +503,50 @@ function drawInfo(){
 
 }
 
+function drawMask(){
+  // resizes the mask
+  maskCanvas.style.width = scale * width + "px";
+  maskCanvas.style.height = scale * height + "px";
+
+  maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
+  maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
+
+  maskCanvas.width = width * maskScale;
+  maskCanvas.height = height * maskScale;
+
+  maskCtx.fillStyle = "rgb(40, 40, 40)"
+
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < height; j++) {
+    
+      maskCtx.beginPath();
+      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/6,0,2 * Math.PI, false);
+      maskCtx.fill()
+
+      maskCtx.beginPath();
+      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,Math.PI/2,Math.PI, false);
+      maskCtx.lineTo(i * maskScale + -maskScale/2 + maskScale/2,j * maskScale + maskScale/2 + maskScale/2);
+      maskCtx.fill()
+    
+      maskCtx.beginPath();
+      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,0,Math.PI/2, false);
+      maskCtx.lineTo(i * maskScale + maskScale/2 + maskScale/2,j * maskScale + maskScale/2 + maskScale/2);
+      maskCtx.fill()
+    
+      maskCtx.beginPath();
+      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,Math.PI,3 * Math.PI/2, false);
+      maskCtx.lineTo(i * maskScale + -maskScale/2 + maskScale/2,j * maskScale + -maskScale/2 + maskScale/2);
+      maskCtx.fill()
+    
+      maskCtx.beginPath();
+      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,3 * Math.PI/2,2*Math.PI, false);
+      maskCtx.lineTo(i * maskScale + maskScale/2 + maskScale/2,j * maskScale + -maskScale/2 + maskScale/2);
+      maskCtx.fill()
+    
+    }
+    
+  }
+}
 
 function drawBackground() {
   
@@ -506,6 +558,7 @@ function drawBackground() {
     backgroundCanvas.style.width = scale * width + "px";
     backgroundCanvas.style.height = scale * height + "px";
   
+
     // reposicionates the background and render canvases
   
     renderCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
@@ -513,7 +566,7 @@ function drawBackground() {
   
     backgroundCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
     backgroundCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
-  
+
     //canvas4.style.width = scale * width + "px";
     //canvas4.style.height = scale * height + "px";
   
@@ -529,6 +582,7 @@ function drawBackground() {
   
     backgroundCanvas.width = width;
     backgroundCanvas.height = height;
+
 
     backgroundCtx.putImageData(background, 0, 0);
 }

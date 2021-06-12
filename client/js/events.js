@@ -238,7 +238,14 @@ function wheel(e) {
     return
   }
   
+  
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
+  // resizes the mask
+  maskCanvas.style.width = scale * width + "px";
+  maskCanvas.style.height = scale * height + "px";
+
+  maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
+  maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
   start()
 }
 
@@ -393,6 +400,9 @@ function mouseMove(e) {
     panZoomTo = mouse;
     xOffset = (panZoomTo[0] - panZoomFrom[0]) / scale;
     yOffset = (panZoomTo[1] - panZoomFrom[1]) / scale;
+
+    maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
+    maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
   }
 }
 

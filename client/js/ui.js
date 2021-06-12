@@ -375,6 +375,8 @@ function initProject() {
 
   scale = 12;
 
+  drawMask()
+
   showLayout("main");
 
   // colorPalette = []

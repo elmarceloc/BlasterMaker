@@ -88,7 +88,8 @@ input[type="number"] {
 }
 
 #backgroundCanvas,
-#renderCanvas/*,
+#renderCanvas,
+#maskCanvas/*,
 #canvas4*/ {
   position: absolute;
   image-rendering: pixelated;
