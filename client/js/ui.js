@@ -95,7 +95,7 @@ var app = new Vue({
       ];
 
 
-      getProjects()
+   //   getProjects()
 
      
 
@@ -375,6 +375,7 @@ function initProject() {
 
   scale = 12;
 
+  updateMask()
   drawMask()
 
   showLayout("main");
@@ -384,6 +385,8 @@ function initProject() {
   temp = []; //??
 
   app.setPublish(false)
+
+  setTimeout(function(){updateScreenSize()}, 3000);
 
   save();
 

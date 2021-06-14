@@ -1,19 +1,3 @@
-uiCanvas = document.getElementById("uiCanvas");
-renderCanvas = document.getElementById("renderCanvas");
-backgroundCanvas = document.getElementById("backgroundCanvas");
-maskCanvas = document.getElementById("maskCanvas");
-
-//canvas4 = document.getElementById("canvas4");
-
-uiCtx = uiCanvas.getContext("2d");
-renderCtx = renderCanvas.getContext("2d");
-backgroundCtx = backgroundCanvas.getContext("2d");
-maskCtx = maskCanvas.getContext("2d");
-//context4 = canvas4.getContext("2d");
-
-uiCanvas.width = window.innerWidth;
-uiCanvas.height = window.innerHeight;
-
 var id = null;
 
 var path = ''
@@ -26,7 +10,7 @@ var isDebug = false;
 var width = 29;
 var height = 29;
 
-var viewMode = parseInt(localStorage.getItem("viewMode"));
+var viewMode = 1
 
 var showGrid = localStorage.getItem("showGrid") == "true";
 var showIds = localStorage.getItem("showIds") == "true";
@@ -35,7 +19,7 @@ var scale = 12;
 var xOffset = 0;
 var yOffset = 0;
 
-var maskScale = 10;
+var maskScale = 12;
 
 var tool = 1;
 var lastTool = tool;
@@ -58,16 +42,29 @@ var panZoomTo = [0, 0];
 var uiScale = 22;
 var isHorizontal = true; //sentido de los beads en la paleta
 
-grid2 = new ImageData(width, height);
+var grid2 = new ImageData(width, height);
 grid2.data.fill(0);
 
-background = new ImageData(width, height);
+var background = new ImageData(width, height);
 
 var temp = [];
 
 var panels = [];
 
 var gridSize = 29;
+
+var uiCanvas = document.getElementById("uiCanvas");
+var renderCanvas = document.getElementById("renderCanvas");
+var backgroundCanvas = document.getElementById("backgroundCanvas");
+var maskCanvas = document.getElementById("maskCanvas");
+
+var uiCtx = uiCanvas.getContext("2d");
+var renderCtx = renderCanvas.getContext("2d");
+var backgroundCtx = backgroundCanvas.getContext("2d");
+var maskCtx = maskCanvas.getContext("2d");
+
+uiCanvas.width = window.innerWidth;
+uiCanvas.height = window.innerHeight;
 
 // resize canvas size
 
@@ -77,8 +74,30 @@ renderCanvas.style.height = height + "px";
 backgroundCanvas.style.width = width + "px";
 backgroundCanvas.style.height = height + "px";
 
-maskCanvas.style.width =( width * 60 ) + "px";
-maskCanvas.style.height = (height * 60 ) + "px";
+maskCanvas.style.width = ( width * maskScale ) + "px";
+maskCanvas.style.height = (height * maskScale ) + "px";
+
+/**
+ * load the previews temp
+ *
+ */
+
+ function undo() {
+  if (temp.length <= 1) return;
+
+  if (temp.length == 0) {
+    temp = [generate()];
+  }
+
+  temp.splice(-1,1)
+
+  load(JSON.stringify(temp[temp.length-1]));
+
+  console.log('undo'+'|'+temp.length)
+
+  localStorage.setItem("code", JSON.stringify(generate()));
+  // localStorage.setItem("saves", temp);
+}
 
 /**
  * Loads data in JSON format
@@ -167,6 +186,42 @@ function save() {
 
   console.log('saved')
 }
+
+function newDraw(w, h) {
+  colorPalette = [];
+  // creates the new grid
+  grid2.data.fill(0);
+
+  resize(w, h);
+}
+
+function resize(w, h) {
+  width = Math.ceil(w/ gridSize) * gridSize;
+  height = Math.ceil(h/ gridSize) * gridSize;
+  grid2 = new ImageData(width, height);
+  matrix = [...Array(height)].map((k) => [...Array(width)].fill(0));
+
+  background = new ImageData(width, height);
+
+  background.data.forEach((element, index, array) => {
+    if (index % 4 == 0) {
+      i = Math.floor(index / 4) % width; // Colores alternados
+      j = Math.floor(index / (4 * width));
+      if ((i + j) % 2 == 0) {
+        array[index] = 255;
+        array[index + 1] = 255;
+        array[index + 2] = 255;
+        array[index + 3] = 255;
+      } else {
+        array[index] = 200;
+        array[index + 1] = 200;
+        array[index + 2] = 200;
+        array[index + 3] = 255;
+      }
+    }
+  });  
+}
+
 
 /**
  * Draws a bead in spesific position
@@ -503,7 +558,7 @@ function drawInfo(){
 
 }
 
-function drawMask(){
+function updateMask(){
   // resizes the mask
   maskCanvas.style.width = scale * width + "px";
   maskCanvas.style.height = scale * height + "px";
@@ -511,8 +566,10 @@ function drawMask(){
   maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
   maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
 
-  maskCanvas.width = width * maskScale;
-  maskCanvas.height = height * maskScale;
+
+}
+
+function drawMask(){
 
   maskCtx.fillStyle = "rgb(40, 40, 40)"
 
@@ -567,264 +624,26 @@ function drawBackground() {
     backgroundCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
     backgroundCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
 
-    //canvas4.style.width = scale * width + "px";
-    //canvas4.style.height = scale * height + "px";
-  
-    //canvas4.style.left = getPosTableToScreen(0, 0)[0] + "px";
-    //canvas4.style.top = getPosTableToScreen(0, 0)[1] + "px";
-  
     // draw the ui
-  
-    uiCtx.clearRect(0, 0, uiCanvas.width, uiCanvas.height);
-  
+    
     renderCanvas.width = width;
     renderCanvas.height = height;
   
     backgroundCanvas.width = width;
     backgroundCanvas.height = height;
 
-
     backgroundCtx.putImageData(background, 0, 0);
+
+   
 }
-
-
-//TODO: crear funcion que setea el estado de public, id,etc al importar un proyecto propio
-
-function getProjects() {
-  axios.get("http://localhost:4000/project", {credentials:true }).then(function (response) {
-    console.log(response.data)
-    self.projects = response.data
-
-    self.projects.forEach(project =>{
-      project.colors = JSON.parse(project.colors)
-
-    })
-
-  })
-}
-
-function updateSave() {
-  // actualisar
-
-  //todo: verificar si hay algun proyecto en curso
-
-  if(id != null){
-    /*
-
-    usar id de proyecto para actualisar
-
-    axios.update('http://localhost:4000/project', formData).then(resp => {
-
-    })
-    */
-  }
-
-}
-
-function initialSave() {
-  
-  const canvas = document.getElementById('renderCanvas');
-  canvas.toBlob(function(blob) {
-    const formData = new FormData();
-    formData.append('file', blob, 'filename.png');
-
-    formData.append('name' , app.name); 
-    formData.append('type' , 'private'); 
-    formData.append('size' , gridSize); 
-    formData.append('palette' , palette); 
-    formData.append('width' , width); 
-    formData.append('height' , height); 
-    formData.append('total' ,getColorsAmount()); 
-    formData.append('code' , JSON.stringify(generate())); 
-    formData.append('colors' , JSON.stringify(colors)); 
-
-
-    formData.append('userId' , '6066682fe0fb5c09e00dc132'); //TODO: Cambiar 👀
-
-
-
-    // Post via axios or other transport method
-    axios.post('http://localhost:4000/project', formData).then(resp => {
-
-      console.log(resp.status);
-      
-      switch (resp.data) {
-        case '0':
-          UIkit.notification({
-            message: "Tu proyecto esta vacío",
-            pos: "top-center",
-          });
-          break;
-          // TODO: activar esto cuando este el online ready
-       /* case '2':
-          UIkit.notification({
-            message: "Error al subir el proyecto a la nube",
-            pos: "top-center",
-          });
-          break;*/
-
-      /* case '3':
-          UIkit.notification({
-            message: "Proyecto guardado exitosamente en la nube",
-            pos: "top-center",
-          });
-          break;  */
-      }
-
-    }).catch(function (error) {
-
-     /* if (!error.response) {
-        // network error
-        UIkit.notification({
-          message: "Error al subir el proyecto a la nube.",
-          pos: "top-center",
-        });
-    }*/
-
-    
-    });
-    
-
-
-  })
-}
-
-
-function loadFromWeb() {
-  var file = {
-    width: app.selected.width,
-    height: app.selected.height,
-    code: app.selected.code,
-    name: app.selected.name,
-    palette: app.selected.palette,
-    size: app.selected.size
-  }
-
-  UIkit.modal(document.getElementById('modal-project')).hide();
-
-  
-  load(JSON.stringify(file))
-
-  initProject()
-  
-  app.setPublish(app.selected.type == 'public' && app.personal ? true: false )
-
-
-  if (app.personal) {
-    initialSave()
-
-    // TODO:update   updateSave() en loop
-
-    
-  }else{
-    app.name = 'Copia de '+app.selected.name
-  }
-
-}
-
-
-
-/**
- * load the previews temp
- *
- */
-
-function undo() {
-  if (temp.length <= 1) return;
-
-  if (temp.length == 0) {
-    temp = [generate()];
-  }
-
-  temp.splice(-1,1)
-
-  load(JSON.stringify(temp[temp.length-1]));
-
-
-
-  console.log('undo'+'|'+temp.length)
-
-
-  localStorage.setItem("code", JSON.stringify(generate()));
-  // localStorage.setItem("saves", temp);
-}
-
-var mask = document.getElementById("mask");
-
-var beadSize = 1280;
-
-function resize(w, h) {
-  width = Math.ceil(w/ gridSize) * gridSize;
-  height = Math.ceil(h/ gridSize) * gridSize;
-  grid2 = new ImageData(width, height);
-  matrix = [...Array(height)].map((k) => [...Array(width)].fill(0));
-
-
- // context4.clearRect(0, 0, width * beadSize, height * beadSize);
- // canvas4.width = w * beadSize/10;
- // canvas4.height = h * beadSize/10
-  
-
-/*
-  for (let j = 0; j < height; j+=1) {
-    for (let i = 0; i < width; i+=1) {
-      console.log(i,j)
-      context4.drawImage(mask,beadSize * i, beadSize * j,beadSize,beadSize);
-    }
-  }*/
-
-  background = new ImageData(width, height);
-
-  background.data.forEach((element, index, array) => {
-    if (index % 4 == 0) {
-      i = Math.floor(index / 4) % width; // Colores alternados
-      j = Math.floor(index / (4 * width));
-      if ((i + j) % 2 == 0) {
-        array[index] = 255;
-        array[index + 1] = 255;
-        array[index + 2] = 255;
-        array[index + 3] = 255;
-      } else {
-        array[index] = 200;
-        array[index + 1] = 200;
-        array[index + 2] = 200;
-        array[index + 3] = 255;
-      }
-    }
-  });
-  
-}
-
-function newDraw(w, h) {
-  colorPalette = [];
-  // creates the new grid
-  grid2.data.fill(0);
-
-  resize(w, h);
-}
-
-//canvas4.width = width * beadSize;
-//canvas4.height = height * beadSize;
-
-
-//canvas4.style.width = width * beadSize + "px";
-//canvas4.style.height = height * beadSize + "px";
-/*
-for (let j = 0; j < height; j++) {
-  for (let i = 0; i < width; i++) {
-    context4.drawImage(mask, beadSize * i, beadSize * j);
-  }
-}*/
-
-var requestId;
 
 function draw() {
-  requestId = undefined;
 
   drawBackground()
 
   // render the beads
   renderCtx.putImageData(grid2, 0, 0);
+
 
   if (scale > 20) {
     drawIds();
@@ -836,6 +655,8 @@ function draw() {
   
   // TODO: arreglar el font de arriba
 
+  uiCtx.clearRect(0, 0, uiCanvas.width, uiCanvas.height);
+
   for (k in panels) {
     panels[k].controller();
   }
@@ -845,32 +666,8 @@ function draw() {
 
   if (isDebug){
     drawInfo()
-    //meter.tick();
   }
-
-  start();
+  requestAnimationFrame(draw);
 }
 
-start()
-
-function start() {
-  if (!requestId) {
-     requestId = window.requestAnimationFrame(draw);
-     document.getElementById('pausedOverlay').style.opacity = '0%'
-     document.getElementById('search').style.opacity = '100%'
-     document.getElementById('openinfo').style.opacity = '100%'
-
-  }
-}
-
-function stop() {
-  if (requestId) {
-     window.cancelAnimationFrame(requestId);
-     requestId = undefined;
-
-     document.getElementById('search').style.opacity = '0%'
-     document.getElementById('pausedOverlay').style.opacity = '100%'
-     document.getElementById('openinfo').style.opacity = '0%'
-     
-  }
-}
+requestAnimationFrame(draw);

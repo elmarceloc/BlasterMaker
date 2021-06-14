@@ -187,6 +187,9 @@ function line(x1, y1, x2, y2, color) {
 }
 
 function updateScreenSize() {
+  console.log('aaaaaaaa')
+
+
   cw = uiCanvas.width * 1;
   ch = uiCanvas.height * 1;
 
@@ -195,8 +198,6 @@ function updateScreenSize() {
 
   panels["colors"].height = window.innerHeight - navbarSize - 19;
   panels["colors"].y = 14;
-
-  //Marcos[1].y = window.innerHeight
 
   panels["tools"].x = window.innerWidth / 2 - 96 * 2;
   panels["tools"].y = window.innerHeight - 74 - navbarSize;
@@ -214,9 +215,13 @@ function updateScreenSize() {
     window.innerHeight - 232 - navbarSize + "px";
 }
 
-setInterval(() => {
+
+onresize = () => {
   updateScreenSize();
-}, 100);
+  updateMask()
+
+  drawMask()
+}
 
 function getMousePos(e) {
   var rect = document.getElementById("uiCanvas").getBoundingClientRect();
@@ -241,12 +246,7 @@ function wheel(e) {
   
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
   // resizes the mask
-  maskCanvas.style.width = scale * width + "px";
-  maskCanvas.style.height = scale * height + "px";
-
-  maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
-  maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
-  start()
+  updateMask()
 }
 
 var oldMouse = false;
