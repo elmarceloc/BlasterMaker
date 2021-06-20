@@ -51,6 +51,12 @@
     "copyright": "Copyright © 2020 BlasterChile.cl",
     "productName": "Blaster Maker",
     "appId": "com.blasterchile.id",
+    "linux": {
+      "icon": "./linux_icon.png",
+      "target": [
+        "deb"
+      ]
+    },
     "mac": {
       "category": "public.app-category.graphics-design",
       "hardenedRuntime": true

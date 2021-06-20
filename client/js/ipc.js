@@ -91,7 +91,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
     if (path != "") {
       ipc.send("saveFile", generate(), path);
-    }
+    } // TODO: check
   });
 
   ipc.on("saved", (event, file_path) => {

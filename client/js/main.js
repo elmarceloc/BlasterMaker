@@ -19,7 +19,8 @@ var scale = 12;
 var xOffset = 0;
 var yOffset = 0;
 
-var maskScale = 12;
+var maskScale = 10;
+var maskScaleHD = 40;
 
 var tool = 1;
 var lastTool = tool;
@@ -57,14 +58,18 @@ var uiCanvas = document.getElementById("uiCanvas");
 var renderCanvas = document.getElementById("renderCanvas");
 var backgroundCanvas = document.getElementById("backgroundCanvas");
 var maskCanvas = document.getElementById("maskCanvas");
+var maskCanvasHD = document.getElementById("maskCanvasHD");
+
 
 var uiCtx = uiCanvas.getContext("2d");
 var renderCtx = renderCanvas.getContext("2d");
 var backgroundCtx = backgroundCanvas.getContext("2d");
 var maskCtx = maskCanvas.getContext("2d");
+var maskCtxHD = maskCanvasHD.getContext("2d");
 
 uiCanvas.width = window.innerWidth;
 uiCanvas.height = window.innerHeight;
+
 
 // resize canvas size
 
@@ -76,6 +81,9 @@ backgroundCanvas.style.height = height + "px";
 
 maskCanvas.style.width = ( width * maskScale ) + "px";
 maskCanvas.style.height = (height * maskScale ) + "px";
+
+maskCanvasHD.style.width = ( width * maskScale ) + "px";
+maskCanvasHD.style.height = ( height * maskScale ) + "px";
 
 /**
  * load the previews temp
@@ -106,7 +114,7 @@ maskCanvas.style.height = (height * maskScale ) + "px";
 
 */
 
-function load(file) {
+function load(file, isCompressed = true) {
   if (!file) return;
 
   try {
@@ -125,7 +133,8 @@ function load(file) {
   let kit = data.palette;
   let size = data.size;
   let code = data.code;
-  let newGrid = decompress(code).split(" ");
+
+  let newGrid = decompress(code).split(" ")
   
   //projectName = name
 
@@ -162,12 +171,14 @@ function load(file) {
 */
 
 function generate() {
-  let savedData = compress(grid2.data.join(" "));
+  let code = grid2.data.join(" ")
+
+  code = compress(code)
 
   return {
     width: width,
     height: height,
-    code: savedData,
+    code: code,
     name: app.name,
     palette: palette,
     size: gridSize == 29 ? '5' : '2.6'
@@ -560,53 +571,67 @@ function drawInfo(){
 
 function updateMask(){
   // resizes the mask
-  maskCanvas.style.width = scale * width + "px";
-  maskCanvas.style.height = scale * height + "px";
-
-  maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
-  maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
-
+  if(scale >= maskScale && scale < maskScaleHD){
+    maskCanvas.style.width =  (scale * Math.min(width, window.screen.width/maskScale)) + "px";
+    maskCanvas.style.height = (scale * Math.min(height, window.screen.height/maskScale)) + "px";
+  
+    maskCanvas.style.left = Math.max(getPosTableToScreen(0, 0)[0] % scale, getPosTableToScreen(0, 0)[0])   + "px";
+    maskCanvas.style.top = Math.max(getPosTableToScreen(0, 0)[1] % scale, getPosTableToScreen(0, 0)[1]) +  "px";
+  }else{
+    maskCanvasHD.style.width =  (scale * Math.min(width, window.screen.width/maskScaleHD)) + "px";
+    maskCanvasHD.style.height = (scale * Math.min(height, window.screen.height/maskScaleHD)) + "px";
+  
+    maskCanvasHD.style.left = Math.max(getPosTableToScreen(0, 0)[0] % scale, getPosTableToScreen(0, 0)[0])   + "px";
+    maskCanvasHD.style.top = Math.max(getPosTableToScreen(0, 0)[1] % scale, getPosTableToScreen(0, 0)[1]) +  "px";
+  }
 
 }
 
 function drawMask(){
 
-  maskCtx.fillStyle = "rgb(40, 40, 40)"
-
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < height; j++) {
-    
-      maskCtx.beginPath();
-      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/6,0,2 * Math.PI, false);
-      maskCtx.fill()
-
-      maskCtx.beginPath();
-      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,Math.PI/2,Math.PI, false);
-      maskCtx.lineTo(i * maskScale + -maskScale/2 + maskScale/2,j * maskScale + maskScale/2 + maskScale/2);
-      maskCtx.fill()
-    
-      maskCtx.beginPath();
-      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,0,Math.PI/2, false);
-      maskCtx.lineTo(i * maskScale + maskScale/2 + maskScale/2,j * maskScale + maskScale/2 + maskScale/2);
-      maskCtx.fill()
-    
-      maskCtx.beginPath();
-      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,Math.PI,3 * Math.PI/2, false);
-      maskCtx.lineTo(i * maskScale + -maskScale/2 + maskScale/2,j * maskScale + -maskScale/2 + maskScale/2);
-      maskCtx.fill()
-    
-      maskCtx.beginPath();
-      maskCtx.arc(i * maskScale + maskScale/2,j * maskScale + maskScale/2,maskScale/2,3 * Math.PI/2,2*Math.PI, false);
-      maskCtx.lineTo(i * maskScale + maskScale/2 + maskScale/2,j * maskScale + -maskScale/2 + maskScale/2);
-      maskCtx.fill()
-    
+  for (let c = 1; c < 3; c++) {
+    let canvas = maskCtx
+    if(c == 2){
+      canvas = maskCtxHD
+      mskScale = maskScaleHD
+    }else{
+      mskScale = maskScale
     }
-    
+
+    canvas.fillStyle = "rgb(40, 40, 40)"
+
+    for (let i = 0; i < Math.min(width, window.screen.width/(mskScale)); i++) {
+      for (let j = 0; j < Math.min(height, window.screen.height/(mskScale)); j++) {
+      
+        canvas.beginPath();
+        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/6,0,2 * Math.PI, false);
+        canvas.fill()
+
+        canvas.beginPath();
+        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,Math.PI/2,Math.PI, false);
+        canvas.lineTo(i * mskScale + -mskScale/2 + mskScale/2,j * mskScale + mskScale/2 + mskScale/2);
+        canvas.fill()
+      
+        canvas.beginPath();
+        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,0,Math.PI/2, false);
+        canvas.lineTo(i * mskScale + mskScale/2 + mskScale/2,j * mskScale + mskScale/2 + mskScale/2);
+        canvas.fill()
+      
+        canvas.beginPath();
+        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,Math.PI,3 * Math.PI/2, false);
+        canvas.lineTo(i * mskScale + -mskScale/2 + mskScale/2,j * mskScale + -mskScale/2 + mskScale/2);
+        canvas.fill()
+      
+        canvas.beginPath();
+        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,3 * Math.PI/2,2*Math.PI, false);
+        canvas.lineTo(i * mskScale + mskScale/2 + mskScale/2,j * mskScale + -mskScale/2 + mskScale/2);
+        canvas.fill()
+      
+      }
+  }
   }
 }
-
-function drawBackground() {
-  
+function updateBackgroundAndRender() {
     // resizes the background and render canvases
 
     renderCanvas.style.width = scale * width + "px";
@@ -631,6 +656,9 @@ function drawBackground() {
   
     backgroundCanvas.width = width;
     backgroundCanvas.height = height;
+}
+
+function drawBackground() {
 
     backgroundCtx.putImageData(background, 0, 0);
 
@@ -644,7 +672,7 @@ function draw() {
   // render the beads
   renderCtx.putImageData(grid2, 0, 0);
 
-
+  uiCtx.clearRect(0, 0, uiCanvas.width, uiCanvas.height);
   if (scale > 20) {
     drawIds();
   }
@@ -655,7 +683,7 @@ function draw() {
   
   // TODO: arreglar el font de arriba
 
-  uiCtx.clearRect(0, 0, uiCanvas.width, uiCanvas.height);
+
 
   for (k in panels) {
     panels[k].controller();

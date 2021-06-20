@@ -290,6 +290,8 @@ function rotateLeft() {
   }
   resize(height, width);
   grid2 = newGrid2;
+  updateBackgroundAndRender()
+
 }
 // FIXME: 
 
@@ -306,6 +308,8 @@ function rotateRight() {
   }
   resize(height, width);
   grid2 = newGrid2;
+  updateBackgroundAndRender()
+
 }
 
 function flipHorizontal() {
@@ -320,6 +324,8 @@ function flipHorizontal() {
     }
   }
   grid2 = newGrid2;
+  updateBackgroundAndRender()
+
 }
 
 function flipVertical() {
@@ -334,6 +340,8 @@ function flipVertical() {
     }
   }
   grid2 = newGrid2;
+  updateBackgroundAndRender()
+
 }
 
 function crop() {
@@ -342,7 +350,6 @@ function crop() {
   if (isEmpty()) return
   
   save();
-
 
   var x1 = Infinity;
   var y1 = Infinity;
@@ -380,6 +387,8 @@ function crop() {
 
   resize(x2 - x1, y2 - y1)
   grid2 = newGrid2;
+
+  updateBackgroundAndRender()
 }
 
 /**
@@ -577,4 +586,23 @@ function getClippedRegion(image, x, y, width, height) {
   ctx.drawImage(image, x, y, width, height,  0, 0, width, height);
 
   return canvas;
+}
+
+function adjustScaleToDPI(canvas) {
+  // Get the size of the canvas in CSS pixels.
+  var rect = canvas.getBoundingClientRect();
+  // Give the canvas pixel dimensions of their CSS
+  // size * the device pixel ratio.
+  canvas.width = rect.width * devicePixelRatio;
+  canvas.height = rect.height  * devicePixelRatio;
+
+  
+  var ctx = canvas.getContext('2d');
+  // Scale all drawing operations by the dpr, so you
+  // don't have to worry about the difference.
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+
+  // scale everything down using CSS
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
 }

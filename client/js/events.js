@@ -187,14 +187,9 @@ function line(x1, y1, x2, y2, color) {
 }
 
 function updateScreenSize() {
-  console.log('aaaaaaaa')
-
-
-  cw = uiCanvas.width * 1;
-  ch = uiCanvas.height * 1;
-
   uiCanvas.width = window.innerWidth;
   uiCanvas.height = window.innerHeight - navbarSize;
+  
 
   panels["colors"].height = window.innerHeight - navbarSize - 19;
   panels["colors"].y = 14;
@@ -219,8 +214,9 @@ function updateScreenSize() {
 onresize = () => {
   updateScreenSize();
   updateMask()
-
+  updateBackgroundAndRender()
   drawMask()
+  console.log('aaaaaaaaaaaaaaa')
 }
 
 function getMousePos(e) {
@@ -245,8 +241,23 @@ function wheel(e) {
   
   
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
+  
+  if(viewMode == 1){
+    if(scale < maskScale){
+      maskCanvas.style.opacity = '0%'
+      maskCanvasHD.style.opacity = '0%'
+    }else if(scale >= maskScale && scale < maskScaleHD){
+      maskCanvasHD.style.opacity = '0%'
+      maskCanvas.style.opacity = '100%'
+    }else{
+      maskCanvas.style.opacity = '0%'
+      maskCanvasHD.style.opacity = '100%'
+    }
+  }
+    
   // resizes the mask
   updateMask()
+  updateBackgroundAndRender()
 }
 
 var oldMouse = false;
@@ -401,8 +412,8 @@ function mouseMove(e) {
     xOffset = (panZoomTo[0] - panZoomFrom[0]) / scale;
     yOffset = (panZoomTo[1] - panZoomFrom[1]) / scale;
 
-    maskCanvas.style.left = getPosTableToScreen(0, 0)[0] + "px";
-    maskCanvas.style.top = getPosTableToScreen(0, 0)[1] + "px";
+    updateMask()
+    updateBackgroundAndRender()
   }
 }
 

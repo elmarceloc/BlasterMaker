@@ -149,7 +149,7 @@ function openMainWindow() {
         {
             label: 'Ver',
             submenu: [
-                /*{
+                {
                   label: 'Estilo',
                   submenu: [
         
@@ -165,12 +165,10 @@ function openMainWindow() {
                       //sublabel: 'ctrl + 2',
                       click: function() {
                         mainWindow.webContents.send('viewmode', 2)
-        
-                       enabled:false
                       }
                     },
                   ]
-                },*/
+                },
                 {
                     label: 'Reglas',
                     click: function () {

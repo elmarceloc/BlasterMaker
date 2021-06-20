@@ -326,38 +326,34 @@ function toggleEvents(bool) {
 }
 
 function showLayout(layout) {
+
+  document.getElementById("new").style.display = "none";
+  document.getElementById("info").style.display = "none";
+  document.getElementById("main").style.display = "none";
+  
+  toggleEvents(false);
+
   switch (layout) {
     case "new":
-      toggleEvents(false);
-
       app.name = "";
       document.getElementById("name").value = "";
       document.getElementById("x").value = 1;
       document.getElementById("y").value = 1;
 
       document.getElementById("new").style.display = "block";
-      document.getElementById("info").style.display = "none";
-      document.getElementById("main").style.display = "none";
       break;
 
     case "info":
-      toggleEvents(false);
-
-      document.getElementById("new").style.display = "none";
       document.getElementById("info").style.display = "block";
-      document.getElementById("main").style.display = "none";
-
       document.getElementById("body").style.overflowY = "visible !important"; // poner important
       break;
 
     case "main":
       toggleEvents(true);
 
-      document.getElementById("new").style.display = "none";
-      document.getElementById("info").style.display = "none";
       document.getElementById("main").style.display = "block";
-
       document.getElementById("body").style.overflowY = "hidden"; // poner important
+
       break;
   }
 }
@@ -375,8 +371,21 @@ function initProject() {
 
   scale = 12;
 
+  maskCanvas.width = Math.min(width, window.screen.width/maskScale)* maskScale;
+  maskCanvas.height = Math.min(height, window.screen.height/maskScale)* maskScale;
+
+  maskCanvasHD.width = Math.min(width, window.screen.width/maskScaleHD)* maskScaleHD;
+  maskCanvasHD.height = Math.min(height, window.screen.height/maskScaleHD)* maskScaleHD;
+
+  maskCanvas.style.opacity = '0%'
+  maskCanvasHD.style.opacity = '0%'
+  
   updateMask()
   drawMask()
+
+  updateBackgroundAndRender()
+
+  drawBackground()
 
   showLayout("main");
 
@@ -384,11 +393,12 @@ function initProject() {
 
   temp = []; //??
 
+  save();
+
   app.setPublish(false)
 
   setTimeout(function(){updateScreenSize()}, 3000);
 
-  save();
 
 }
 /*

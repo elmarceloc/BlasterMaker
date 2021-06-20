@@ -695,8 +695,10 @@ Panel = function (
 
   ===========================    */ 
 
-  var ui = document.getElementById("ui");
+var ui = document.getElementById("ui");
 
+var toolUiScale = 48*2
+var uiViewportScale = 48
 
 panels["tools"]=(new Panel("",window.innerWidth/2 - 96*2, 800, 192+96*2,50,0,0,0,0,15,15,15,15,60,0,true,(x,y,mL,mR,mU,mD,width,height)=>{},(x,y,mL,mR,mU,mD,width,height)=>{
     drawWindow(x,y,width,height,mL,mU,mR,mD);
@@ -704,63 +706,69 @@ panels["tools"]=(new Panel("",window.innerWidth/2 - 96*2, 800, 192+96*2,50,0,0,0
 
 panels["move"]=(new Panel(panels["tools"],0,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(0)},(x,y,mL,mR,mU,mD,width,height)=>{
   if (tool == 0) {
-    uiCtx.drawImage(ui, 0, 48, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, 0, toolUiScale, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   } else {
-    uiCtx.drawImage(ui, 0, 0, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, 0, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   }
 }))
 
 
-panels["pen"]=(new Panel(panels["tools"],48,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,hheight)=>{setTool(1)},(x,y,mL,mR,mU,mD,width,height)=>{
+panels["pen"]=(new Panel(panels["tools"],uiViewportScale,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,hheight)=>{setTool(1)},(x,y,mL,mR,mU,mD,width,height)=>{
   if (tool == 1) {
-    uiCtx.drawImage(ui, 48, 48, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale, toolUiScale, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   } else {
-    uiCtx.drawImage(ui, 48, 0, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   }
 }))
 
 
 
-panels["eraser"]=(new Panel(panels["tools"],48*2,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(3)},(x,y,mL,mR,mU,mD,width,height)=>{
+panels["eraser"]=(new Panel(panels["tools"],uiViewportScale*2,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(3)},(x,y,mL,mR,mU,mD,width,height)=>{
   if (tool == 3) {
-    uiCtx.drawImage(ui, 48 * 2, 48, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale * 2, toolUiScale, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   } else {
-    uiCtx.drawImage(ui, 48 * 2, 0, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale * 2, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   }
 }))
 
-panels["bucket"]=(new Panel(panels["tools"],48*3,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(2)},(x,y,mL,mR,mU,mD,width,height)=>{
+panels["bucket"]=(new Panel(panels["tools"],uiViewportScale*3,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(2)},(x,y,mL,mR,mU,mD,width,height)=>{
   if (tool == 2) {
-    uiCtx.drawImage(ui, 48 * 3, 48, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale * 3, toolUiScale, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   } else {
-    uiCtx.drawImage(ui, 48 * 3, 0, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale * 3, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   }
 }))
 
-panels["undo"]=(new Panel(panels["tools"],48*4,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{
+panels["undo"]=(new Panel(panels["tools"],uiViewportScale*4,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{
   
   undo()
 
 },(x,y,mL,mR,mU,mD,width,height)=>{
-  uiCtx.drawImage(ui, 48 * 4, 0, 48, 48, x + mL, y + mU, 48, 48);
+  uiCtx.drawImage(ui, toolUiScale * 4, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
 
 
-panels["picker"]=(new Panel(panels["tools"],48*5,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(4)},(x,y,mL,mR,mU,mD,width,height)=>{
+panels["picker"]=(new Panel(panels["tools"],uiViewportScale*5,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setTool(4)},(x,y,mL,mR,mU,mD,width,height)=>{
   if (tool == 4) {
-    uiCtx.drawImage(ui, 48 * 5, 48, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale * 5, toolUiScale, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   } else {
-    uiCtx.drawImage(ui, 48 * 5, 0, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale * 5, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
   }
 }))
 
-panels["zoomout"]=(new Panel(panels["tools"],48*6,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{scale -= 2},(x,y,mL,mR,mU,mD,width,height)=>{
-  uiCtx.drawImage(ui, 48 * 11, 0, 48, 48, x + mL, y + mU, 48, 48);
+panels["zoomout"]=(new Panel(panels["tools"],uiViewportScale*6,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{scale -= 2;
+   updateBackgroundAndRender()
+   updateMask()
+  },(x,y,mL,mR,mU,mD,width,height)=>{
+  uiCtx.drawImage(ui, toolUiScale * 11, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 
 }))
 
-panels["zoomin"]=(new Panel(panels["tools"],48*7,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{scale += 2},(x,y,mL,mR,mU,mD,width,height)=>{
-  uiCtx.drawImage(ui, 48 * 10, 0, 48, 48, x + mL, y + mU, 48, 48);
+panels["zoomin"]=(new Panel(panels["tools"],uiViewportScale*7,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{scale += 2;
+   updateBackgroundAndRender()
+   updateMask()
+  },(x,y,mL,mR,mU,mD,width,height)=>{
+  uiCtx.drawImage(ui, toolUiScale * 10, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
 
 /* ===========================
@@ -770,25 +778,24 @@ panels["zoomin"]=(new Panel(panels["tools"],48*7,0,50,50,0,0,0,0,0,0,0,0,50,50,t
   ===========================    */ 
 
 
-panels["transform"]=(new Panel("",window.innerWidth/2+400,800,48*4,70,0,0,16,0,0,0,0,0,60,0,true,(x,y,mL,mR,mU,mD,width,height)=>{},(x,y,mL,mR,mU,mD,width,height)=>{
+panels["transform"]=(new Panel("",window.innerWidth/2+400,800,uiViewportScale*4,70,0,0,16,0,0,0,0,0,60,0,true,(x,y,mL,mR,mU,mD,width,height)=>{},(x,y,mL,mR,mU,mD,width,height)=>{
     drawWindow(x,y,width,height,mL,mU,mR,mD);
 
     drawTitle('Transformar', x + width / 2 - 3, y)
 }))
 
 panels["flipHorizontal"]=(new Panel(panels["transform"],0,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{flipHorizontal()},(x,y,mL,mR,mU,mD,width,height)=>{
-    uiCtx.drawImage(ui, 48*6, 0, 48, 48, x + mL, y + mU, 48, 48);
+    uiCtx.drawImage(ui, toolUiScale*6, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
 
-panels["flipVertical"]=(new Panel(panels["transform"],48,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{flipVertical()},(x,y,mL,mR,mU,mD,width,height)=>{    
-    uiCtx.drawImage(ui, 48*7, 0, 48, 48, x + mL, y + mU, 48, 48);
+panels["flipVertical"]=(new Panel(panels["transform"],uiViewportScale,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{flipVertical()},(x,y,mL,mR,mU,mD,width,height)=>{    
+    uiCtx.drawImage(ui, toolUiScale*7, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
 
 
-panels["rotateRight"]=(new Panel(panels["transform"],48*2,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{rotateRight()},(x,y,mL,mR,mU,mD,width,height)=>{    
-    uiCtx.drawImage(ui, 48*8, 0, 48, 48, x + mL, y + mU, 48, 48);
+panels["rotateRight"]=(new Panel(panels["transform"],uiViewportScale*2,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{rotateRight()},(x,y,mL,mR,mU,mD,width,height)=>{    
+    uiCtx.drawImage(ui, toolUiScale*8, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
-
-panels["rotateLeft"]=(new Panel(panels["transform"],48*3,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{rotateLeft()},(x,y,mL,mR,mU,mD,width,height)=>{
-    uiCtx.drawImage(ui, 48*9, 0, 48, 48, x + mL, y + mU, 48, 48);
+panels["rotateLeft"]=(new Panel(panels["transform"],uiViewportScale*3,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{rotateLeft()},(x,y,mL,mR,mU,mD,width,height)=>{
+    uiCtx.drawImage(ui, toolUiScale*9, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
