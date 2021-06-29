@@ -97,9 +97,9 @@ if(storage){
  function undo() {
   if (temp.length <= 1) return;
 
-  if (temp.length == 0) {
-    temp = [generate()];
-  }
+  //if (temp.length == 0) {
+  //  temp = [generate()];
+ // }
 
   temp.splice(-1,1)
 
@@ -292,9 +292,9 @@ function drawIds() {
     xDiff = finalPos[0] - startPos[0];
     yDiff = finalPos[1] - startPos[1];
 
-    for (y = 0; y < yDiff; y++) {
+    for (let y = 0; y < yDiff; y++) {
       for (
-        x = getBeadPos(...startPos) + width * 4 * y;
+        let x = getBeadPos(...startPos) + width * 4 * y;
         x < getBeadPos(...startPos) + xDiff * 4 + width * 4 * y;
         x += 4
       ) {
@@ -694,7 +694,7 @@ function draw() {
 
 
 
-  for (k in panels) {
+  for (let k in panels) {
     panels[k].controller();
   }
 

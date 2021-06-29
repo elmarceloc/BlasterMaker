@@ -47,12 +47,12 @@ function changePalette(img, wd, hd){
     var b = imageData.data[i+2]; // Blue
     var a = imageData.data[i+3]; // Alpha
           
-    min = 9999999;
-    idMin = 0;
+    var min = 9999999;
+    var idMin = 0;
     
     for(let j in colors){
-      rgb = colors[j].rgb;
-      dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
+      let rgb = colors[j].rgb;
+      let dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
 
       if(dis < min){
         min = dis

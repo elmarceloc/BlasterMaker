@@ -282,7 +282,7 @@ function rotateLeft() {
   newGrid2 = new ImageData(height, width);
   for (j = 0; j < height; j++) {
     for (i = 0; i < width * 4; i += 4) {
-      for (rgb = 0; rgb < 4; rgb++) {
+      for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[(height - 1) * 4 + height * i - j * 4 + rgb] =
           grid2.data[i + 4 * width * j + rgb];
       }
@@ -300,7 +300,7 @@ function rotateRight() {
   newGrid2 = new ImageData(height, width);
   for (j = 0; j < width; j++) {
     for (i = 0; i < height * 4; i += 4) {
-      for (rgb = 0; rgb < 4; rgb++) {
+      for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i + 4 * height * j + rgb] =
           grid2.data[(width - 1) * 4 + width * i - j * 4 + rgb];
       }
@@ -317,7 +317,7 @@ function flipHorizontal() {
   newGrid2 = new ImageData(width, height);
   for (j = 0; j < height; j++) {
     for (i = 0; i < width * 4; i += 4) {
-      for (rgb = 0; rgb < 4; rgb++) {
+      for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i + 4 * width * j + rgb] =
           grid2.data[4 * (width - 1) - i + 4 * width * j + rgb];
       }
@@ -333,7 +333,7 @@ function flipVertical() {
   newGrid2 = new ImageData(width, height);
   for (j = 0; j < height; j++) {
     for (i = 0; i < width * 4; i += 4) {
-      for (rgb = 0; rgb < 4; rgb++) {
+      for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i + j * width * 4 + rgb] =
           grid2.data[i + (height - 1 - j) * width * 4 + rgb];
       }
@@ -357,8 +357,8 @@ function crop() {
   var y2 = 0;
 
 
-  for (j = 0; j < height; j++) {
-    for (i = 0; i < width * 4; i += 4) {
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width * 4; i += 4) {
       if (grid2.data[i + j * width * 4 + 3] != 0) {
         x1 = Math.min(x1, i / 4);
         y1 = Math.min(y1, j);

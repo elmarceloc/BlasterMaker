@@ -549,12 +549,12 @@ function createFromImage(data) {
       var b = dest.data[i + 2]; // Blue
       var a = dest.data[i + 3]; // Alpha
 
-      min = 9999999;
-      idMin = 0;
+      let min = 9999999;
+      let idMin = 0;
 
       for (let j in colors) {
-        rgb = colors[j].rgb;
-        dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2);
+        let rgb = colors[j].rgb;
+        let dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2);
 
         if (dis < min) {
           min = dis;
@@ -745,13 +745,13 @@ function printToScale(){
       finalCanvas.width = gridSize * circleRadius
       finalCanvas.height = gridSize * circleRadius
     
-      tempCtx    = tempCanvas.getContext('2d')
-      image  = document.getElementById('previewCanvas')
+      var tempCtx    = tempCanvas.getContext('2d')
+      var image  = document.getElementById('previewCanvas')
 
-      finalCtx    = finalCanvas.getContext('2d'),
+      var finalCtx    = finalCanvas.getContext('2d'),
 
 
-      clip   = getClippedRegion(image, i * gridSize, j * gridSize, gridSize, gridSize);
+      var clip   = getClippedRegion(image, i * gridSize, j * gridSize, gridSize, gridSize);
 
       tempCtx.drawImage(clip, 0, 0);
 
