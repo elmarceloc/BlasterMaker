@@ -1,7 +1,7 @@
 /*const xElement = document.querySelector("#x");
 const yElement = document.querySelector("#y");*/
-const wElement = document.querySelector("#width");
-const hElement = document.querySelector("#height");
+//const wElement = document.querySelector("#width");
+//const hElement = document.querySelector("#height");
 const sElement = document.querySelector("#scale");
 const sizeElement = document.querySelector("#size");
 
@@ -157,13 +157,15 @@ yElement.addEventListener("change", (event) => {
   panX = y*1
 
 });*/
-wElement.addEventListener("change", (event) => {
+/*wElement.addEventListener("change", (event) => {
   const w = document.querySelector("#width").value;
+
 });
 
 hElement.addEventListener("change", (event) => {
   const h = document.querySelector("#height").value;
-});
+
+});*/
 
 sElement.addEventListener("change", (event) => {
   document.querySelector("#loading-container").style.visibility = 'visible';

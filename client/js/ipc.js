@@ -26,7 +26,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     // Let's check whether notification permissions have already been granted
     else if (Notification.permission === "granted") {
       // If it's okay let's create a notification
-      var notification = new Notification("Blaster Maker", {
+      new Notification("Blaster Maker", {
         body: body,
         icon:
           "https://blasterchile.cl/wp-content/uploads/2019/09/logo_rojo.png",
@@ -38,7 +38,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
       Notification.requestPermission(function (permission) {
         // If the user accepts, let's create a notification
         if (permission === "granted") {
-          var notification = new Notification("Blaster Maker", {
+          new Notification("Blaster Maker", {
             body: body,
             icon:
               "https://blasterchile.cl/wp-content/uploads/2019/09/logo_rojo.png",
@@ -141,6 +141,9 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
 
       document.querySelector("#loading-container").style.visibility = 'hidden';
+      document.querySelector("#previewCrop").style.display = 'block';
+
+      
 
       ipc.send("setProgress", 1)
 

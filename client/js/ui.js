@@ -241,7 +241,7 @@ document.getElementById("openinfo").onclick = function () {
   colorsUsed = [];
   colorsAmount = [];
 
-  for (x = 0; x < 4 * width * height; x += 4) {
+  for (let x = 0; x < 4 * width * height; x += 4) {
     var r = grid2.data[x + 0];
     var g = grid2.data[x + 1];
     var b = grid2.data[x + 2];
@@ -688,8 +688,8 @@ function downloadImage() {
     
         let imageData = ctx2.getImageData(0, 0, imagePreview.width, imagePreview.height);    
     
-        for (row = 0; row < height * imagePreview.height; row++) {
-          for (col = 0; col < imagePreview.width; col++) {
+        for (let row = 0; row < height * imagePreview.height; row++) {
+          for (let col = 0; col < imagePreview.width; col++) {
               index = (col + row * imagePreview.width) * 4;
     
               let r = imageData.data[index];
@@ -773,7 +773,7 @@ function printToScale(){
 
         for (row = 0; row <   gridSize; row++) {
           for (col = 0; col <   gridSize; col++) {
-            index = (col + (row *  gridSize)) * 4;
+            let index = (col + (row *  gridSize)) * 4;
 
             let r = imageData.data[index]
             let g = imageData.data[index + 1] 

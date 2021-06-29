@@ -160,10 +160,12 @@ function load(file, isCompressed = true) {
     grid2.data[i + 1] = newGrid[i + 1];
     grid2.data[i + 2] = newGrid[i + 2];
     grid2.data[i + 3] = newGrid[i + 3];
-    //agregar colores mientras se importa la imagen
+
+    // agregar colores mientras se importa la imagen
+
     if (grid2.data[i + 3]) {
-      nuevoColor = getColorId(grid2.data.slice(i, i + 3), colorPalette);
-      if (nuevoColor == 0) {
+      let newColor = getColorId(grid2.data.slice(i, i + 3), colorPalette);
+      if (newColor == 0) {
         colorPalette.push(
           colors[getColorId(grid2.data.slice(i, i + 3), colors) - 1]
         );
