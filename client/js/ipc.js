@@ -251,17 +251,21 @@ function printTable() {
     formatDate = `${day}-${month}-${year}`
   }
 
-  var style = `<style>
+  var style = `
+  <style>
   .invoice-box {
       max-width: 800px;
       margin: auto;
       padding: 30px;
-      border: 1px solid #eee;
-      box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+      /*     border: 1px solid #eee;
+      box-shadow: 0 0 10px rgba(0, 0, 0, .15);*/
       font-size: 16px;
       line-height: 24px;
       font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
       color: #555;
+  }
+  #color-table{
+    overflow-y: visible!important
   }
   
   .invoice-box table {
@@ -320,10 +324,6 @@ function printTable() {
   .table-container {
     margin-bottom: 30px;
   }
-  #color-table{
-    min-height: 500px;
-
-  }
   @media only screen and (max-width: 600px) {
       .invoice-box table tr.top table td {
           width: 100%;
@@ -340,13 +340,13 @@ function printTable() {
 
   @media print
   {    
-    #pdf,#file-image,#publicTr,#modal-publish,#nameInput
+    #pdf,#file-image,#publicTr,#modal-publish,#nameInput,.icon-reset
       {
           display: none !important;
       }
   }
 
-  #nameInput{
+  #nameInput,.icon-reset,#modal-publish{
     display: none !important;
   }
   

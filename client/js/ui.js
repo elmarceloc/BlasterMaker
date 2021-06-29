@@ -23,6 +23,8 @@ var app = new Vue({
     category: 0,
     beta: false,
 
+    isElectron: navigator.userAgent.toLowerCase().indexOf(" electron/") > -1,
+
     renderMode: 'pixels',
     renderDefinition:'hight',
     renderType:'color'
@@ -188,7 +190,7 @@ var app = new Vue({
   }
 });
 
-app.onlogin();
+//app.onlogin();
 
 closenew.style.top = navbarSize + 20 + "px";
 
@@ -465,15 +467,16 @@ function openRecent() {
     // TODO:mostrar q no hay en el else
     console.log(localStorage.getItem('code'))
     load( localStorage.getItem('code') )
+    initProject();
   } 
   if (storage) {
     storage.has('code', function(error, hasKey) {
       if (hasKey) {
         load( JSON.stringify(storage.getSync('code')) )
+        initProject();
       }
     });
   }
-  initProject();
     
 }
 
@@ -584,9 +587,10 @@ function createFromImage(data) {
 function downloadTable() {
 
 
-    window.scrollTo(0, 0);
+  
+  //var container = document.getElementById("image-wrap"); //specific element on page
+  window.scrollTo(0, 0);
 
-    //var container = document.getElementById("image-wrap"); //specific element on page
     var container = document.getElementById("colorsheet-container"); // full page
     html2canvas(container, {
       allowTaint: true,
@@ -800,8 +804,8 @@ function printToScale(){
             if(a == 0 ) {
               finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 255 + ")";
               finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
-            }else if(lightness > 0.5 && app.renderType == 'color'){
-              finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 0 + ")";
+            }else if(lightness >= 0.5 && app.renderType == 'color'){
+              finalCtx.fillStyle = "rgba(" + 0 + "," + 0 + "," + 0 + "," + 255 + ")";
               finalCtx.arc(circleRadius * col + circleRadius/2, circleRadius* row+ circleRadius/2, circleRadius/8, 0, 2 * Math.PI, false);
             }else if(lightness < 0.5 && app.renderType == 'color'){
               finalCtx.fillStyle = "rgba(" + 255 + "," + 255 + "," + 255 + "," + 255 + ")";

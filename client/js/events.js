@@ -199,7 +199,7 @@ function updateScreenSize() {
 
 
   setTimeout(function(){
-    document.getElementById('search').style.width = panels.colors.width + 6  //FIXME
+    document.getElementById('search').style.width = panels.colors.width == 30 ? 65 : panels.colors.width + 6  //FIXME
   },40) 
 
   // panels["transform"].x = window.innerWidth / 2 + 400;

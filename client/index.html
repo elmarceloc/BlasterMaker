@@ -292,9 +292,9 @@
                     </fieldset>
 
 
-                    <hr></hr>
-                    <div style="padding: 20px;">
-                    <button onclick="importFromMenu()" class="uk-button uk-button-secondary uk-width-1-1 uk-button-large"><i class="fas fa-magic"></i>  Crear a partir de Imagen</button>
+                    <hr v-if="isElectron" ></hr>
+                    <div v-if="isElectron" style="padding: 20px;">
+                    <button v-if="isElectron" onclick="importFromMenu()" class="uk-button uk-button-secondary uk-width-1-1 uk-button-large"><i class="fas fa-magic"></i>  Crear a partir de Imagen</button>
                 </div>
                 </div>
 
