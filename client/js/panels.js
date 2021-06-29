@@ -205,7 +205,7 @@ Panel = function (
         this.prevHeight = this.height;
   
         if (isInRect(...mouse, this.getX(), this.getY(), this.width, this.height)) {
-          for (i in panels) {
+          for (let i in panels) {
             panels[i].isInactive = true;
           }
           this.isInactive = false;

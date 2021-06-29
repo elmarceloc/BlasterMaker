@@ -12,7 +12,6 @@ function openAboutUs() {
         movable: true,
         alwaysOnTop: true,
         fullscreenable: false,
-        icon: __dirname + '/client/img/blaster.ico',
         webPreferences: {
             enableRemoteModule: true,
             nodeIntegration: true,

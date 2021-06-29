@@ -207,7 +207,7 @@ function isInside(x, y) {
 
 
 function replaceBead(index, toreplace) {
-  for (x = 0; x < 4 * width * height; x+=4) {
+  for (let x = 0; x < 4 * width * height; x+=4) {
     if (sameColor(grid2.data.slice(x, x + 3), colors[index-1].rgb)) {
       
       if (toreplace != 0) {
@@ -298,8 +298,8 @@ function rotateLeft() {
 function rotateRight() {
   save();
   newGrid2 = new ImageData(height, width);
-  for (j = 0; j < width; j++) {
-    for (i = 0; i < height * 4; i += 4) {
+  for (let j = 0; j < width; j++) {
+    for (let i = 0; i < height * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i + 4 * height * j + rgb] =
           grid2.data[(width - 1) * 4 + width * i - j * 4 + rgb];
@@ -315,8 +315,8 @@ function rotateRight() {
 function flipHorizontal() {
   save();
   newGrid2 = new ImageData(width, height);
-  for (j = 0; j < height; j++) {
-    for (i = 0; i < width * 4; i += 4) {
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i + 4 * width * j + rgb] =
           grid2.data[4 * (width - 1) - i + 4 * width * j + rgb];
@@ -331,8 +331,8 @@ function flipHorizontal() {
 function flipVertical() {
   save();
   newGrid2 = new ImageData(width, height);
-  for (j = 0; j < height; j++) {
-    for (i = 0; i < width * 4; i += 4) {
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i + j * width * 4 + rgb] =
           grid2.data[i + (height - 1 - j) * width * 4 + rgb];
@@ -375,8 +375,8 @@ function crop() {
   
   var newGrid2 = new ImageData(width2, height2);
 
-  for (j = 0; j <= height2; j++) {
-    for (i = 0; i <= width2; i ++) {
+  for (let j = 0; j <= height2; j++) {
+    for (let i = 0; i <= width2; i ++) {
       for (rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[i * 4 + j * width2 * 4 + rgb] =
           grid2.data[(i+x1)*4 + (j+y1) * width * 4 + rgb];
@@ -404,7 +404,7 @@ function compress(str) {
   var output = "";
   var count = 0;
   S = str.split(" ");
-  for (var i = 0; i < S.length; i++) {
+  for (let i = 0; i < S.length; i++) {
     count++;
     if (S[i] != S[i + 1]) {
       output += " " + S[i] + "_" + count;

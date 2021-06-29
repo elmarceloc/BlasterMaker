@@ -749,9 +749,7 @@ function printToScale(){
       var image  = document.getElementById('previewCanvas')
 
       var finalCtx    = finalCanvas.getContext('2d'),
-
-
-      var clip   = getClippedRegion(image, i * gridSize, j * gridSize, gridSize, gridSize);
+          clip   = getClippedRegion(image, i * gridSize, j * gridSize, gridSize, gridSize);
 
       tempCtx.drawImage(clip, 0, 0);
 
