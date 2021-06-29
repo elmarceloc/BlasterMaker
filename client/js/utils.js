@@ -73,7 +73,7 @@ function getColorId(Color, Colors) {
 
 function setBeadColor(x, y, color) {
   if (isInside(x, y)) {
-    pos = getBeadPos(x, y, width);
+    let pos = getBeadPos(x, y);
     if (color != 0) {
       col = colors[color - 1].rgb;
       grid2.data[pos + 0] = col[0];
@@ -280,8 +280,8 @@ function isEmpty() {
 function rotateLeft() {
   save();
   newGrid2 = new ImageData(height, width);
-  for (j = 0; j < height; j++) {
-    for (i = 0; i < width * 4; i += 4) {
+  for (let j = 0; j < height; j++) {
+    for (let i = 0; i < width * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
         newGrid2.data[(height - 1) * 4 + height * i - j * 4 + rgb] =
           grid2.data[i + 4 * width * j + rgb];

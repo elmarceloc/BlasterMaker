@@ -639,7 +639,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
             menu.popup({ window: remote.getCurrentWindow() });
           }
-        } else {
+        }/* else {
           if (
             Math.floor(
               (mouse[1] - panels.palete.y - panels.palete.marginU) / uiScale
@@ -651,7 +651,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
             colorPalette.length
           ) {
           }
-        }
+        }*/
       }
 
       menu.append(

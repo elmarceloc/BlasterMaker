@@ -12,8 +12,8 @@ const path = require('path')
 
 const { openAboutUs } = require("./aboutus");
 const { openControls } = require("./controls");
-const { openTSRWindow } = require("./tsr");
-const { openIdeasWindow } = require("./ideas");
+//const { openTSRWindow } = require("./tsr");
+//const { openIdeasWindow } = require("./ideas");
 
 var workerWindow;
 

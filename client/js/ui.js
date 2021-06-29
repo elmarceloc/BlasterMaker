@@ -621,105 +621,105 @@ function downloadTable() {
 function downloadImage() {
 
   var imagePreview = document.getElementById('previewCanvas');
-  var template = document.getElementById('template');
+  //var template = document.getElementById('template');
 
-    var c2 = document.createElement('canvas');
-    let ctx2 = c2.getContext('2d');
+  var c2 = document.createElement('canvas');
+  let ctx2 = c2.getContext('2d');
 
-    var c3 = document.createElement('canvas');
-    let ctx3 = c3.getContext('2d');
+  var c3 = document.createElement('canvas');
+  let ctx3 = c3.getContext('2d');
 
-    switch (app.renderMode) {
-      case 'pixels':
-    
-        let zoom = 20
-    
-        c2.width = width * zoom
-        c2.height = height * zoom
-        
-    
-    
-        // scales the image using neirest neighbourn algorithm
-    
-        var offtx = document.createElement('canvas').getContext('2d');
+  switch (app.renderMode) {
+    case 'pixels':
+  
+      let zoom = 20
+  
+      c2.width = width * zoom
+      c2.height = height * zoom
+      
+  
+  
+      // scales the image using neirest neighbourn algorithm
+  
+      var offtx = document.createElement('canvas').getContext('2d');
 
-        offtx.drawImage(imagePreview, 0, 0);
-        
-     //   ctx2.drawImage(template, 0, 0, width * zoom , height * zoom );
-        
-        var imgData = offtx.getImageData(0, 0, imagePreview.width, imagePreview.height).data;
+      offtx.drawImage(imagePreview, 0, 0);
+      
+    //   ctx2.drawImage(template, 0, 0, width * zoom , height * zoom );
+      
+      var imgData = offtx.getImageData(0, 0, imagePreview.width, imagePreview.height).data;
 
-        // Draw the zoomed-up pixels to a different canvas context
-        for (var x=0;x<imagePreview.width;++x){
-          for (var y=0;y<imagePreview.height;++y){
-            // Find the starting index in the one-dimensional image data
-            let i = (y * imagePreview.width + x) * 4;
-            let r = imgData[i  ];
-            let g = imgData[i+1];
-            let b = imgData[i+2];
-            let a = imgData[i+3];
+      // Draw the zoomed-up pixels to a different canvas context
+      for (var x=0;x<imagePreview.width;++x){
+        for (var y=0;y<imagePreview.height;++y){
+          // Find the starting index in the one-dimensional image data
+          let i = (y * imagePreview.width + x) * 4;
+          let r = imgData[i  ];
+          let g = imgData[i+1];
+          let b = imgData[i+2];
+          let a = imgData[i+3];
 
-            ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
-            ctx2.fillRect(x*zoom + 30, y*zoom + 30, zoom, zoom);
-          }
+          ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
+          ctx2.fillRect(x*zoom + 30, y*zoom + 30, zoom, zoom);
         }
+      }
 
 
-        var cnv = ''
-    
-        if(app.renderDefinition == 'original'){
-          cnv = renderCanvas
-        }else if(app.renderDefinition == 'hight'){
-          cnv = c2
+      var cnv = ''
+  
+      if(app.renderDefinition == 'original'){
+        cnv = renderCanvas
+      }else if(app.renderDefinition == 'hight'){
+        cnv = c2
+      }
+      break;
+  
+    case 'beads':
+
+      circleRadius = 8
+
+      c2.width = imagePreview.width * circleRadius;
+      c2.height = imagePreview.height * circleRadius;
+  
+      c3.width = imagePreview.width * circleRadius/2;
+      c3.height = imagePreview.height * circleRadius/2;
+
+      ctx2.drawImage(imagePreview, 0, 0);
+  
+      let imageData = ctx2.getImageData(0, 0, imagePreview.width, imagePreview.height);    
+  
+      for (let row = 0; row < height * imagePreview.height; row++) {
+        for (let col = 0; col < imagePreview.width; col++) {
+            let index = (col + row * imagePreview.width) * 4;
+  
+            let r = imageData.data[index];
+            let g = imageData.data[index + 1];
+            let b = imageData.data[index + 2];
+            let a = imageData.data[index + 3];
+  
+            ctx3.beginPath();
+            ctx3.fillStyle = "rgba(0, 0, 0, 0";
+            ctx3.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
+            ctx3.lineWidth = circleRadius/3;
+            ctx3.arc(
+                circleRadius * col + circleRadius / 2,
+                circleRadius * row + circleRadius / 2,
+                circleRadius / 2 - circleRadius/6,
+                0,
+                2 * Math.PI,
+                false
+            );
+            ctx3.fill("evenodd");
+  
+            ctx3.stroke();
+  
         }
-        break;
-    
-      case 'beads':
+        cnv = c3
+      }
+      break;
+  }
 
-        circleRadius = 8
-
-        c2.width = imagePreview.width * circleRadius;
-        c2.height = imagePreview.height * circleRadius;
-    
-        c3.width = imagePreview.width * circleRadius/2;
-        c3.height = imagePreview.height * circleRadius/2;
-
-        ctx2.drawImage(imagePreview, 0, 0);
-    
-        let imageData = ctx2.getImageData(0, 0, imagePreview.width, imagePreview.height);    
-    
-        for (let row = 0; row < height * imagePreview.height; row++) {
-          for (let col = 0; col < imagePreview.width; col++) {
-              index = (col + row * imagePreview.width) * 4;
-    
-              let r = imageData.data[index];
-              let g = imageData.data[index + 1];
-              let b = imageData.data[index + 2];
-              let a = imageData.data[index + 3];
-    
-              ctx3.beginPath();
-              ctx3.fillStyle = "rgba(0, 0, 0, 0";
-              ctx3.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + a + ")";
-              ctx3.lineWidth = circleRadius/3;
-              ctx3.arc(
-                  circleRadius * col + circleRadius / 2,
-                  circleRadius * row + circleRadius / 2,
-                  circleRadius / 2 - circleRadius/6,
-                  0,
-                  2 * Math.PI,
-                  false
-              );
-              ctx3.fill("evenodd");
-    
-              ctx3.stroke();
-    
-          }
-          cnv = c3
-        }
-        break;
-    }
-
-    saveCanvasAsImage(cnv)
+  saveCanvasAsImage(cnv)
   
 }
 
@@ -771,8 +771,8 @@ function printToScale(){
 
       if(!isEmpty){      
 
-        for (row = 0; row <   gridSize; row++) {
-          for (col = 0; col <   gridSize; col++) {
+        for (let row = 0; row <   gridSize; row++) {
+          for (let col = 0; col <   gridSize; col++) {
             let index = (col + (row *  gridSize)) * 4;
 
             let r = imageData.data[index]

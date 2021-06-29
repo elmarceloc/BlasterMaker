@@ -358,7 +358,7 @@ function drawGrid() {
           let value = i % gridSize == 0 ? gridSize : i % gridSize;
 
           for (let j = 0; j < 2; j++) {
-            var [ruleX, ruleY] = getPosTableToScreen(width * j, i - 0.5);
+            let [ruleX, ruleY] = getPosTableToScreen(width * j, i - 0.5);
 
             switch (j) {
               case 0:
@@ -416,7 +416,7 @@ function drawGrid() {
           let value = i % gridSize == 0 ? gridSize : i % gridSize;
 
           for (let j = 0; j < 2; j++) {
-            var [ruleX, ruleY] = getPosTableToScreen(i - 0.5, height * j);
+            let [ruleX, ruleY] = getPosTableToScreen(i - 0.5, height * j);
 
             switch (j) {
               case 0:
