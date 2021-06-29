@@ -153,13 +153,13 @@ function openMainWindow() {
                   label: 'Estilo',
                   submenu: [
         
-                    {
+                    /*{
                       label:'Bead studio free',
                       //sublabel: 'ctrl + 1',
                       click: function() {
                         mainWindow.webContents.send('viewmode', 1)
                       }
-                    },
+                    },*/
                     {
                       label: 'Pixelart',
                       //sublabel: 'ctrl + 2',
@@ -509,6 +509,43 @@ ipcMain.on('closecropper', (event) => {
 
 })
 
+ipcMain.on('saveImage', async function (event, img) {
+    console.log('open save dialog..')
+    const options = {
+     title: 'Save an Image',
+     filters: [
+      { name: 'Images', extensions: ['png'] }
+     ]
+    }
+    const result = await electron.dialog.showSaveDialog(options)
+        
+    if(result){
+
+        // strip off the data: url prefix to get just the base64-encoded bytes
+        var data = img.replace(/^data:image\/\w+;base64,/, "");
+        var buf = Buffer.from(data, 'base64');
+        console.log(buf)
+
+        console.log(result)
+
+        fs.writeFile(result.filePath, buf, (err) => {
+
+            let op = { buttons: ['Close'] };
+            if(err) {
+                op = _.extend(op, {
+                    title: 'Error al guardar',
+                    type: 'error',
+                    message: err.name || 'Export Error',
+                    detail: err.toString()
+                });
+
+                electron.dialog.showMessageBox(BrowserWindow.getFocusedWindow(), op);
+
+            }
+        });
+    }
+})
+
 // TODO: test on mac/linux
 
 // read the file and send data to the render process
@@ -557,5 +594,7 @@ function openFile(){
         console.log(err);
     });
 }
+
+
 
 module.exports = { openMainWindow };

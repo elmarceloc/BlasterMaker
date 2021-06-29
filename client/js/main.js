@@ -1,3 +1,9 @@
+try {
+  storage = require('electron-json-storage')
+} catch (ex) {
+  storage = null;
+}
+
 var id = null;
 
 var path = ''
@@ -12,8 +18,8 @@ var height = 29;
 
 var viewMode = 1
 
-var showGrid = localStorage.getItem("showGrid") == "true";
-var showIds = localStorage.getItem("showIds") == "true";
+var showGrid = storage ? storage.getSync('showGrid') : localStorage.getItem('showGrid')
+var showIds = storage ? storage.getSync('showIds') : localStorage.getItem('showIds')
 
 var scale = 12;
 var xOffset = 0;
@@ -71,19 +77,17 @@ uiCanvas.width = window.innerWidth;
 uiCanvas.height = window.innerHeight;
 
 
-// resize canvas size
+// ========= Show debug info =========
 
-renderCanvas.style.width = width + "px";
-renderCanvas.style.height = height + "px";
+if(storage){
+  storage.getAll(function(error, data) {
+    if (error) throw error;
 
-backgroundCanvas.style.width = width + "px";
-backgroundCanvas.style.height = height + "px";
+    console.log(data);
+  });
+}
+// ====================================
 
-maskCanvas.style.width = ( width * maskScale ) + "px";
-maskCanvas.style.height = (height * maskScale ) + "px";
-
-maskCanvasHD.style.width = ( width * maskScale ) + "px";
-maskCanvasHD.style.height = ( height * maskScale ) + "px";
 
 /**
  * load the previews temp
@@ -103,7 +107,13 @@ maskCanvasHD.style.height = ( height * maskScale ) + "px";
 
   console.log('undo'+'|'+temp.length)
 
-  localStorage.setItem("code", JSON.stringify(generate()));
+  if(storage){
+    storage.set('code', generate(), function(error) {
+    });
+  }else{
+    localStorage.setItem('code',JSON.stringify(generate()))
+  }
+
   // localStorage.setItem("saves", temp);
 }
 
@@ -193,7 +203,13 @@ function save() {
     temp.shift(1);
   }
   temp.push(generate());
-  localStorage.setItem("code", JSON.stringify(generate()));
+
+  if(storage){
+    storage.set('code', generate(), function(error) {
+    });
+  }else{
+    localStorage.setItem('code',JSON.stringify(generate()))
+  }
 
   console.log('saved')
 }
@@ -320,8 +336,10 @@ function drawGrid() {
 
       var fixedScale = Math.min(scale, 25);
 
+
+      uiCtx.fillStyle = "#aaaaaa";
+
       for (let i = 0; i <= height; i++) {
-        uiCtx.fillStyle = "#aaaaaa";
 
         if (i % gridSize == 0 && !(i == height || i == 0)) {
           // ????
@@ -442,14 +460,12 @@ function drawGrid() {
 function drawCursor(){
   if (isInside(...getPosScreenToGrid(...mouse)) && tool != 0) {
     if (!isOverPanel()) {
-      uiCtx.beginPath();
 
       switch (viewMode) {
         case 1:
 
           switch (tool) {
             case 3:
-              uiCtx.strokeStyle = "rgb(255,0,0)";
               uiCtx.lineWidth =  scale/10;
 
               [eracerX, eracerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
@@ -466,10 +482,10 @@ function drawCursor(){
               uiCtx.moveTo(eracerX + scale /5, eracerY - scale /5);
               uiCtx.lineTo(eracerX - scale/5, eracerY + scale/5);
               uiCtx.stroke();
+
               break;
             case 4:
-              uiCtx.fillStyle = "rgba(0,0,0,0)";
-              uiCtx.strokeStyle = "rgb(255,64,101)";
+              uiCtx.beginPath();
               uiCtx.lineWidth =  scale/10;
 
               [pickerX, pickerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
@@ -534,9 +550,8 @@ function drawCursor(){
           );
           break;
       }
+      uiCtx.fillStyle = "#aaaaaa";
 
-      uiCtx.globalAlpha = 0.6;
-      uiCtx.fill();
       uiCtx.globalAlpha = 1;
     }
   }
@@ -561,17 +576,11 @@ function drawInfo(){
   uiCtx.fillText(`Tool: ${tool}`, baseX, baseY + 40);
   uiCtx.fillText(`Scale: ${Math.floor(scale)}`, baseX, baseY + 60);
 
-  // Local storage
-
-  //uiCtx.fillText(`showGrid: ${localStorage.getItem('showGrid')}`, baseX, baseY + 100);
-  //uiCtx.fillText(`showIds: ${localStorage.getItem('showIds')}`, baseX, baseY + 120);
-
-
 }
 
 function updateMask(){
   // resizes the mask
-  if(scale >= maskScale && scale < maskScaleHD){
+  /*if(scale >= maskScale && scale < maskScaleHD){
     maskCanvas.style.width =  (scale * Math.min(width, window.screen.width/maskScale)) + "px";
     maskCanvas.style.height = (scale * Math.min(height, window.screen.height/maskScale)) + "px";
   
@@ -583,53 +592,53 @@ function updateMask(){
   
     maskCanvasHD.style.left = Math.max(getPosTableToScreen(0, 0)[0] % scale, getPosTableToScreen(0, 0)[0])   + "px";
     maskCanvasHD.style.top = Math.max(getPosTableToScreen(0, 0)[1] % scale, getPosTableToScreen(0, 0)[1]) +  "px";
-  }
+  }*/
 
 }
 
 function drawMask(){
 
-  for (let c = 1; c < 3; c++) {
-    let canvas = maskCtx
-    if(c == 2){
-      canvas = maskCtxHD
-      mskScale = maskScaleHD
-    }else{
-      mskScale = maskScale
-    }
-
-    canvas.fillStyle = "rgb(40, 40, 40)"
-
-    for (let i = 0; i < Math.min(width, window.screen.width/(mskScale)); i++) {
-      for (let j = 0; j < Math.min(height, window.screen.height/(mskScale)); j++) {
-      
-        canvas.beginPath();
-        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/6,0,2 * Math.PI, false);
-        canvas.fill()
-
-        canvas.beginPath();
-        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,Math.PI/2,Math.PI, false);
-        canvas.lineTo(i * mskScale + -mskScale/2 + mskScale/2,j * mskScale + mskScale/2 + mskScale/2);
-        canvas.fill()
-      
-        canvas.beginPath();
-        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,0,Math.PI/2, false);
-        canvas.lineTo(i * mskScale + mskScale/2 + mskScale/2,j * mskScale + mskScale/2 + mskScale/2);
-        canvas.fill()
-      
-        canvas.beginPath();
-        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,Math.PI,3 * Math.PI/2, false);
-        canvas.lineTo(i * mskScale + -mskScale/2 + mskScale/2,j * mskScale + -mskScale/2 + mskScale/2);
-        canvas.fill()
-      
-        canvas.beginPath();
-        canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,3 * Math.PI/2,2*Math.PI, false);
-        canvas.lineTo(i * mskScale + mskScale/2 + mskScale/2,j * mskScale + -mskScale/2 + mskScale/2);
-        canvas.fill()
-      
+ /* for (let c = 1; c < 3; c++) {
+      let canvas = maskCtx
+      if(c == 2){
+        canvas = maskCtxHD
+        mskScale = maskScaleHD
+      }else{
+        mskScale = maskScale
       }
-  }
-  }
+
+      canvas.fillStyle = "rgb(40, 40, 40)"
+
+      for (let i = 0; i < Math.min(width, window.screen.width/(mskScale)); i++) {
+        for (let j = 0; j < Math.min(height, window.screen.height/(mskScale)); j++) {
+        
+          canvas.beginPath();
+          canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/6,0,2 * Math.PI, false);
+          canvas.fill()
+
+          canvas.beginPath();
+          canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,Math.PI/2,Math.PI, false);
+          canvas.lineTo(i * mskScale + -mskScale/2 + mskScale/2,j * mskScale + mskScale/2 + mskScale/2);
+          canvas.fill()
+        
+          canvas.beginPath();
+          canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,0,Math.PI/2, false);
+          canvas.lineTo(i * mskScale + mskScale/2 + mskScale/2,j * mskScale + mskScale/2 + mskScale/2);
+          canvas.fill()
+        
+          canvas.beginPath();
+          canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,Math.PI,3 * Math.PI/2, false);
+          canvas.lineTo(i * mskScale + -mskScale/2 + mskScale/2,j * mskScale + -mskScale/2 + mskScale/2);
+          canvas.fill()
+        
+          canvas.beginPath();
+          canvas.arc(i * mskScale + mskScale/2,j * mskScale + mskScale/2,mskScale/2,3 * Math.PI/2,2*Math.PI, false);
+          canvas.lineTo(i * mskScale + mskScale/2 + mskScale/2,j * mskScale + -mskScale/2 + mskScale/2);
+          canvas.fill()
+        
+        }
+    }
+  }*/
 }
 function updateBackgroundAndRender() {
     // resizes the background and render canvases

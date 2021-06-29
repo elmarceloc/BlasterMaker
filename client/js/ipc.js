@@ -213,27 +213,12 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 }
 
 function saveCanvasAsImage(canvas) {
-  /*if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
+  if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
+    ipc.send('saveImage',canvas.toDataURL())
 
-    let options = {
-      title: "Guardar Imagen",
-      defaultPath:  '/nombre.png',
-      buttonLabel: "Guardar",
-      filters: [
-          { name: 'Imagenes', extensions: ['png'] },
-      ]
-    }
-
-
-    var path = dialog.showSaveDialogSync(options)
-    
-    saveCanvasAsPNG(path,canvas)
-   
-      
-    
   }else{
-*/
+
     let a = $("<a>")
     .attr("href",  canvas.toDataURL())
     .attr("download", app.name == '' ? 'imagen.png' : app.name + ".png")
@@ -242,7 +227,7 @@ function saveCanvasAsImage(canvas) {
     a[0].click();
     
     a.remove();
- // }
+  }
 }
 
 

@@ -25,16 +25,31 @@ function setViewMode(mode) {
     }
     
         
-
-    localStorage.setItem("viewMode",viewMode)
+    if(storage){
+      storage.set('viewMode', viewMode, function(error) {
+      });
+    }else{
+      localStorage.setItem('viewMode',viewMode)
+    }
 }
 
 function toggleGrid () {
     showGrid = !showGrid
-    localStorage.setItem("showGrid",showGrid)
+
+    if(storage){
+      storage.set('showGrid', viewMode, function(error) {
+      });
+    }else{
+      localStorage.setItem('showGrid',viewMode)
+    }
 }
 
 function toggleIds() {
     showIds = !showIds
-    localStorage.setItem("showIds",showIds)
+    if(storage){
+      storage.set('showIds', viewMode, function(error) {
+      });
+    }else{
+      localStorage.setItem('showIds',viewMode)
+    }
 }

@@ -169,11 +169,11 @@ var app = new Vue({
       this.publicState = !this.publicState;
       console.log(this.publicState);
     },
-    setPublish: function(state) {
+    /*setPublish: function(state) {
       document.getElementById("public").checked = state;
       this.publicState = state;
 
-    }
+    }*/
   },
   computed: {
     filteredProjects: function () {
@@ -383,7 +383,6 @@ function initProject() {
   updateMask()
   drawMask()
 
-  updateBackgroundAndRender()
 
   drawBackground()
 
@@ -395,10 +394,10 @@ function initProject() {
 
   save();
 
-  app.setPublish(false)
+  //app.setPublish(false)
 
-  setTimeout(function(){updateScreenSize()}, 3000);
-
+  updateScreenSize()
+  updateBackgroundAndRender()
 
 }
 /*
@@ -456,19 +455,26 @@ function createNew() {
 
   initProject();
 
-  initialSave()
+  //initialSave()
 
 }
 
 function openRecent() {
-  if (localStorage.getItem("code")) {
-    load(localStorage.getItem("code"));
 
-    initProject();
-      
-  } else {
-    // muestra un error, porque no hay un recent proyect
+  if (localStorage.getItem('code') != null) {
+    // TODO:mostrar q no hay en el else
+    console.log(localStorage.getItem('code'))
+    load( localStorage.getItem('code') )
+  } 
+  if (storage) {
+    storage.has('code', function(error, hasKey) {
+      if (hasKey) {
+        load( JSON.stringify(storage.getSync('code')) )
+      }
+    });
   }
+  initProject();
+    
 }
 
 /**
@@ -566,7 +572,7 @@ function createFromImage(data) {
 
     initProject();
 
-    initialSave()
+    //initialSave()
 
 
     //dis=( Math.abs(rgb[0]-r) + Math.abs(rgb[1]-g) + Math.abs(rgb[2]-b) )
@@ -576,27 +582,42 @@ function createFromImage(data) {
 //setInterval(updateSave,60*1000*3) // TODO: online version
 
 function downloadTable() {
-  window.scrollTo(0, 0);
 
-  //var container = document.getElementById("image-wrap"); //specific element on page
-  var container = document.getElementById("colorsheet-container"); // full page
-  html2canvas(container, {
-    allowTaint: true,
-    backgroundColor: "#222222",
-  }).then(function (canvas) {
-    var link = document.createElement("a");
-    document.body.appendChild(link);
-    link.download = app.name + ".jpg";
-    link.href = canvas.toDataURL();
-    link.target = "_blank";
-    link.click();
-  });
+
+    window.scrollTo(0, 0);
+
+    //var container = document.getElementById("image-wrap"); //specific element on page
+    var container = document.getElementById("colorsheet-container"); // full page
+    html2canvas(container, {
+      allowTaint: true,
+      backgroundColor: "#222222",
+    }).then(function (canvas) {
+
+      if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
+
+        ipc.send('saveImage',canvas.toDataURL())
+    
+      }else{
+  
+        var link = document.createElement("a");
+        document.body.appendChild(link);
+        
+        link.download = app.name + ".jpg";
+
+        link.href = canvas.toDataURL();
+        link.target = "_blank";
+        link.click();
+
+      }
+    });
+
 }
 
 
 function downloadImage() {
 
-    var imagePreview = document.getElementById('previewCanvas');
+  var imagePreview = document.getElementById('previewCanvas');
+  var template = document.getElementById('template');
 
     var c2 = document.createElement('canvas');
     let ctx2 = c2.getContext('2d');
@@ -607,18 +628,23 @@ function downloadImage() {
     switch (app.renderMode) {
       case 'pixels':
     
-        let zoom = 10
+        let zoom = 20
     
         c2.width = width * zoom
         c2.height = height * zoom
+        
     
     
         // scales the image using neirest neighbourn algorithm
     
         var offtx = document.createElement('canvas').getContext('2d');
-        offtx.drawImage(imagePreview,0,0);
-        var imgData = offtx.getImageData(0,0,imagePreview.width, imagePreview.height).data;
-    
+
+        offtx.drawImage(imagePreview, 0, 0);
+        
+     //   ctx2.drawImage(template, 0, 0, width * zoom , height * zoom );
+        
+        var imgData = offtx.getImageData(0, 0, imagePreview.width, imagePreview.height).data;
+
         // Draw the zoomed-up pixels to a different canvas context
         for (var x=0;x<imagePreview.width;++x){
           for (var y=0;y<imagePreview.height;++y){
@@ -628,10 +654,13 @@ function downloadImage() {
             let g = imgData[i+1];
             let b = imgData[i+2];
             let a = imgData[i+3];
+
             ctx2.fillStyle = "rgba("+r+","+g+","+b+","+(a/255)+")";
-            ctx2.fillRect(x*zoom,y*zoom,zoom,zoom);
+            ctx2.fillRect(x*zoom + 30, y*zoom + 30, zoom, zoom);
           }
         }
+
+
         var cnv = ''
     
         if(app.renderDefinition == 'original'){

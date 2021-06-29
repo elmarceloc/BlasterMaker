@@ -190,14 +190,17 @@ function updateScreenSize() {
   uiCanvas.width = window.innerWidth;
   uiCanvas.height = window.innerHeight - navbarSize;
   
-
   panels["colors"].height = window.innerHeight - navbarSize - 19;
   panels["colors"].y = 14;
 
   panels["tools"].x = window.innerWidth / 2 - 96 * 2;
   panels["tools"].y = window.innerHeight - 74 - navbarSize;
+  
 
-  document.getElementById('search').style.width = panels.colors.width + 6;
+
+  setTimeout(function(){
+    document.getElementById('search').style.width = panels.colors.width + 6  //FIXME
+  },40) 
 
   // panels["transform"].x = window.innerWidth / 2 + 400;
   // panels["transform"].y = window.innerHeight - 80 - navbarSize;
@@ -216,7 +219,6 @@ onresize = () => {
   updateMask()
   updateBackgroundAndRender()
   drawMask()
-  console.log('aaaaaaaaaaaaaaa')
 }
 
 function getMousePos(e) {
@@ -270,9 +272,6 @@ function mouseDown(e) {
 
   if (isOverPanel()) return;
 
-  /* if (isInside(...getPosScreenToGrid(e.pageX, e.pageY))) {
-    save();
-  }*/
   switch (e.button ) {
     case 0:
       switch (tool) {
@@ -349,6 +348,7 @@ function mouseUp(e) {
   click = false;
   clickUp = true;
   isDragging = false;
+
   switch (tool) {
     case 1:
       isDrawing = false;
@@ -361,7 +361,7 @@ function mouseUp(e) {
       break;
   }
 
-  if (!isOverPanel() && !overDropDown /*&& isInside(...getPosScreenToGrid(e.pageX, e.pageY))*/) { // ?? 👀
+  if (!isOverPanel() && !overDropDown && e.button == 0) { // ?? 👀
     save();
 
   }
@@ -661,6 +661,14 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
           checked: showGrid,
           click: function () {
             showGrid = !showGrid;
+
+            if(storage){
+              storage.set('showGrid', showGrid, function(error) {
+              });
+            }else{
+              localStorage.setItem('showGrid',showGrid)
+            }
+          
           }
         })
       );
@@ -672,6 +680,13 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
           checked: showIds,
           click: function () {
             showIds = !showIds;
+
+            if(storage){
+              storage.set('showIds', showIds, function(error) {
+              });
+            }else{
+              localStorage.setItem('showIds',showIds)
+            }
           }
         })
       );
