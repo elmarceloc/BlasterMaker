@@ -270,7 +270,7 @@ function mouseDown(e) {
   click = true;
   clickDown = true;
 
-  if (isOverPanel()) return;
+  if (isOverPanel() || overDropDown) return;
 
   switch (e.button ) {
     case 0:
@@ -281,12 +281,17 @@ function mouseDown(e) {
             mouse[0] - xOffset * scale,
             mouse[1] - yOffset * scale,
           ];
+
           panZoomTo = [mouse[0] - xOffset * scale, mouse[1] - yOffset * scale];
           isDragging = true;
           break;
         // pencil
         case 1:
-          isDrawing = true;
+          
+          if (isInside(...getPosScreenToGrid(mouse[0], mouse[1]))){
+            isDrawing = true;
+          }
+
           if (
             getBeadColor(...getPosScreenToGrid(...mouse)) != color &&
             !isInInfo(...mouse)
@@ -349,6 +354,10 @@ function mouseUp(e) {
   clickUp = true;
   isDragging = false;
 
+  if ( isDrawing &&  e.button == 0) { // ?? 👀
+    save()
+  }
+
   switch (tool) {
     case 1:
       isDrawing = false;
@@ -361,12 +370,6 @@ function mouseUp(e) {
       break;
   }
 
-  if (!isOverPanel() && !overDropDown && e.button == 0) { // ?? 👀
-    save();
-
-  }
-
-  // ???
 }
 
 function mouseMove(e) {

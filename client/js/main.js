@@ -460,106 +460,103 @@ function drawGrid() {
 }
 
 function drawCursor(){
-  if (isInside(...getPosScreenToGrid(...mouse)) && tool != 0) {
-    if (!isOverPanel()) {
+  if (isInside(...getPosScreenToGrid(...mouse)) && tool != 0 && !isOverPanel()) {
+    switch (viewMode) {
+      case 1:
 
-      switch (viewMode) {
-        case 1:
+        switch (tool) {
+          case 3:
+            uiCtx.lineWidth =  scale/10;
 
-          switch (tool) {
-            case 3:
-              uiCtx.lineWidth =  scale/10;
-
-              [eracerX, eracerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
-                scale / 2,
-                scale / 2,
-              ])]
-
-              uiCtx.beginPath();
-              uiCtx.moveTo(eracerX - scale /5, eracerY - scale /5);
-              uiCtx.lineTo(eracerX + scale/5, eracerY + scale/5);
-              uiCtx.stroke();
-
-              uiCtx.beginPath();
-              uiCtx.moveTo(eracerX + scale /5, eracerY - scale /5);
-              uiCtx.lineTo(eracerX - scale/5, eracerY + scale/5);
-              uiCtx.stroke();
-
-              break;
-            case 4:
-              uiCtx.beginPath();
-              uiCtx.lineWidth =  scale/10;
-
-              [pickerX, pickerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
-                scale / 2,
-                scale / 2,
-              ])]
-
-              uiCtx.beginPath();
-              uiCtx.arc(
-                pickerX, pickerY,
-                (scale * 0.5) - scale / 6 ,
-                0,
-                6.29,
-                0
-              );
-              uiCtx.stroke()
-
-              uiCtx.beginPath();
-              uiCtx.arc(
-                pickerX, pickerY,
-                (scale * 0.5) - scale / 3  ,
-                0,
-                6.29,
-                0
-              );
-              uiCtx.stroke()
-
-
-              break;
-            
-            default:
-              if (color - 1 < colors.length) {
-                uiCtx.fillStyle =
-                  "rgb(" +
-                    colors[color - 1].rgb[0] +
-                  "," +
-                    colors[color - 1].rgb[1] +
-                  "," +
-                    colors[color - 1].rgb[2] +
-                  ")";
-              }
-
-              uiCtx.rect(
-                ...getPosGridToScreen(...getPosScreenToGrid(...mouse)),
-                scale,
-                scale
-              );
-              break;
-          }
-          break;
-
-        case 2:
-          uiCtx.arc(
-            ...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
+            [eracerX, eracerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
               scale / 2,
               scale / 2,
-            ]),
-            scale * 0.5,
-            0,
-            6.29,
-            0
-          );
-          break;
-      }
-      uiCtx.fillStyle = "#aaaaaa";
+            ])]
 
-      uiCtx.globalAlpha = 1;
+            uiCtx.beginPath();
+            uiCtx.moveTo(eracerX - scale /5, eracerY - scale /5);
+            uiCtx.lineTo(eracerX + scale/5, eracerY + scale/5);
+            uiCtx.stroke();
+
+            uiCtx.beginPath();
+            uiCtx.moveTo(eracerX + scale /5, eracerY - scale /5);
+            uiCtx.lineTo(eracerX - scale/5, eracerY + scale/5);
+            uiCtx.stroke();
+
+            break;
+          case 4:
+            uiCtx.beginPath();
+            uiCtx.lineWidth =  scale/10;
+
+            [pickerX, pickerY] = [...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
+              scale / 2,
+              scale / 2,
+            ])]
+
+            uiCtx.beginPath();
+            uiCtx.arc(
+              pickerX, pickerY,
+              (scale * 0.5) - scale / 6 ,
+              0,
+              6.29,
+              0
+            );
+            uiCtx.stroke()
+
+            uiCtx.beginPath();
+            uiCtx.arc(
+              pickerX, pickerY,
+              (scale * 0.5) - scale / 3  ,
+              0,
+              6.29,
+              0
+            );
+            uiCtx.stroke()
+
+
+            break;
+          
+          default:
+            if (color - 1 < colors.length) {
+              uiCtx.fillStyle =
+                "rgb(" +
+                  colors[color - 1].rgb[0] +
+                "," +
+                  colors[color - 1].rgb[1] +
+                "," +
+                  colors[color - 1].rgb[2] +
+                ")";
+            }
+
+            uiCtx.rect(
+              ...getPosGridToScreen(...getPosScreenToGrid(...mouse)),
+              scale,
+              scale
+            );
+            break;
+        }
+        break;
+
+      case 2:
+        uiCtx.arc(
+          ...s(getPosGridToScreen(...getPosScreenToGrid(...mouse)), [
+            scale / 2,
+            scale / 2,
+          ]),
+          scale * 0.5,
+          0,
+          6.29,
+          0
+        );
+        break;
     }
+    uiCtx.fillStyle = "#aaaaaa";
+
+    uiCtx.globalAlpha = 1;
   }
 }
 
-function drawInfo(){
+function drawDebug(){
 
   let baseX = panels['colors'].x + panels['colors'].width + 20
   let baseY = 30
@@ -579,6 +576,31 @@ function drawInfo(){
   uiCtx.fillText(`Scale: ${Math.floor(scale)}`, baseX, baseY + 60);
 
 }
+
+function drawInfo(){
+  if(panels['colors']){
+    let baseX = panels['colors'].x + panels['colors'].width + 20
+    let baseY = 20
+
+    uiCtx.fillStyle = "rgba(196, 196, 174 ,255)";
+    uiCtx.font = "14px Arial";
+    uiCtx.textAlign = "left";
+
+    // General
+    let [x,y] = [...getPosScreenToGrid(...mouse)]
+
+
+    uiCtx.drawImage(ui, (48*2)*12, 0, 48*2, 48*2, baseX , baseY - 15, 48/2, 48/2);
+    uiCtx.fillText(`${width} x ${height}`, baseX + 34, baseY);
+
+    if(isInside(x,y)){
+      uiCtx.fillText(`${x+1} x ${y+1}`, baseX + 120, baseY);
+      uiCtx.drawImage(ui, 48*2, 0, 48*2, 48*2, baseX + 94, baseY - 12, 48/2, 48/2);
+    }
+  }
+
+}
+
 
 function updateMask(){
   // resizes the mask
@@ -691,10 +713,14 @@ function draw() {
   drawCursor()
   
   drawGrid()
-  
+
+  drawInfo()
+
+  /*if (isDebug){
+    drawDebug()
+  }*/
+
   // TODO: arreglar el font de arriba
-
-
 
   for (let k in panels) {
     panels[k].controller();
@@ -702,10 +728,7 @@ function draw() {
 
   clickDown = false;
   clickUp = false;
-
-  if (isDebug){
-    drawInfo()
-  }
+  
   requestAnimationFrame(draw);
 }
 
