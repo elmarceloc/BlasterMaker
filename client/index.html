@@ -189,7 +189,7 @@
 
         <div id="modal-magic-print" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
-                <h2 class="uk-modal-title">Generar PDF a escala real 🧙‍♂️</h2>
+                <h2 class="uk-modal-title">🧙‍♂️ Generar PDF a escala real</h2>
                 <p>
                     
                     
@@ -202,7 +202,13 @@
                                 <label><input value="code" class="uk-radio" type="radio" v-model="renderType"> Código</label>
                             </div>
 
+                            <div v-if="renderType=='color'">
+                                <img  style="display: block;margin: auto;" src="img/pdf_colors.png"></img>
+                            </div>
 
+                            <div v-if="renderType=='code'">
+                                <img  style="display: block;margin: auto;" src="img/pdf_ids.png"></img>
+                            </div>
                         </div>
                     </div>
 
@@ -350,6 +356,15 @@
                                         <td><i class="fas fa-circle"></i> Beads usados</td>
                                         <td style="width: 120px;">{{total}}</td>
                                     </tr>
+                                    <tr>
+                                        <td><i class="fas fa-coins"></i> Costo aproximado</td>
+                                        <td   style="width: 120px;">{{cost}} 
+                                            <i @click="setPrice" uk-toggle="target: #modal-price" uk-tooltip="Costo basado en los precios de blasterchile.cl" style="float: right;padding-top: 3px;" class="fas fa-info-circle"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-circle"></i> Tamaño Real</td>
+                                        <td style="width: 120px;">{{realSize}}</td>
+                                    </tr>
                                     <tr v-if="beta" id="publicTr" data-html2canvas-ignore="True">
                                         <td><i class="fas fa-cloud-upload-alt"></i> Publicar</td>
                                         <td style="width: 120px;"><input id="public" type="checkbox"
@@ -393,6 +408,35 @@
                                 </tbody>
                             </table>
 
+
+                            <div id="modal-price" uk-modal>
+                                <div class="uk-modal-dialog uk-modal-body">
+                                    <h2 class="uk-modal-title"><i style="color:rgb(255,23,68)" class="fas fa-coins"></i> Calcular Costo</h2>
+                                    <p>
+                                        
+                                        <div class="uk-margin">
+                                            <label class="uk-form-label" for="form-stacked-text">Cantidad de Figuras</label>
+                                            <input @change="onChangeCustomPrice" v-model="amountToDo" class="uk-input uk-form-width-small" type="text" value="1" placeholder="1">
+                                        </div>
+
+                                        <div class="uk-margin">
+                                            <label class="uk-form-label" for="form-stacked-text">Margen (%)</label>
+                                            <input @change="onChangeCustomPrice" v-model="margin" class="uk-input uk-form-width-small" min type="text" value="" placeholder="%35">
+                                        </div>
+
+                                        <div style="font-size: 20px;" class="uk-margin">
+                                            
+                                            Valor: <p style="color:rgb(255,23,68);font-weight:bold;display:inline"> {{ customPrice }} </p>
+                                        </div>
+
+
+                                    </p>
+                                    <p class="uk-text-right">
+                                        <button class="uk-button uk-button-secondary uk-modal-close"
+                                            type="button">Cerrar</button>
+                                    </p>
+                                </div>
+                            </div>
 
                             <div id="modal-publish" uk-modal>
                                 <div class="uk-modal-dialog uk-modal-body">

@@ -624,7 +624,7 @@ Panel = function (
     //dibuja una ventana
     drawWindow(x,y,width,height,mL,mU,mR,mD);
   
-    drawTitle('Paleta', x + width / 2 - 3, y)
+    drawTitle('Paleta de Colores', x + width / 2, y)
 
 
     if (colorPalette.length == 0) {

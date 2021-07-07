@@ -279,7 +279,7 @@ function isEmpty() {
 // FIXME: 
 function rotateLeft() {
   save();
-  newGrid2 = new ImageData(height, width);
+  let newGrid2 = new ImageData(height, width);
   for (let j = 0; j < height; j++) {
     for (let i = 0; i < width * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
@@ -297,7 +297,7 @@ function rotateLeft() {
 
 function rotateRight() {
   save();
-  newGrid2 = new ImageData(height, width);
+  let newGrid2 = new ImageData(height, width);
   for (let j = 0; j < width; j++) {
     for (let i = 0; i < height * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
@@ -314,7 +314,7 @@ function rotateRight() {
 
 function flipHorizontal() {
   save();
-  newGrid2 = new ImageData(width, height);
+  let newGrid2 = new ImageData(width, height);
   for (let j = 0; j < height; j++) {
     for (let i = 0; i < width * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
@@ -330,7 +330,7 @@ function flipHorizontal() {
 
 function flipVertical() {
   save();
-  newGrid2 = new ImageData(width, height);
+  let newGrid2 = new ImageData(width, height);
   for (let j = 0; j < height; j++) {
     for (let i = 0; i < width * 4; i += 4) {
       for (let rgb = 0; rgb < 4; rgb++) {
@@ -344,12 +344,7 @@ function flipVertical() {
 
 }
 
-function crop() {
-  // crops the thing
-
-  if (isEmpty()) return
-  
-  save();
+function getBoundries(){
 
   var x1 = Infinity;
   var y1 = Infinity;
@@ -368,11 +363,22 @@ function crop() {
     }
   }
 
-  console.log(x1,y1,x2,y2);
+  return { x1,  y1, x2, y2 }
 
-  width2=Math.ceil((x2 - x1)/ gridSize) * gridSize
-  height2=Math.ceil((y2 - y1)/ gridSize) * gridSize
+}
+
+function crop() {
+  // crops the thing
+
+  if (isEmpty()) return
   
+  save();
+
+  let { x1,y1,x2,y2 } = getBoundries()
+
+  width2 = Math.ceil((x2 - x1)/ gridSize) * gridSize
+  height2 = Math.ceil((y2 - y1)/ gridSize) * gridSize
+
   var newGrid2 = new ImageData(width2, height2);
 
   for (let j = 0; j <= height2; j++) {
@@ -383,7 +389,6 @@ function crop() {
       }
     }
   }  
-  
 
   resize(x2 - x1, y2 - y1)
   grid2 = newGrid2;
@@ -435,7 +440,110 @@ function decompress(str) {
   return output;
 }
 
+/**
+ * Gets the amount of beads from color
+ *
+ * @param {number} `id` - the id of bead color
+ * @return {number} amount of beads
 
+*/
+
+function getColorAmount(id) {
+  let count = 0;
+  for (let i = 0; i < width; i++) {
+    for (let j = 0; j < height; j++) {
+      if (getBeadColor(i, j) == id) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+function line(x1, y1, x2, y2, color) {
+  // Translate coordinates
+  /* var x1 = startCoordinates.left;
+      var y1 = startCoordinates.top;
+      var x2 = endCoordinates.left;
+      var y2 = endCoordinates.top;*/
+  // Define differences and error check
+  // Iterators, counters required by algorithm
+  let x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
+  // Calculate line deltas
+  dx = x2 - x1;
+  dy = y2 - y1;
+  // Create a positive copy of deltas (makes iterating easier)
+  dx1 = Math.abs(dx);
+  dy1 = Math.abs(dy);
+  // Calculate error intervals for both axis
+  px = 2 * dy1 - dx1;
+  py = 2 * dx1 - dy1;
+  // The line is X-axis dominant
+  if (dy1 <= dx1) {
+    // Line is drawn left to right
+    if (dx >= 0) {
+      x = x1;
+      y = y1;
+      xe = x2;
+    } else {
+      // Line is drawn right to left (swap ends)
+      x = x2;
+      y = y2;
+      xe = x1;
+    }
+    setBeadColor(x, y, color); // Draw first pixel
+    // Rasterize the line
+    for (i = 0; x < xe; i++) {
+      x = x + 1;
+      // Deal with octants...
+      if (px < 0) {
+        px = px + 2 * dy1;
+      } else {
+        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+          y = y + 1;
+        } else {
+          y = y - 1;
+        }
+        px = px + 2 * (dy1 - dx1);
+      }
+      // Draw pixel from line span at
+      // currently rasterized position
+      setBeadColor(x, y, color);
+    }
+  } else {
+    // The line is Y-axis dominant
+    // Line is drawn bottom to top
+    if (dy >= 0) {
+      x = x1;
+      y = y1;
+      ye = y2;
+    } else {
+      // Line is drawn top to bottom
+      x = x2;
+      y = y2;
+      ye = y1;
+    }
+    setBeadColor(x, y, color);
+    // Rasterize the line
+    for (i = 0; y < ye; i++) {
+      y = y + 1;
+      // Deal with octants...
+      if (py <= 0) {
+        py = py + 2 * dx1;
+      } else {
+        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+          x = x + 1;
+        } else {
+          x = x - 1;
+        }
+        py = py + 2 * (dx1 - dy1);
+      }
+      // Draw pixel from line span at
+      // currently rasterized position
+      setBeadColor(x, y, color);
+    }
+  }
+}
 
 function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
   if (typeof stroke === 'undefined') {

@@ -135,16 +135,16 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     img = new Image();
     img.onload = function () {
 
-      changePalette(img,img.width,img.height)
+      changePalette(img, img.width, img.height)
 
       updatePreview(img, Math.min(img.width, 100))
 
+      cropWidth = img.width
+      cropHeight = img.height
 
       document.querySelector("#loading-container").style.visibility = 'hidden';
       document.querySelector("#previewCrop").style.display = 'block';
-
       
-
       ipc.send("setProgress", 1)
 
       setTimeout(function () {
@@ -157,8 +157,9 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
 
     document.getElementById("previewCropOriginal").onload = function () {
-      document.getElementById("width").value = this.width;
-      document.getElementById("height").value = this.height;
+      //document.getElementById("width").value = this.width;
+
+      //document.getElementById("height").value = this.height;
 
       document.querySelector("#scale").max = this.width;
 
@@ -177,8 +178,8 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
 /*    const x = document.querySelector("#x").value;
     const y = document.querySelector("#y").value;*/
-    const w = document.querySelector("#width").value;
-    const h = document.querySelector("#height").value;
+  //  const w = document.querySelector("#width").value;
+  //  const h = document.querySelector("#height").value;
     const size = document.querySelector('input[name="sizeBeads"]:checked').value;
     const kit = document.querySelector('input[name="kit"]:checked').value;
     const url = document.querySelector("#previewCropOriginal").src;
@@ -187,13 +188,14 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     ipc.send("exportImageData", {
       x: 0,
       y: 0,
-      w: w,
-      h: h,
+      w: cropWidth,
+      h: cropHeight,
       size: size,
       kit: kit,
       url: url,
       newWidth: parseInt(newWidth),
-      newHeight: (newWidth * h) / w,
+      newHeight: (newWidth * cropHeight) / cropWidth,
+      
     });
   }
 

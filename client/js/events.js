@@ -101,91 +101,6 @@ function fill(x, y) {
   }
 }
 
-function line(x1, y1, x2, y2, color) {
-  // Translate coordinates
-  /* var x1 = startCoordinates.left;
-      var y1 = startCoordinates.top;
-      var x2 = endCoordinates.left;
-      var y2 = endCoordinates.top;*/
-  // Define differences and error check
-  // Iterators, counters required by algorithm
-  let x, y, dx, dy, dx1, dy1, px, py, xe, ye, i;
-  // Calculate line deltas
-  dx = x2 - x1;
-  dy = y2 - y1;
-  // Create a positive copy of deltas (makes iterating easier)
-  dx1 = Math.abs(dx);
-  dy1 = Math.abs(dy);
-  // Calculate error intervals for both axis
-  px = 2 * dy1 - dx1;
-  py = 2 * dx1 - dy1;
-  // The line is X-axis dominant
-  if (dy1 <= dx1) {
-    // Line is drawn left to right
-    if (dx >= 0) {
-      x = x1;
-      y = y1;
-      xe = x2;
-    } else {
-      // Line is drawn right to left (swap ends)
-      x = x2;
-      y = y2;
-      xe = x1;
-    }
-    setBeadColor(x, y, color); // Draw first pixel
-    // Rasterize the line
-    for (i = 0; x < xe; i++) {
-      x = x + 1;
-      // Deal with octants...
-      if (px < 0) {
-        px = px + 2 * dy1;
-      } else {
-        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
-          y = y + 1;
-        } else {
-          y = y - 1;
-        }
-        px = px + 2 * (dy1 - dx1);
-      }
-      // Draw pixel from line span at
-      // currently rasterized position
-      setBeadColor(x, y, color);
-    }
-  } else {
-    // The line is Y-axis dominant
-    // Line is drawn bottom to top
-    if (dy >= 0) {
-      x = x1;
-      y = y1;
-      ye = y2;
-    } else {
-      // Line is drawn top to bottom
-      x = x2;
-      y = y2;
-      ye = y1;
-    }
-    setBeadColor(x, y, color);
-    // Rasterize the line
-    for (i = 0; y < ye; i++) {
-      y = y + 1;
-      // Deal with octants...
-      if (py <= 0) {
-        py = py + 2 * dx1;
-      } else {
-        if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
-          x = x + 1;
-        } else {
-          x = x - 1;
-        }
-        py = py + 2 * (dx1 - dy1);
-      }
-      // Draw pixel from line span at
-      // currently rasterized position
-      setBeadColor(x, y, color);
-    }
-  }
-}
-
 function updateScreenSize() {
   uiCanvas.width = window.innerWidth;
   uiCanvas.height = window.innerHeight - navbarSize;
@@ -196,10 +111,14 @@ function updateScreenSize() {
   panels["tools"].x = window.innerWidth / 2 - 96 * 2;
   panels["tools"].y = window.innerHeight - 74 - navbarSize;
   
+  closenew.style.top = navbarSize + 20 + "px";
 
+  openinfo.style.top = navbarSize + 20 + "px";
+  closeinfo.style.top = navbarSize + 20 + "px";
 
+  
   setTimeout(function(){
-    document.getElementById('search').style.width = panels.colors.width == 30 ? 65 : panels.colors.width + 6  //FIXME
+    document.getElementById('search').style.width = panels.colors.width == 30 ? 65 : panels.colors.width + 6 //FIXME
   },40) 
 
   // panels["transform"].x = window.innerWidth / 2 + 400;
@@ -209,8 +128,9 @@ function updateScreenSize() {
 
   //document.getElementById('search').style.width = panels["colors"].width + 6
   //console.log(window.innerHeight - 232 - navbarSize + 'px')
+
   document.getElementById("color-table").style.height =
-    window.innerHeight - 232 - navbarSize + "px";
+    window.innerHeight - 292 - navbarSize + "px";
 }
 
 
@@ -223,6 +143,7 @@ onresize = () => {
 
 function getMousePos(e) {
   var rect = document.getElementById("uiCanvas").getBoundingClientRect();
+
   return [
     ((e.clientX - rect.left) / (rect.right - rect.left)) * uiCanvas.width,
     ((e.clientY - rect.top) / (rect.bottom - rect.top)) * uiCanvas.height,
@@ -240,7 +161,6 @@ function wheel(e) {
     scale = 1.01
     return
   }
-  
   
   scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
   
@@ -327,6 +247,7 @@ function mouseDown(e) {
             if (toReplace != -1) {
               replaceBead(toReplace, color);
               toReplace = -1;
+              save();
             }
           }
           // FIXME:
@@ -354,7 +275,7 @@ function mouseUp(e) {
   clickUp = true;
   isDragging = false;
 
-  if ( isDrawing &&  e.button == 0) { // ?? 👀
+  if ( (isDrawing || (tool != 1 &&  !isOverPanel() && !overDropDown && isInside(...getPosScreenToGrid(mouse[0], mouse[1])) )) &&  e.button == 0) { // ?? 👀
     save()
   }
 
@@ -445,42 +366,6 @@ for (var i = 0; i < navbars.length; i++) {
     }, false);
 }
 
-
-
-
-
-
-/*
-function keyPress(e) {
-  if (e.key == "w") {
-    scale *= 1.1;
-  }
-
-  if (e.key == "s") {
-    scale /= 1.1;
-    save();
-  }*/
-
-/* if (e.key == "n" && isDevMode) {
-    panels.unshift(
-      new Panel(
-        "_",
-        ...mouse,
-        50,
-        50,
-        8,
-        20,
-        20,
-        true,
-        true,
-        () => {},
-        () => {}
-      )
-    );
-  }
-};
-*/
-
 function keyDown(e) {
   if (e.repeat) { return }
 
@@ -512,6 +397,8 @@ function keyDown(e) {
       rotateRight();
       break;
   }
+
+  updateBackgroundAndRender()
 
   // binds the numbers keys for color palette
 

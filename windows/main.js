@@ -2,7 +2,7 @@ require('dotenv').config()
 
 const electron = require('electron')
 
-const {BrowserWindow, Menu, ipcMain} = require('electron')
+const {BrowserWindow, Menu, ipcMain, shell} = require('electron')
 
 const sizeOf = require('image-size');
 
@@ -301,19 +301,19 @@ function openMainWindow() {
                 {
                     label: 'Visitar blasterchile.cl',
                     click: function () {
-                        open("https://blasterchile.cl");
+                        shell.openExternal("https://blasterchile.cl");
                     }
                 },
                 {
                     label: 'Visitar Instagram de Blaster Chile',
                     click: function () {
-                        open("https://www.instagram.com/blaster.chile");
+                        shell.openExternal("https://www.instagram.com/blaster.chile");
                     }
                 },
                 {
                     label: 'Discord de la Comunidad',
                     click: function () {
-                        open("https://discord.gg/FpSxx6FZkF");
+                        shell.openExternal("https://discord.gg/FpSxx6FZkF");
                     }
                 },
 
@@ -512,14 +512,14 @@ ipcMain.on('closecropper', (event) => {
 ipcMain.on('saveImage', async function (event, img) {
     console.log('open save dialog..')
     const options = {
-     title: 'Save an Image',
+     title: 'Guardar como Imagen',
      filters: [
       { name: 'Images', extensions: ['png'] }
      ]
     }
     const result = await electron.dialog.showSaveDialog(options)
-        
-    if(result){
+
+    if(!result.canceled){
 
         // strip off the data: url prefix to get just the base64-encoded bytes
         var data = img.replace(/^data:image\/\w+;base64,/, "");
