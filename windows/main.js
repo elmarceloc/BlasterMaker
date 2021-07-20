@@ -149,17 +149,17 @@ function openMainWindow() {
         {
             label: 'Ver',
             submenu: [
-                {
+                /*{
                   label: 'Estilo',
                   submenu: [
         
-                    /*{
+                    {
                       label:'Bead studio free',
                       //sublabel: 'ctrl + 1',
                       click: function() {
                         mainWindow.webContents.send('viewmode', 1)
                       }
-                    },*/
+                    },
                     {
                       label: 'Pixelart',
                       //sublabel: 'ctrl + 2',
@@ -168,18 +168,24 @@ function openMainWindow() {
                       }
                     },
                   ]
-                },
+                },*/
                 {
                     label: 'Reglas',
                     click: function () {
-                        mainWindow.webContents.send('showGrid')
+                        mainWindow.webContents.send('view', 'showGrid')
                     }
                 },
                 {
                     // TODO: rename
                     label: 'Colores',
                     click: function () {
-                        mainWindow.webContents.send('showIds')
+                        mainWindow.webContents.send('view', 'showIds')
+                    }
+                },
+                {
+                    label: 'Ver a escala',
+                    click: function () {
+                        mainWindow.webContents.send('view', 'scale')
                     }
                 },
 
@@ -210,7 +216,7 @@ function openMainWindow() {
                     label: 'Deshacer',
                     //  accelerator: process.platform == 'darwin' ? 'cmd + z' : 'ctrl + z',
                     click: function () {
-                        mainWindow.webContents.send('action', 'undo')
+                        mainWindow.webContents.send('edit', 'undo')
                     }
                 },
                 {
@@ -219,28 +225,28 @@ function openMainWindow() {
                 {
                     label: 'Rotar a la derecha',
                     click: function () {
-                        mainWindow.webContents.send('action', 'rotateR')
+                        mainWindow.webContents.send('edit', 'rotateR')
                     }
                 },
 
                 {
                     label: 'Rotar a la izquierda',
                     click: function () {
-                        mainWindow.webContents.send('action', 'rotateL')
+                        mainWindow.webContents.send('edit', 'rotateL')
                     }
                 },
 
                 {
                     label: 'Invertir horizontalmente',
                     click: function () {
-                        mainWindow.webContents.send('action', 'flipH')
+                        mainWindow.webContents.send('edit', 'flipH')
                     }
                 },
 
                 {
                     label: 'Invertir verticalmente',
                     click: function () {
-                        mainWindow.webContents.send('action', 'flipV')
+                        mainWindow.webContents.send('edit', 'flipV')
                     }
                 },
 
@@ -248,7 +254,7 @@ function openMainWindow() {
                     label: 'Recortar',
                     //  accelerator: process.platform == 'darwin' ? 'cmd + z' : 'ctrl + z',
                     click: function () {
-                        mainWindow.webContents.send('action', 'crop')
+                        mainWindow.webContents.send('edit', 'crop')
                     },
                    // enabled: false,
                 },
@@ -279,7 +285,7 @@ function openMainWindow() {
                                 })
                             */
 
-                        mainWindow.webContents.send('clear')
+                        mainWindow.webContents.send('edit','clear')
 
                     }
                 }

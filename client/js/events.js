@@ -151,20 +151,9 @@ function getMousePos(e) {
 }
 
 function wheel(e) {
-
-  if (scale >= 150){
-    scale = 149
-    return  
-  }
-
-  if (scale <= 1){
-    scale = 1.01
-    return
-  }
+  setScale(scale * (1 - e.deltaY / Math.abs(e.deltaY) / 10))
   
-  scale *= 1 - e.deltaY / Math.abs(e.deltaY) / 10;
-  
-  if(viewMode == 1){
+  /*if(viewMode == 1){
     if(scale < maskScale){
       maskCanvas.style.opacity = '0%'
       maskCanvasHD.style.opacity = '0%'
@@ -175,11 +164,8 @@ function wheel(e) {
       maskCanvas.style.opacity = '0%'
       maskCanvasHD.style.opacity = '100%'
     }
-  }
+  }*/
     
-  // resizes the mask
-  updateMask()
-  updateBackgroundAndRender()
 }
 
 var oldMouse = false;

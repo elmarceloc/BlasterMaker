@@ -35,10 +35,18 @@
 
     <script>if (window.module) module = window.module;</script>
 
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/tippy.js@6/themes/light.css"
+    />
+    <script src="https://unpkg.com/tippy.js@6"></script>
 
+  
 </head>
 
 <body id="body">
+
     <nav id="navbar" class="uk-navbar-container uk-margin" uk-navbar>
         <div class="uk-navbar-left">
 
@@ -63,17 +71,17 @@
 
                             <li>
                                 <a onclick="toggleGrid()">
-                                    <i class="fas fa-border-all"></i>  Rejilla
+                                    <i class="blasterColor fas fa-border-all"></i>  Rejilla
                                 </a>
                             </li>
                             <li>
                                 <a onclick="toggleIds()">
-                                    <i class="fas fa-eye-dropper"></i>  Colores
+                                    <i class="blasterColor fas fa-eye-dropper"></i>  Colores
                                 </a>
                             </li>
                             <li>
                                 <a onclick="launchFullScreen(document.documentElement)">
-                                    <i class="fas fa-expand"></i>  Pantalla completa
+                                    <i class="blasterColor fas fa-expand"></i>  Pantalla completa
                                 </a>
                             </li>
 
@@ -89,43 +97,43 @@
 
                             <li>
                                 <a onclick="undo()">
-                                    <i class="fas fa-reply"></i>  Deshacer
+                                    <i class="blasterColor fas fa-reply"></i>  Deshacer
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="rotateRight()">
-                                    <i class="fas fa-redo"></i>  Rotar a la derecha
+                                    <i class="blasterColor fas fa-redo"></i>  Rotar a la derecha
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="rotateLeft()">
-                                    <i class="fas fa-undo"></i>  Rotar a la izquierda
+                                    <i class="blasterColor fas fa-undo"></i>  Rotar a la izquierda
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="flipHorizontal()">
-                                    <i class="fas fa-arrows-alt-h"></i>  Invertir horizontalmente
+                                    <i class="blasterColor fas fa-arrows-alt-h"></i>  Invertir horizontalmente
                                 </a>
                             </li>
 
                             <li>
                                 <a onclick="flipVertical()">
-                                    <i class="fas fa-arrows-alt-v"></i>  Invertir verticalmente
+                                    <i class="blasterColor fas fa-arrows-alt-v"></i>  Invertir verticalmente
                                 </a>
                             </li>
 
                            <!-- <li>
                                 <a onclick="crop()">
-                                    <i class="fas fa-crop"></i>  Recortar
+                                    <i class="blasterColor fas fa-crop"></i>  Recortar
                                 </a>
                             </li>
                         -->
                             <li>
                                 <a onclick="newDraw(width,height)">
-                                    <i class="fas fa-trash-alt"></i>  Limpiar
+                                    <i class="blasterColor fas fa-trash-alt"></i>  Limpiar
                                 </a>
                             </li>
 
@@ -139,6 +147,7 @@
 
         </div>
     </nav>
+    <div id="overlay"></div>
 
 
     <!-- TODO: cambiar a canvas -->
@@ -202,12 +211,12 @@
                                 <label><input value="code" class="uk-radio" type="radio" v-model="renderType"> Código</label>
                             </div>
 
-                            <div v-if="renderType=='color'">
-                                <img  style="display: block;margin: auto;" src="img/pdf_colors.png"></img>
+                            <div v-if="renderType == 'color'">
+                                <img class="magic-preview" src="img/pdf_colors.png"></img>
                             </div>
 
-                            <div v-if="renderType=='code'">
-                                <img  style="display: block;margin: auto;" src="img/pdf_ids.png"></img>
+                            <div v-if="renderType == 'code'">
+                                <img class="magic-preview" src="img/pdf_ids.png"></img>
                             </div>
                         </div>
                     </div>
@@ -311,7 +320,7 @@
                 <div role="button" tabindex="0"><i style="color: white" class="fas fa-times"></i></div>
             </div>
             <div class="uk-grid-small" uk-grid>
-                <div class="uk-width-1-2@s" id="colorsheet-container">
+                <div id="colorsheet-container" class="uk-width-1-2@s uk-width-1-2@m" >
                     <div id="colorssheet">
 
                         <div id="info-table" class="table-container">
@@ -338,36 +347,39 @@
                                 <tbody>
                                     <tr>
                                         <td><i class="fas fa-file-alt"></i> Nombre</td>
-                                        <td style="width: 120px;"><input data-html2canvas-ignore="True" id="nameInput" type="text" v-model="name"></input> <span id="projectName">{{name}}</span>  </td>
+                                        <td>
+                                            <input data-html2canvas-ignore="True" id="nameInput" type="text" v-model="name"></input> 
+                                            <span id="projectName">{{name}}</span>  
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-eye-dropper"></i> Paleta</td>
-                                        <td style="width: 120px;">{{colorPalette}}</td>
+                                        <td>{{colorPalette}}</td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-dot-circle"></i> Tamaño beads</td>
-                                        <td style="width: 120px;">{{beadSize}}</td>
+                                        <td>{{beadSize}}</td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-arrows-alt"></i> Cantidad de placas</td>
-                                        <td style="width: 120px;">{{size}}</td>
+                                        <td>{{size}}</td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-circle"></i> Beads usados</td>
-                                        <td style="width: 120px;">{{total}}</td>
+                                        <td>{{total}}</td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-coins"></i> Costo aproximado</td>
-                                        <td   style="width: 120px;">{{cost}} 
-                                            <i @click="setPrice" uk-toggle="target: #modal-price" uk-tooltip="Costo basado en los precios de blasterchile.cl" style="float: right;padding-top: 3px;" class="fas fa-info-circle"></i></td>
+                                        <td>{{cost}} 
+                                            <i @click="setPrice" uk-toggle="target: #modal-price" uk-tooltip="Costo basado en los precios de blasterchile.cl (Clickea para ver más)" style="float: right;padding-top: 3px;" class="fas fa-info-circle"></i></td>
                                     </tr>
                                     <tr>
                                         <td><i class="fas fa-circle"></i> Tamaño Real</td>
-                                        <td style="width: 120px;">{{realSize}}</td>
+                                        <td>{{realSize}}</td>
                                     </tr>
                                     <tr v-if="beta" id="publicTr" data-html2canvas-ignore="True">
                                         <td><i class="fas fa-cloud-upload-alt"></i> Publicar</td>
-                                        <td style="width: 120px;"><input id="public" type="checkbox"
+                                        <td><input id="public" type="checkbox"
                                                 onclick="event.preventDefault()" uk-toggle="target: #modal-publish"
                                                 class="toggle"></td>
                                     </tr>
@@ -388,14 +400,14 @@
                         </div>
 
 
-                        <div id="color-table" class="table-container" style="height: 320px; overflow-y: auto">
+                        <div id="color-table" class="table-container">
                             <table class="uk-table uk-table-divider uk-table-small  uk-light uk-background-secondary">
                                 <thead>
                                     <tr class="heading">
                                         <th><i class="header-icon fas fa-eye-dropper"></i></th>
                                         <th>Nombre</th>
                                         <th style="width: 20px;">Codigo</th>
-                                        <th style="width: 20px;">#</th>
+                                        <th style="width: 20px; text-align: right;padding-right: 14px;">#</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -403,7 +415,7 @@
                                         <td class="color" v-bind:style="'background-color:'+color.rgb"></td>
                                         <td data-label="name" data-label="color">{{color.name}}</td>
                                         <td data-label="id">{{color.id}}</td>
-                                        <td data-label="amount">{{color.amount}}</td>
+                                        <td id="colorAmount" data-label="amount">{{color.amount}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -411,7 +423,7 @@
 
                             <div id="modal-price" uk-modal>
                                 <div class="uk-modal-dialog uk-modal-body">
-                                    <h2 class="uk-modal-title"><i style="color:rgb(255,23,68)" class="fas fa-coins"></i> Calcular Costo</h2>
+                                    <h2 class="uk-modal-title"><i class="blasterColor fas fa-coins"></i> Calcular Costo</h2>
                                     <p>
                                         
                                         <div class="uk-margin">
@@ -426,7 +438,7 @@
 
                                         <div style="font-size: 20px;" class="uk-margin">
                                             
-                                            Valor: <p style="color:rgb(255,23,68);font-weight:bold;display:inline"> {{ customPrice }} </p>
+                                            Valor: <p class="blasterColor" style="font-weight:bold;display:inline"> {{ customPrice }} </p>
                                         </div>
 
 
@@ -477,7 +489,7 @@
                 </div>
 
 
-                <div id="previewContainer" class="uk-width-1-2@s">
+                <div id="previewContainer" class="uk-width-1-2@s uk-width-1-2@m">
                     <table class="uk-table uk-table-divider  uk-light uk-background-secondary">
                         <thead>
                             <tr class="heading">
@@ -487,7 +499,7 @@
 
 
                     </table>
-                    <img id="previewCanvas" style="width: 100%;image-rendering: pixelated;">
+                    <img id="previewCanvas" >
                 </div>
 
             </div>
@@ -505,14 +517,14 @@
             <div role="button" tabindex="0"> <i class="fas fa-arrow-right"></i> </div>
         </div>
 
-        <input id="search" placeholder="Buscar" type="number">
+        <input id="search" placeholder="Buscar..." type="number">
 
 
         <canvas id="backgroundCanvas" style="image-rendering: pixelated; z-index: 1; "></canvas>
         <canvas id="renderCanvas" style="image-rendering: pixelated; z-index: 2;"></canvas>
-        <canvas id="uiCanvas" width="100%" height="100%" style="z-index: 4;"></canvas>
         <canvas id="maskCanvas" style="z-index: 3;"></canvas>
         <canvas id="maskCanvasHD" style="z-index: 3;"></canvas>
+        <canvas id="uiCanvas" width="100%" height="100%" style="z-index: 4;"></canvas>
 
         <!-- <canvas id="canvas4" style="image-rendering: pixelated; z-index: 3; "></canvas>  -->
     </div>

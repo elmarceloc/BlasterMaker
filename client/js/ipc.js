@@ -29,7 +29,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
       new Notification("Blaster Maker", {
         body: body,
         icon:
-          "https://blasterchile.cl/wp-content/uploads/2019/09/logo_rojo.png",
+          "img/blaster.png",
       });
     }
 
@@ -41,7 +41,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
           new Notification("Blaster Maker", {
             body: body,
             icon:
-              "https://blasterchile.cl/wp-content/uploads/2019/09/logo_rojo.png",
+              "img/blaster.png",
           });
         }
       });
@@ -57,20 +57,22 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     initProject()
   });
 
-  ipc.on("viewmode", (event, mode) => {
-    setViewMode(mode);
-  });
 
-  ipc.on("showGrid", (event) => {
-    toggleGrid();
-  });
-
-  ipc.on("showIds", (event) => {
-    toggleIds();
-  });
-
-  ipc.on("clear", (event, mode) => {
-    newDraw(width, height);
+  ipc.on("view", (event, action, mode) => {
+    switch (action) {
+      case "viewmode":
+        setViewMode(mode);
+        break;
+      case "showGrid":
+        toggleGrid();
+        break;
+      case "showIds":
+        toggleIds();
+        break;
+      case "scale":
+        setScale(1)
+        break;
+    }
   });
 
   ipc.on("readBeads", (event) => {
@@ -104,7 +106,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
     showLayout("new");
   });
 
-  ipc.on("action", (event, action) => {
+  ipc.on("edit", (event, action) => {
     switch (action) {
       case "undo":
         undo();
@@ -123,6 +125,9 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
         break;
       case "flipV":
         flipVertical();
+        break;
+      case "clear":
+        newDraw(width, height);
         break;
     }
   });

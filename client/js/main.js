@@ -230,25 +230,6 @@ function resize(w, h) {
   grid2 = new ImageData(width, height);
   matrix = [...Array(height)].map((k) => [...Array(width)].fill(0));
 
-  background = new ImageData(width, height);
-
-  background.data.forEach((element, index, array) => {
-    if (index % 4 == 0) {
-      i = Math.floor(index / 4) % width; // Colores alternados
-      j = Math.floor(index / (4 * width));
-      if ((i + j) % 2 == 0) {
-        array[index] = 255;
-        array[index + 1] = 255;
-        array[index + 2] = 255;
-        array[index + 3] = 255;
-      } else {
-        array[index] = 200;
-        array[index + 1] = 200;
-        array[index + 2] = 200;
-        array[index + 3] = 255;
-      }
-    }
-  });  
 }
 
 
@@ -550,7 +531,7 @@ function drawCursor(){
 
 function drawInfo(){
   if(panels['colors']){
-    let baseX = panels['colors'].x + panels['colors'].width + 20
+    let baseX = panels['colors'].x + Math.max(panels['colors'].width,52) + 20
     let baseY = 20
 
     uiCtx.fillStyle = "rgba(196, 196, 174 ,255)";
@@ -656,20 +637,42 @@ function updateBackgroundAndRender() {
     
     renderCanvas.width = width;
     renderCanvas.height = height;
-  
-    backgroundCanvas.width = width;
-    backgroundCanvas.height = height;
 }
 
 function drawBackground() {
+  // resizes the background
+  backgroundCanvas.width = width;
+  backgroundCanvas.height = height;
 
-    backgroundCtx.putImageData(background, 0, 0);
-   
+  // draw a chess board in the background
+  background = new ImageData(width, height);
+
+  background.data.forEach((element, index, array) => {
+    if (index % 4 == 0) {
+      i = Math.floor(index / 4) % width; // Colores alternados
+      j = Math.floor(index / (4 * width));
+      if ((i + j) % 2 == 0) {
+        array[index] = 255;
+        array[index + 1] = 255;
+        array[index + 2] = 255;
+        array[index + 3] = 255;
+      } else {
+        array[index] = 200;
+        array[index + 1] = 200;
+        array[index + 2] = 200;
+        array[index + 3] = 255;
+      }
+    }
+  });  
+
+  backgroundCtx.putImageData(background, 0, 0);
+
+
 }
 
 function draw() {
 
-  drawBackground()
+  //drawBackground()
 
   // render the beads
   renderCtx.putImageData(grid2, 0, 0);

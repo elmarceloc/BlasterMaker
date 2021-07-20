@@ -276,7 +276,15 @@ function isEmpty() {
   return true;
 
 }
-// FIXME: 
+
+function setScale(newScale){
+  if (newScale > 150 || newScale < 1) return    
+
+  scale = newScale;
+  updateBackgroundAndRender()
+  updateMask()
+}
+
 function rotateLeft() {
   save();
   let newGrid2 = new ImageData(height, width);
@@ -293,7 +301,6 @@ function rotateLeft() {
   updateBackgroundAndRender()
 
 }
-// FIXME: 
 
 function rotateRight() {
   save();

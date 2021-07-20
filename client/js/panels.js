@@ -756,18 +756,12 @@ panels["picker"]=(new Panel(panels["tools"],uiViewportScale*5,0,50,50,0,0,0,0,0,
   }
 }))
 
-panels["zoomout"]=(new Panel(panels["tools"],uiViewportScale*6,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{scale -= 2;
-   updateBackgroundAndRender()
-   updateMask()
-  },(x,y,mL,mR,mU,mD,width,height)=>{
+panels["zoomout"]=(new Panel(panels["tools"],uiViewportScale*6,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setScale(scale - 2)},(x,y,mL,mR,mU,mD,width,height)=>{
   uiCtx.drawImage(ui, toolUiScale * 11, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 
 }))
 
-panels["zoomin"]=(new Panel(panels["tools"],uiViewportScale*7,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{scale += 2;
-   updateBackgroundAndRender()
-   updateMask()
-  },(x,y,mL,mR,mU,mD,width,height)=>{
+panels["zoomin"]=(new Panel(panels["tools"],uiViewportScale*7,0,50,50,0,0,0,0,0,0,0,0,50,50,true,(x,y,mL,mR,mU,mD,width,height)=>{setScale(scale + 2)},(x,y,mL,mR,mU,mD,width,height)=>{
   uiCtx.drawImage(ui, toolUiScale * 10, 0, toolUiScale, toolUiScale, x + mL, y + mU, uiViewportScale, uiViewportScale);
 }))
 

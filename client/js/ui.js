@@ -294,7 +294,9 @@ function showLayout(layout) {
   document.getElementById("new").style.display = "none";
   document.getElementById("info").style.display = "none";
   document.getElementById("main").style.display = "none";
-  
+
+  document.getElementById("closeinfo").style.background = "#ff1744";   
+
   toggleEvents(false);
 
   switch (layout) {
@@ -310,6 +312,7 @@ function showLayout(layout) {
     case "info":
       document.getElementById("info").style.display = "block";
       document.getElementById("body").style.overflowY = "visible !important"; // poner important
+      document.getElementById("closeinfo").style.background = "rgb(34,34,34)";   
       break;
 
     case "main":
@@ -320,6 +323,40 @@ function showLayout(layout) {
 
       break;
   }
+}
+
+function showTutorial(){
+  tippy('#openinfo', {
+    content: '¡Aca puedes ver la informacion de tu proyecto!',
+    theme: 'light',
+    placement: 'left-end',
+
+  })
+
+  tippy('#search', {
+    content: '¡Aca puedes buscar colores!',
+    theme: 'light',
+    placement: 'right-end',
+
+  })
+
+  
+  document.querySelector('#overlay').style.opacity = '100%'
+
+  document.querySelector('#openinfo')._tippy.show();
+  document.querySelector('#search')._tippy.show();
+
+  document.body.addEventListener('click', closeTutorial, true); 
+}
+
+function closeTutorial(){
+  document.querySelector('#overlay').style.opacity = '0%'
+  setTimeout(function(){
+    document.querySelector('#openinfo')._tippy.disable();
+    document.body.removeEventListener("click", closeTutorial);
+
+  },2000)
+
 }
 
 function initProject() {
@@ -346,7 +383,26 @@ function initProject() {
 
   updateScreenSize()
   updateBackgroundAndRender()
+
   
+  // if tutorial didnt show up
+  if (storage) {
+    if(storage.getSync('showTutorial') && Object.keys(storage.getSync('showTutorial')).length === 0 && storage.getSync('showTutorial').constructor === Object){
+
+      showTutorial()
+
+      storage.set('showTutorial', true, function(error) {
+
+      });
+    }
+  }else{
+    if( localStorage.getItem("showTutorial") === null){
+
+      showTutorial()
+      
+      localStorage.setItem("showTutorial", true);
+    }
+  }
   //app.setPublish(false)
 
   /*maskCanvas.width = Math.min(width, window.screen.width/maskScale)* maskScale;
