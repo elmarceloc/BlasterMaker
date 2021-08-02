@@ -176,7 +176,6 @@ function openMainWindow() {
                     }
                 },
                 {
-                    // TODO: rename
                     label: 'Colores',
                     click: function () {
                         mainWindow.webContents.send('view', 'showIds')
@@ -322,7 +321,18 @@ function openMainWindow() {
                         shell.openExternal("https://discord.gg/FpSxx6FZkF");
                     }
                 },
-
+                {
+                    label: 'Reportar un bug',
+                    click: function () {
+                        shell.openExternal("");
+                    }
+                },,
+                {
+                    label: 'Realizar una sugerencia',
+                    click: function () {
+                        shell.openExternal("");
+                    }
+                },
                 /*{
                   label: 'Unirse al servidor de Discord',
                   click: function() {

@@ -80,6 +80,13 @@
                                 </a>
                             </li>
                             <li>
+                                <a onclick="setScale(1)">
+                                    <i class="blasterColor fas fa-ruler-combined"></i>  Ver a escala
+                                </a>
+                            </li>
+
+                            
+                            <li>
                                 <a onclick="launchFullScreen(document.documentElement)">
                                     <i class="blasterColor fas fa-expand"></i>  Pantalla completa
                                 </a>
@@ -125,12 +132,12 @@
                                 </a>
                             </li>
 
-                           <!-- <li>
+                            <li>
                                 <a onclick="crop()">
                                     <i class="blasterColor fas fa-crop"></i>  Recortar
                                 </a>
                             </li>
-                        -->
+                        
                             <li>
                                 <a onclick="newDraw(width,height)">
                                     <i class="blasterColor fas fa-trash-alt"></i>  Limpiar
@@ -148,9 +155,6 @@
         </div>
     </nav>
     <div id="overlay"></div>
-
-
-    <!-- TODO: cambiar a canvas -->
 
     <div id="app">
 
@@ -306,8 +310,8 @@
 
                     </fieldset>
 
+                    <hr v-if="isElectron" class="uk-divider-icon">
 
-                    <hr v-if="isElectron" ></hr>
                     <div v-if="isElectron" style="padding: 20px;">
                     <button v-if="isElectron" onclick="importFromMenu()" class="uk-button uk-button-secondary uk-width-1-1 uk-button-large"><i class="fas fa-magic"></i>  Crear a partir de Imagen</button>
                 </div>

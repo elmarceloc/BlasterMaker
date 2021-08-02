@@ -48,6 +48,10 @@ input[type="number"] {
   background: #ff1744;
 }
 
+.uk-button:not(:disabled), .uk-input, .uk-modal-dialog{
+  border-radius: 3px;
+}
+
 .blasterColor{
   color:#FF1744;
 }
