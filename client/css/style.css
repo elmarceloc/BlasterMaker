@@ -988,3 +988,20 @@ input[type="checkbox"]:focus {
   display: block;
   margin: auto;
 }
+
+.color-selector{
+  width: 20px;
+  height: 20px;
+  margin: 3px;
+  border: 1px solid white;
+  display: inline-block;
+  border-radius: 50%;
+  opacity: 1;
+  -webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.colordisabled{
+  opacity: 0.3!important;
+}

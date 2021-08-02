@@ -606,16 +606,16 @@ function drawTooltip(ctx, x, y, text, width) {
 
 
 
-function setColorPalete(size,kit) {
+function setColorPalete(size, newPalette) {
   colors = []
 
-  palette = kit
+  palette = newPalette
 
   switch (size) {
     case '5':
       gridSize = 29
 
-      switch (kit) {
+      switch (newPalette) {
         case 'all':
           palettes.five.map(v => colors.push(totalColors[v]))
           break;
@@ -628,7 +628,7 @@ function setColorPalete(size,kit) {
     case '2.6':
       gridSize = 50
 
-      switch (kit) {
+      switch (newPalette) {
         case 'all':
           palettes.two.map(v => colors.push(totalColors[v]))
           break;

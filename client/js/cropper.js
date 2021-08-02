@@ -15,10 +15,31 @@ var newCtx = canvas3.getContext("2d");
 
 document.getElementById("previewContainer").appendChild(canvas3);
 
+var app = new Vue({
+  el: '#app',
+  data: {
+    colors: []
+  },
+  methods: {
+    toggleColorState: function(event, index){
+      console.log('color '+index+' toggled')
+      this.colors[index].enabled = !colors[index].enabled
 
-colors = []
+      event.target.classList.toggle('colordisabled')
 
-palettes.five.map(v => colors.push(totalColors[v]))
+      //TODO: cambiar el color de la imagen a la paleta nueva
+    }
+  }
+})
+
+app.colors.forEach(color => {
+  color.enabled = false
+});
+
+//colors = []
+
+//palettes.five.map(v => colors.push(totalColors[v]))
+palettes.five.map(v => app.colors.push(totalColors[v]))
 
 var panX = 0; // scaled image pan
 var panY = 0;
@@ -33,12 +54,14 @@ function changePalette(img, wd, hd){
 
   oldCtx.drawImage(img, 0, 0);
 
-  imageData = oldCtx.getImageData(0, 0,wd,hd);
+  imageData = oldCtx.getImageData(0, 0, wd, hd);
 
   image = img
 
   imageWidth = wd
   imageHeight = hd
+  
+  console.log(app.colors)
 
   for (var i = 0; i < imageData.data.length; i+=4) {
     // get color of pixel
@@ -49,21 +72,23 @@ function changePalette(img, wd, hd){
           
     var min = 9999999;
     var idMin = 0;
-    
-    for(let j in colors){
-      let rgb = colors[j].rgb;
+
+    for(let j in app.colors){
+      let rgb = app.colors[j].rgb;
       let dis = distanceRGB(rgb[0], rgb[1], rgb[2], r, g, b, 2)
 
       if(dis < min){
         min = dis
         idMin = j
+        app.colors[j].enabled = true;
       }
     }
     
     if (a != 0){
-      imageData.data[i] = colors[parseInt(idMin)].rgb[0]
-      imageData.data[i+1] = colors[parseInt(idMin)].rgb[1]
-      imageData.data[i+2] = colors[parseInt(idMin)].rgb[2]
+
+      imageData.data[i] = app.colors[parseInt(idMin)].rgb[0]
+      imageData.data[i+1] = app.colors[parseInt(idMin)].rgb[1]
+      imageData.data[i+2] = app.colors[parseInt(idMin)].rgb[2]
     }
 
   }
@@ -81,8 +106,8 @@ function updatePreview(img, width, angle = 0) {
     newCtx.canvas.height = height;
     
     var src = oldCtx.getImageData(0, 0, oldCtx.canvas.width, oldCtx.canvas.height);
- 
-  console.log(imageData.data)
+  
+   // console.log(imageData.data)
 
     var data = new Uint32Array(src.data.buffer); // source
     var dest = newCtx.createImageData(width, height);
@@ -110,10 +135,9 @@ function updatePreview(img, width, angle = 0) {
    // console.log(dest)
     newCtx.putImageData(dest, 0, 0);
 
-   // document.getElementById("previewContainer").appendChild(canvas2);
+    //document.getElementById("previewContainer").appendChild(canvas2);
 
     document.querySelector("#loading-container").style.visibility = 'hidden';
-  //  document.querySelector("previewCrop").style.visibility = 'visible';
 
 
 /*    var $image = $('#previewCrop');
@@ -192,11 +216,18 @@ el.addEventListener('change', () => {
 
    var newSize = document.querySelector("#scale").value;
 
+    console.log(app.colors, colors)
+
+
+
    setColorPalete(size, kit)
 
-   changePalette(image, imageWidth, imageHeight);
+   app.colors = colors
 
+   changePalette(image, imageWidth, imageHeight);
+   
    updatePreview(img, newSize)
+
 
 });
 

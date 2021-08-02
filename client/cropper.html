@@ -43,33 +43,33 @@
     </div>
 
 
-<style>
+    <style>
 
-    img{
-        display: none;
-    }
+        img{
+            display: none;
+        }
 
-    #previewCanvas{
-        width: 500px;
-        visibility: hidden;
-    }
-    
-    i {
-            color: rgb(255,64,101)
-    }
-    #previewCrop{
-        display: none;
+        #previewCanvas{
+            width: 500px;
+            visibility: hidden;
+        }
+        
+        i {
+                color: rgb(255,64,101)
+        }
+        #previewCrop{
+            display: none;
 
-    }
-</style>
+        }
+    </style>
 
-    <div id="app" class="uk-grid-small uk-grid">
+    <div class="uk-grid-small uk-grid">
         <div class="uk-width-1-2@s  uk-light uk-background-secondary uk-padding">
 
             <form id="myform" class="uk-fieldset">
 
                 <legend class="uk-legend"><i class="fas fa-magic"></i> Importar imagen</legend>
-                <br>
+                </br>
                 <!--
                 <div class="uk-grid-small uk-grid">
 
@@ -132,15 +132,26 @@
                     
                     <div class="uk-form-controls uk-form-controls-text">
 
-                        <input onchange="updateTextInput(this.value);" id="scale" type="range" min="1" max="100" value="1"><br>
+                        <input onchange="updateTextInput(this.value)" id="scale" type="range" min="1" max="100" value="1"></input></br>
                     </div>
 
                 </div>
 
+                
+                <div id="app">
+                    <div class="color-selector" 
+                        @click="toggleColorState($event, index)" 
+                        @click="" 
+                        :class="{colordisabled: !color.enabled}" 
+                         :style="'background-color: rgb('+ color.rgb[0] +','+ color.rgb[1] +','+ color.rgb[2] +')'"  
+                         v-for="(color, index) in colors">
+                         
+                    </div>
+                </div>
 
                 <button onclick="exportImageData(event)" class="uk-margin uk-button uk-button-secondary">Importar</button>
                 
-            </fieldset>
+            </form>
 
         </div>
         <div class="uk-width-1-2@s " style="padding: 20px;">
@@ -152,10 +163,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 
     <script src="js/ipc.js?asdas=asdasd"></script>
 
