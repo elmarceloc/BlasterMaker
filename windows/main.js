@@ -4,6 +4,8 @@ const electron = require('electron')
 
 const {BrowserWindow, Menu, ipcMain, shell} = require('electron')
 
+const { autoUpdater } = require("electron-updater");
+
 const sizeOf = require('image-size');
 
 const fs = require('fs')
@@ -320,7 +322,7 @@ function openMainWindow() {
                     click: function () {
                         shell.openExternal("https://discord.gg/FpSxx6FZkF");
                     }
-                },
+                },/*,
                 {
                     label: 'Reportar un bug',
                     click: function () {
@@ -332,7 +334,7 @@ function openMainWindow() {
                     click: function () {
                         shell.openExternal("");
                     }
-                },
+                },*/
                 /*{
                   label: 'Unirse al servidor de Discord',
                   click: function() {
@@ -362,6 +364,11 @@ function openMainWindow() {
 
     Menu.setApplicationMenu(menu)
 
+
+    mainWindow.once("ready-to-show", () => {
+        console.log("checking updates...");
+        autoUpdater.checkForUpdatesAndNotify();
+    });
 
     // Open the DevTools.
     //mainWindow.webContents.openDevTools()
@@ -584,6 +591,11 @@ ipcMain.on('get-file-data', function (event) {
     event.returnValue = data;
 
 });
+
+
+ipcMain.on("restart_app", () => {
+    autoUpdater.quitAndInstall();
+});  
 
 function getPage(){
     return mainWindow.webContents.getURL().split('/')[mainWindow.webContents.getURL().split('/').length -1]

@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/lib/uikit.css" />
 
     <link rel="stylesheet" href="css/style.css?asd=sd">
+    <link rel="stylesheet" href="css/notification.css?asd=sd">
 
     <script src="js/lib/img_box.js"></script>
 
@@ -46,6 +47,17 @@
 </head>
 
 <body id="body">
+
+    <div id="notification" class="ui message hidden">
+        <i class="fas fa-times"  id="close-button" onClick="closeNotification()"></i>
+        <div id="message_title" class="header">
+          
+        </div>
+        <p id="message"></p>
+        <button id="restart-button" class="ui button primary hidden" onClick="restartApp()">
+          Reiniciar Ahora
+        </button>
+      </div>
 
     <nav id="navbar" class="uk-navbar-container uk-margin" uk-navbar>
         <div class="uk-navbar-left">

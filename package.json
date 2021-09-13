@@ -6,11 +6,14 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --x64",
-    "gh-publish": "electron-builder --x64 -p always",
+    "dist": "electron-builder --x64 --publish never",
+    "publish": "electron-builder build --publish always",
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elmarceloc/BlasterMaker.git"
+  },
   "keywords": [
     "Electron",
     "quick",
@@ -39,6 +42,7 @@
     "electron-packager": "^15.2.0",
     "electron-reload": "^1.5.0",
     "electron-tooltip": "^1.1.5",
+    "electron-updater": "^4.3.9",
     "i": "^0.3.6",
     "image-size": "^0.9.3",
     "minimist": "^1.2.5",
@@ -49,7 +53,7 @@
     "universal-analytics": "^0.4.23"
   },
   "build": {
-    "copyright": "Copyright © 2020 BlasterChile.cl",
+    "copyright": "Copyright © 2021 BlasterChile.cl",
     "productName": "Blaster Maker",
     "appId": "com.blasterchile.id",
     "linux": {
@@ -65,7 +69,8 @@
     "win": {
       "target": "nsis",
       "icon": "/icon.ico",
-      "legalTrademarks": "Copyright © 2020 BlasterChile.cl"
+      "legalTrademarks": "Copyright © 2021 BlasterChile.cl",
+      "verifyUpdateCodeSignature": false
     },
     "fileAssociations": [
       {

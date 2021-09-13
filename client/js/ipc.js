@@ -176,6 +176,36 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 
   });
 
+
+  const notification = document.getElementById("notification");
+  const message_title = document.getElementById("message_title");
+  const message = document.getElementById("message");
+  const restartButton = document.getElementById("restart-button");
+  
+  ipc.on("update_available", () => {
+    ipc.removeAllListeners("update_available");
+    message_title.innerText = "¡Actualisación Disponible!";
+    message.innerHTML = '<i class="fas fa-download"></i> Descargando...';
+    notification.classList.remove("hidden");
+  });
+  
+  ipc.on("update_downloaded", () => {
+    ipc.removeAllListeners("update_downloaded");
+    message_title.innerText = "Actualización Descargada.";
+    message.innerHTML =
+      '<i class="fas fa-check"></i> Se instalara al reiniciar. ¿Quieres reiniciar ahora?';
+    restartButton.classList.remove("hidden");
+    notification.classList.remove("hidden");
+  });
+  
+  function closeNotification() {
+    notification.classList.add("hidden");
+  }
+  function restartApp() {
+    ipc.send("restart_app");
+  }
+  
+
   function exportImageData(event) {
 
 

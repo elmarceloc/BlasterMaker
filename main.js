@@ -5,6 +5,8 @@ const electron = require('electron')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
+const { autoUpdater } = require("electron-updater");
+
 const {openMainWindow} = require("./windows/main.js");
 
 // this should be placed at top of main.js to handle setup events quickly
@@ -97,3 +99,12 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
+
+autoUpdater.on("update-available", () => {
+  console.log("update available");
+  mainWindow.webContents.send("update_available");
+});
+autoUpdater.on("update-downloaded", () => {
+  console.log("update downloaded");
+  mainWindow.webContents.send("update_downloaded");
+});
