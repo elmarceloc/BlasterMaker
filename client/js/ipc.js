@@ -7,8 +7,8 @@
 
 if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   var ipc = require("electron").ipcRenderer;
-  var {dialog } = require('electron').remote;
-  var fs = require('fs');
+ // var { dialog } = require('electron').remote;
+  //var fs = require('fs');
 
   var bmdata = ipc.sendSync('get-file-data');
 

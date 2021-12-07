@@ -48,7 +48,9 @@
 
 <body id="body">
 
-    <div id="notification" class="ui message hidden">
+    <div id="app">
+
+    <div v-if="isElectron" id="notification" class="ui message hidden">
         <i class="fas fa-times"  id="close-button" onClick="closeNotification()"></i>
         <div id="message_title" class="header">
           
@@ -168,7 +170,7 @@
     </nav>
     <div id="overlay"></div>
 
-    <div id="app">
+    <div>
 
         <div id="modal-save-image" uk-modal>
             <div class="uk-modal-dialog uk-modal-body">
@@ -350,8 +352,8 @@
                                         <th id="pdf-container">
                                             <button data-html2canvas-ignore="True" uk-tooltip="Imprimir" class="icon-reset" onclick="printTable()"><i id="pdf-icon"
                                                     class="far fa-file-pdf"></i></button>
-                                            <button data-html2canvas-ignore="True" uk-tooltip="Descargar Plantilla" class="icon-reset" onclick="downloadTable()"><i
-                                                    id="img-icon" class="far fa-file-image"></i></button>
+                                            <!--<button data-html2canvas-ignore="True" uk-tooltip="Descargar Plantilla" class="icon-reset" onclick="downloadTable()"><i
+                                                    id="img-icon" class="far fa-file-image"></i></button>-->
                                             <button data-html2canvas-ignore="True" uk-tooltip="Descargar Imagen" class="icon-reset"><i
                                                     id="fullimage" class="fas fa-image" uk-toggle="target: #modal-save-image"></i></button>
                                             <button data-html2canvas-ignore="True" uk-tooltip="Imprimir a escala" class="icon-reset"><i
@@ -465,11 +467,11 @@
                                     </p>
                                 </div>
                             </div>
-
+                            <!-- 
                             <div id="modal-publish" uk-modal>
                                 <div class="uk-modal-dialog uk-modal-body">
-                                    <h2 class="uk-modal-title">{{publicState ? 'Ocultar' : 'Publicar'}}</h2>
-                                    <p>Estas seguro que deseas {{publicState ? 'ocultarlo' : 'publicarlo'}}?
+                                    <h2 class="uk-modal-title">Publicar</h2>
+                                    <p>Estas seguro que deseas publicarlo?
                                         
                                         
                                         <div class="uk-margin">
@@ -488,14 +490,13 @@
                                         <button class="uk-button uk-button-default uk-modal-close"
                                             type="button">Cancelar</button>
                                         <button class="uk-button uk-button-secondary uk-modal-close"
-                                            v-on:click="togglePublish()" type="button">{{publicState ? 'Ocultar' :
-                                            'Publicar'}}</button>
+                                            v-on:click="togglePublish()" type="button">Publicar</button>
                                     </p>
                                 </div>
                             </div>
-                            <!--
+                            
                             <div id="togglePublic">
-                                <input id="public" type="checkbox" onclick="event.preventDefault()" uk-toggle="target: #modal-publish" class="toggle"> <label for="public">{{publicState ? 'Publico' : 'Privado'}}</label>
+                                <input id="public" type="checkbox" onclick="event.preventDefault()" uk-toggle="target: #modal-publish" class="toggle"> <label for="public">Publicado</label>
                             </div> -->
                         </div>
 
@@ -526,7 +527,7 @@
 
     </div>
 
-
+    </div>
 
     <div id="main">
         <div class="btnfloat" id="openinfo">

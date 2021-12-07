@@ -406,8 +406,9 @@ function keyDown(e) {
 }
 
 if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
-  const { remote, contextBridge } = require("electron");
-  const { Menu, MenuItem } = remote;
+  //console.log(require('@electron/remote'))
+  const {  Menu , MenuItem } = require('@electron/remote')
+
 
   window.addEventListener(
     "contextmenu",
@@ -437,7 +438,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
             new MenuItem({
               label: "Cambiar color",
               click: function () {
-                //todo:
                 toReplace = color;
                 setTool(4);
               },
@@ -491,7 +491,6 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
               new MenuItem({
                 label: "Cambiar color",
                 click: function () {
-                  //todo:
                   toReplace = colors.indexOf(colorPalette[index]);
                   setTool(4);
                 },
@@ -513,7 +512,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
               })
             );
 
-            menu.popup({ window: remote.getCurrentWindow() });
+            menu.popup({ window: require('@electron/remote').getCurrentWindow() });
           }
         }/* else {
           if (
@@ -567,7 +566,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
         })
       );
 
-      menu.popup({ window: remote.getCurrentWindow() });
+      menu.popup({ window: require('@electron/remote').getCurrentWindow() });
 
       //TODO: mostrar "selecionar color" al darle click derecho a un color en pantalla...
     },

@@ -34,6 +34,10 @@ function openMainWindow() {
         icon: __dirname + '../../client/img/blaster.ico',
     })
 
+    // https://www.npmjs.com/package/@electron/remote
+    require('@electron/remote/main').initialize()
+    require("@electron/remote/main").enable(mainWindow.webContents) 
+
     mainWindow.setBackgroundColor('#222222') // ???
 
     mainWindow.on('blur', function(){
@@ -65,7 +69,6 @@ function openMainWindow() {
     });
 
 
-    // and load the index.html of the app.
     mainWindow.loadFile('client/index.html')
 
     if (process.env.DEV == 'false') {

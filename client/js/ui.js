@@ -23,7 +23,6 @@ var app = new Vue({
     myprojects: [],
     projects: [],
     personal: false,
-    publicState: false,
     query: '',
     category: 0,
     beta: false,
@@ -60,9 +59,9 @@ var app = new Vue({
           break;
 
         case "browser":*/
-            console.log(from,index)
+    /*        console.log(from,index)
             console.log(this.projects[index].liked)
-            this.projects[index].liked = !this.projects[index].liked;
+            this.projects[index].liked = !this.projects[index].liked;*/
      /*     break;
       }*/
     },
@@ -95,14 +94,62 @@ var app = new Vue({
     
     },
     togglePublish: function () {
-      // publicar
-      if (this.publicState) {
-        document.getElementById("public").checked = false;
-      } else {
-        document.getElementById("public").checked = true;
-      }
-      this.publicState = !this.publicState;
-      console.log(this.publicState);
+      const canvas = document.getElementById("renderCanvas");
+  canvas.toBlob(function (blob) {
+    const formData = new FormData();
+    formData.append("file", blob, "filename.png");
+
+    formData.append("name", app.name);
+    formData.append("type", "private");
+    formData.append("size", gridSize);
+    formData.append("palette", palette);
+    formData.append("width", width);
+    formData.append("height", height);
+    formData.append("total", getColorsAmount());
+    formData.append("code", JSON.stringify(generate()));
+    formData.append("colors", JSON.stringify(colors));
+
+    formData.append("userId", "6066682fe0fb5c09e00dc132"); //TODO: Cambiar 👀
+
+    // Post via axios or other transport method
+    axios
+      .post("http://localhost:4000/project", formData)
+      .then((resp) => {
+        console.log(resp.status);
+
+        switch (resp.data) {
+         /* case "0":
+            UIkit.notification({
+              message: "Tu proyecto esta vacío",
+              pos: "top-center",
+            });
+            break;*/
+          // TODO: activar esto cuando este el online ready
+          /* case '2':
+            UIkit.notification({
+              message: "Error al subir el proyecto a la nube",
+              pos: "top-center",
+            });
+            break;*/
+
+          /* case '3':
+            UIkit.notification({
+              message: "Proyecto guardado exitosamente en la nube",
+              pos: "top-center",
+            });
+            break;  */
+        }
+      })
+      .catch(function (error) {
+        /* if (!error.response) {
+          // network error
+          UIkit.notification({
+            message: "Error al subir el proyecto a la nube.",
+            pos: "top-center",
+          });
+      }*/
+      });
+  });
     },
 
     onChangeCustomPrice(){
@@ -110,9 +157,10 @@ var app = new Vue({
       let price = Math.floor( this.total * pricePerBead )
       let finalPrice = this.amountToDo * (this.margin/100 * price + price)
 
-      this.customPrice = new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format( finalPrice)
+      this.customPrice = new Intl.NumberFormat('es-CL', {currency: 'CLP', style: 'currency'}).format(finalPrice)
 
-    },setPrice(){
+    },
+    setPrice(){
       this.onChangeCustomPrice()
     }
     /*setPublish: function(state) {

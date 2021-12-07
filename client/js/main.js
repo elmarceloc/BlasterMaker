@@ -1,8 +1,11 @@
 try {
   storage = require('electron-json-storage')
+  storage.setDataPath(os.tmpdir());
 } catch (ex) {
   storage = null;
 }
+
+
 
 var id = null;
 

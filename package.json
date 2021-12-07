@@ -1,6 +1,6 @@
 {
   "name": "BlasterMaker",
-  "version": "0.7.7",
+  "version": "0.7.71",
   "description": "Software para la creacion de patrones con hama beads",
   "main": "main.js",
   "scripts": {
@@ -27,11 +27,12 @@
   ],
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^10.4.6",
     "electron-builder": "^22.8.1",
+    "electron": "^16.0.3",
     "minami": "^1.2.3"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.1",
     "cheerio": "^1.0.0-rc.3",
     "clean-jsdoc-theme": "^3.2.7",
     "custom-electron-titlebar": "^3.2.4",
