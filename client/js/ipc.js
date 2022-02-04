@@ -184,7 +184,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
   
   ipc.on("update_available", () => {
     ipc.removeAllListeners("update_available");
-    message_title.innerText = "¡Actualisación Disponible!";
+    message_title.innerText = "¡Actualización Disponible!";
     message.innerHTML = '<i class="fas fa-download"></i> Descargando...';
     notification.classList.remove("hidden");
   });
@@ -380,7 +380,7 @@ function printTable() {
 
   @media print
   {    
-    #pdf,#file-image,#publicTr,#modal-publish,#nameInput,.icon-reset
+    #pdf,#file-image,#publicTr,#modal-publish,#nameInput,.icon-reset,#modal-price
       {
           display: none !important;
       }

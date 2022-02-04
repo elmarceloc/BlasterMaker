@@ -1,6 +1,6 @@
 {
   "name": "BlasterMaker",
-  "version": "0.7.71",
+  "version": "1.0.11",
   "description": "Software para la creacion de patrones con hama beads",
   "main": "main.js",
   "scripts": {
@@ -54,7 +54,7 @@
     "universal-analytics": "^0.4.23"
   },
   "build": {
-    "copyright": "Copyright © 2021 BlasterChile.cl",
+    "copyright": "Copyright © 2022 BlasterChile.cl",
     "productName": "Blaster Maker",
     "appId": "com.blasterchile.id",
     "linux": {
@@ -70,7 +70,7 @@
     "win": {
       "target": "nsis",
       "icon": "/icon.ico",
-      "legalTrademarks": "Copyright © 2021 BlasterChile.cl",
+      "legalTrademarks": "Copyright © 2022 BlasterChile.cl",
       "verifyUpdateCodeSignature": false
     },
     "fileAssociations": [
