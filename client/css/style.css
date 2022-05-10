@@ -1005,3 +1005,21 @@ input[type="checkbox"]:focus {
 .colordisabled{
   opacity: 0.3!important;
 }
+
+.floatmenu{
+  position: absolute;
+  top: 100px;
+  right: 0px;
+  width: 160px;
+  z-index: 100;
+}
+
+.floatmenu button{
+  width: 140px;
+  margin-bottom: 10px;
+}
+.floatmenu p {
+  width: 160px;
+  text-align: center;
+  color: white;
+}

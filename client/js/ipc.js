@@ -4,8 +4,9 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
+const isElectron = navigator.userAgent.toLowerCase().indexOf(" electron/") > -1;
 
-if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
+if (isElectron) {
   var ipc = require("electron").ipcRenderer;
  // var { dialog } = require('electron').remote;
   //var fs = require('fs');
@@ -253,7 +254,7 @@ if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
 }
 
 function saveCanvasAsImage(canvas) {
-  if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
+  if (isElectron) {
 
     ipc.send('saveImage',canvas.toDataURL())
 
@@ -403,6 +404,32 @@ function printTable() {
   .rtl table tr td:nth-child(2) {
       text-align: left;
   }
+
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: arial;
+    padding-bottom: 100px;
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    font-size:13px;
+    color: #333; 
+    margin-top: 20px;
+    text-align: center;
+  }
+
   </style>`
 
 
@@ -429,8 +456,6 @@ function printTable() {
                                   Fecha: ${formatDate}<br>
                                   
                               </td>
-                              
-
                           </tr>
                       </table>
                   </td>
@@ -439,57 +464,16 @@ function printTable() {
             </table>
 
               ${sheet}
+
+            <div class="footer">
+              Plantilla realizada con Blaster Maker | <b>blasterchile.cl</b>
+            </div>
+
       </div>
   </body>
   </html>`;
 
-  if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
-    ipc.send("printPDF", page);
-  } else {
-    var w = window.open();
-
-    w.document.write(
-      `<!doctype html>
-      <html>
-      <head>
-          <meta charset="utf-8">
-          <title>${app.name}</title>
-          
-          ${style}
-      </head>
-      
-      <body>
-          <div class="invoice-box">
-              <table cellpadding="0" cellspacing="0">
-
-                  
-                  <tr class="information">
-                      <td colspan="2">
-                          <table>
-                              <tr>
-                                  <td>
-                                      Nombre: ${app.name}<br>
-                                      Fecha: ${formatDate}<br>
-                                      
-                                  </td>
-                                  
-
-                              </tr>
-                          </table>
-                      </td>
-                  </tr>
-
-                </table>
-
-                  ${sheet}
-          </div>
-      </body>
-      </html>`
-    );
-    w.window.print();
-    w.document.close();
-    return false;
-  }
+  printPDF(page)
 }
 
 
@@ -497,6 +481,19 @@ function printReal(images) {
 
   var style = `
     <style>
+      .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding-top: 10px;
+        border-top: 1px solid #ddd;
+        font-size:13px;
+        color: #333; 
+        margin-top: 20px;
+        text-align: center;
+      }
+
       body{    margin: 10mm 10mm 10mm 10mm; }
       img{
         image-rendering: auto;
@@ -537,35 +534,25 @@ function printReal(images) {
   
   <body>
      ${images}
+     <div class="footer">
+        Plantilla realizada con Blaster Maker | <b>blasterchile.cl</b>
+      </div>
+
   </body>
   </html>`;
 
-  if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
-    ipc.send("printPDF", page);
-  } else {
-    var w = window.open();
-    w.document.write(
-      `<!doctype html>
-      <html>
-      <head>
-          <meta charset="utf-8">
-          <title>${app.name}</title>
-          ${style}
-      </head>
-      
-      <body>
-         ${images}
-      </body>
-      </html>`
-    );
-    setTimeout(() => {
-      w.window.print();
-      w.document.close();
-    }, 500)
-
-    return false;
-  }
+  printPDF(page)
 }
 
-
-//ipc.send('invokeAction', 'someData');
+function printPDF(page){
+  if (isElectron) {
+    ipc.send("printPDF", page);
+  } else {
+    var win = window.open();
+    win.document.write(page);
+    setTimeout(() => {
+      win.window.print();
+      win.document.close();
+    }, 500)
+  }
+}

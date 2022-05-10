@@ -538,8 +538,8 @@ Panel = function (
           yPos = 15 + y + mU
 
         }
-
-        if (search == '' || search.toLowerCase() == colors[i].id.toLowerCase().substring(2)) {
+        //console.log('searching: ',search.toLowerCase(),colors[i].id.toLowerCase())
+        if (search == '' || search.toLowerCase().includes(colors[i].id.toLowerCase())) {
           
 
 
@@ -559,7 +559,7 @@ Panel = function (
             colorId = colors[i].id
           }
           
-            }
+        }
       }
       
       if (colorId /*&& search == ''*/) {

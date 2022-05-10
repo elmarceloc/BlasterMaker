@@ -4,6 +4,8 @@ const electron = require('electron')
 
 const {BrowserWindow, Menu, ipcMain, shell} = require('electron')
 
+const isDev = require('electron-is-dev');
+
 const { autoUpdater } = require("electron-updater");
 
 const sizeOf = require('image-size');
@@ -62,30 +64,12 @@ function openMainWindow() {
 
     workerWindow.loadURL("file://" +  path.join(__dirname, '../') + "/worker.html");
 
-    if (process.env.DEV == 'true') mainWindow.webContents.openDevTools();
-
     workerWindow.on("closed", () => {
         workerWindow = undefined;
     });
 
 
     mainWindow.loadFile('client/index.html')
-
-    if (process.env.DEV == 'false') {
-
-        mainWindow.on('close', function (e) {
-            const choice = require('electron').dialog.showMessageBoxSync(this,
-                {
-                    type: 'warning',
-                    buttons: ['Yes', 'No'],
-                    title: 'Cerrar Blaster Maker',
-                    message: '¿Estas segúro que deseas salir?'
-                });
-            if (choice === 1) {
-                e.preventDefault();
-            }
-        });
-    }
 
     const mainMenu = [
         {
@@ -210,7 +194,7 @@ function openMainWindow() {
                     type: 'separator'
                 },
                 { role: 'togglefullscreen' },
-                ...(process.env.DEV == 'true') ?[{ role: 'toggledevtools' }] : [],
+                ...(isDev) ?[{ role: 'toggledevtools' }] : [],
             ]
         },
         {
@@ -374,7 +358,7 @@ function openMainWindow() {
     });
 
     // Open the DevTools.
-    //mainWindow.webContents.openDevTools()
+    if (isDev) mainWindow.webContents.openDevTools()
 }
 
 
@@ -577,7 +561,7 @@ ipcMain.on('saveImage', async function (event, img) {
 // read the file and send data to the render process
 ipcMain.on('get-file-data', function (event) {
 
-    mainWindow.webContents.send('debug', process.env.DEV  == 'true')
+    mainWindow.webContents.send('debug', isDev)
 
     var data = null;
     console.log(process.argv)

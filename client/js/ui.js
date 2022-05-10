@@ -24,9 +24,9 @@ var app = new Vue({
     projects: [],
     personal: false,
     query: '',
-    category: 0,
     beta: false,
-
+    category: 0,
+    username: '',
     isElectron: navigator.userAgent.toLowerCase().indexOf(" electron/") > -1,
 
     renderMode: 'pixels',
@@ -34,122 +34,68 @@ var app = new Vue({
     renderType:'color'
   },
   methods: {
-    toggleLogin: function (value) {
-      this.sidemenu = value;
-    },
+    publish: function () {
+    const canvas = document.getElementById("renderCanvas");
 
-    select: function (from, index) {
-      switch (from) {
-        case "personal":
-          this.personal = true
-          this.selected = this.myprojects[index];
-          break;
+    canvas.toBlob(function (blob) {
+      const formData = new FormData();
+      
+      formData.append("image", blob);
+      formData.append("name", app.name);
+      formData.append("size", gridSize == 29 ? 5 : 2);
+      formData.append("palette", palette);
+      formData.append("width", width);
+      formData.append("height", height);
+      formData.append("total", getColorsAmount());
+      formData.append("code", JSON.stringify(generate()));
+      formData.append("colors", JSON.stringify(app.colors));
+      formData.append("username", app.username);
+      formData.append("category", app.category);
 
-        case "browser":
-          this.personal = false
-          this.selected = this.projects[index];
-          break;
-      }
-    },
-
-    doFav: function(from, index) {
-     /* switch (from) {
-        case "personal":
-            this.myprojects[index].liked = !this.myprojects[index].liked;
-          break;
-
-        case "browser":*/
-    /*        console.log(from,index)
-            console.log(this.projects[index].liked)
-            this.projects[index].liked = !this.projects[index].liked;*/
-     /*     break;
-      }*/
-    },
-
-    onlogin: function () {
-      // my projects
-
-      /* fetch("http://localhost:4000/project/")
-      .then(response => response.json())
-      .then(projects => {
-        this.myprojects = projects
-      })*/
-
-      // other proyects
-
-      /*  fetch("https://api.npms.io/v2/search?q=vue")
-      .then(response => response.json())
-      .then(data => (this.projects = data.total));
-*/
-      var self = this;
-
-      // DEBUG
-
-
-        this.projects.forEach(project =>{
-          project.liked = true
+      
+      // Post via axios or other transport method
+      axios.post("http://localhost/blaster/save.php", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         })
+        .then((resp) => {
+          console.log(resp.status);
+          console.log(resp.data);
 
+          switch (resp.data) {
+            case "0":
+              UIkit.notification({
+                message: "Tu proyecto esta vacío",
+                pos: "top-center",
+              });
+              break;
+            // TODO: activar esto cuando este el online ready
+            case '2':
+              UIkit.notification({
+                message: "Error al subir el proyecto a la nube",
+                pos: "top-center",
+              });
+              break;
 
-    
-    },
-    togglePublish: function () {
-      const canvas = document.getElementById("renderCanvas");
-  canvas.toBlob(function (blob) {
-    const formData = new FormData();
-    formData.append("file", blob, "filename.png");
-
-    formData.append("name", app.name);
-    formData.append("type", "private");
-    formData.append("size", gridSize);
-    formData.append("palette", palette);
-    formData.append("width", width);
-    formData.append("height", height);
-    formData.append("total", getColorsAmount());
-    formData.append("code", JSON.stringify(generate()));
-    formData.append("colors", JSON.stringify(colors));
-
-    formData.append("userId", "6066682fe0fb5c09e00dc132"); //TODO: Cambiar 👀
-
-    // Post via axios or other transport method
-    axios
-      .post("http://localhost:4000/project", formData)
-      .then((resp) => {
-        console.log(resp.status);
-
-        switch (resp.data) {
-         /* case "0":
-            UIkit.notification({
-              message: "Tu proyecto esta vacío",
-              pos: "top-center",
-            });
-            break;*/
-          // TODO: activar esto cuando este el online ready
-          /* case '2':
-            UIkit.notification({
-              message: "Error al subir el proyecto a la nube",
-              pos: "top-center",
-            });
-            break;*/
-
-          /* case '3':
-            UIkit.notification({
-              message: "Proyecto guardado exitosamente en la nube",
-              pos: "top-center",
-            });
-            break;  */
-        }
-      })
-      .catch(function (error) {
-        /* if (!error.response) {
-          // network error
-          UIkit.notification({
-            message: "Error al subir el proyecto a la nube.",
-            pos: "top-center",
+            case '3':
+              UIkit.notification({
+                message: "Proyecto guardado exitosamente en la nube",
+                pos: "top-center",
+              });
+              break;  
+          }
+        })
+        .catch(function (error) {
+            if (!error.response) {
+              // network error
+              UIkit.notification({
+                message: "Error al publicar el proyecto.",
+                pos: "top-center",
+              });
+          }
           });
-      }*/
       });
-  });
     },
 
     onChangeCustomPrice(){
@@ -206,8 +152,7 @@ function resizePreview() {
 setInterval(resizePreview, 200);
 
 document.getElementById("openinfo").onclick = function () {
-  
-  app.total = getColorsAmount();
+
 
   if (app.total == 0) {
     UIkit.notification({
@@ -216,16 +161,7 @@ document.getElementById("openinfo").onclick = function () {
     });
     return;
   }
-  
-  updateColors()
 
-  updateMoney()
-
-  updatePreview();
-
-  resizePreview()
-
-  updateRealSize()
 
   showLayout("info");
 
@@ -358,6 +294,19 @@ function showLayout(layout) {
       break;
 
     case "info":
+
+      app.total = getColorsAmount();
+
+      updateColors()
+    
+      updateMoney()
+    
+      updatePreview();
+    
+      resizePreview()
+    
+      updateRealSize()
+
       document.getElementById("info").style.display = "block";
       document.getElementById("body").style.overflowY = "visible !important"; // poner important
       document.getElementById("closeinfo").style.background = "rgb(34,34,34)";   
@@ -896,4 +845,9 @@ function printToScale(){
 
 function fullscreen() {
   img_box(document.getElementById("preview"));
+}
+
+function printFromMain() {
+  showLayout('info')
+  printTable()
 }

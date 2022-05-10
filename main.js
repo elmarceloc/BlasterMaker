@@ -77,12 +77,6 @@ function handleSquirrelEvent() {
   }
 };
 
-// hot reload for debugging purposes
-if (process.env.dev) {
-  require('electron-reload')(__dirname,{
-    electron: require(`${__dirname}/node_modules/electron`)
-  })
-}
 //app.disableHardwareAcceleration()
 
 app.whenReady().then(() => {

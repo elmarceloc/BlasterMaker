@@ -467,20 +467,26 @@
                                     </p>
                                 </div>
                             </div>
-                            <!-- 
+                            
                             <div id="modal-publish" uk-modal>
                                 <div class="uk-modal-dialog uk-modal-body">
                                     <h2 class="uk-modal-title">Publicar</h2>
                                     <p>Estas seguro que deseas publicarlo?
-                                        
-                                        
+                                        <div class="uk-margin">
+                                            <input type="text" class="uk-input" v-model="username">
+                                        </div>
+                                        <div class="uk-margin">
+                                            <input type="text" class="uk-input" v-model="name">
+                                        </div>
+
                                         <div class="uk-margin">
                                             <label class="uk-form-label" for="form-stacked-select">Categoria</label>
                                             <div class="uk-form-controls">
 
-                                                <select class="uk-select">
-                                                    <option id="0">Anime</option>
-                                                    <option id="1">Juegos</option>
+                                                <select v-model="category" class="uk-select">
+                                                    <option value="1">Anime</option>
+                                                    <option value="2">Juegos</option>
+                                                    <option value="0">Otro</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -490,14 +496,10 @@
                                         <button class="uk-button uk-button-default uk-modal-close"
                                             type="button">Cancelar</button>
                                         <button class="uk-button uk-button-secondary uk-modal-close"
-                                            v-on:click="togglePublish()" type="button">Publicar</button>
+                                            v-on:click="publish()" type="button">Publicar</button>
                                     </p>
                                 </div>
                             </div>
-                            
-                            <div id="togglePublic">
-                                <input id="public" type="checkbox" onclick="event.preventDefault()" uk-toggle="target: #modal-publish" class="toggle"> <label for="public">Publicado</label>
-                            </div> -->
                         </div>
 
 
@@ -530,9 +532,15 @@
     </div>
 
     <div id="main">
+        <div class="floatmenu">
+            <button onclick="printFromMain()" class="uk-button uk-button-secondary">IMPRIMIR</button>
+            <button onclick="showLayout('info')" uk-toggle="target: #modal-publish" class="uk-button uk-button-secondary">COMPARTIR</button>
+
+            <p>Te gustaria compartir tu creacion con la comunidad</p>
+        </div>
         <div class="btnfloat" id="openinfo"><div role="button" tabindex="0" style="font-size: 14px;"> info</div></div>
 
-        <input id="search" placeholder="Buscar..." type="number">
+        <input id="search" placeholder="Buscar..." type="text">
 
 
         <canvas id="backgroundCanvas" style="image-rendering: pixelated; z-index: 1; "></canvas>
@@ -550,14 +558,14 @@
         <img id="ui" src="img/ui.png?ddsf=sdf" width="768" height="384">
     </div>
 
-    <script src="js/palette.js"></script>
+    <script src="js/palette.js?as=sd"></script>
 
 
-    <script src="js/utils.js?asasd=234"></script>
+    <script src="js/utils.js?asasd=sd"></script>
     <script src="js/main.js?asasd=sdf"></script>
-    <script src="js/events.js?asasd=234"></script>
-    <script src="js/panels.js?asasd=345345"></script>
-    <script src="js/ui.js?asasd=asd"></script>
+    <script src="js/events.js?asasd=sdf"></script>
+    <script src="js/panels.js?asasd=dsf"></script>
+    <script src="js/ui.js?asasd=df"></script>
 
     <script src="js/ipc.js?asasd=asd"></script>
 

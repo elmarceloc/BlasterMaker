@@ -151,7 +151,9 @@ function getMousePos(e) {
 }
 
 function wheel(e) {
-  setScale(scale * (1 - e.deltaY / Math.abs(e.deltaY) / 10))
+  if (navigator.userAgent.toLowerCase().indexOf(" electron/") > -1) {
+    setScale(scale * (1 - e.deltaY / Math.abs(e.deltaY) / 10))
+  } 
   
   /*if(viewMode == 1){
     if(scale < maskScale){
