@@ -50,11 +50,10 @@ var app = new Vue({
       formData.append("code", JSON.stringify(generate()));
       formData.append("colors", JSON.stringify(app.colors));
       formData.append("username", app.username);
-      formData.append("category", app.category);
-
+      formData.append("category", '');
       
       // Post via axios or other transport method
-      axios.post("http://localhost/blaster/save.php", formData, {
+      axios.post(" https://lbt.ger.mybluehost.me/blaster/save.php", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },

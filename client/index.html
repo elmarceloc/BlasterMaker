@@ -471,24 +471,12 @@
                             <div id="modal-publish" uk-modal>
                                 <div class="uk-modal-dialog uk-modal-body">
                                     <h2 class="uk-modal-title">Publicar</h2>
-                                    <p>Estas seguro que deseas publicarlo?
+                                    <p>Estas seguro que deseas publicarlo?</p>
                                         <div class="uk-margin">
-                                            <input type="text" class="uk-input" v-model="username">
+                                            <input type="text" placeholder="Tu nombre o apodo" class="uk-input" v-model="username">
                                         </div>
                                         <div class="uk-margin">
-                                            <input type="text" class="uk-input" v-model="name">
-                                        </div>
-
-                                        <div class="uk-margin">
-                                            <label class="uk-form-label" for="form-stacked-select">Categoria</label>
-                                            <div class="uk-form-controls">
-
-                                                <select v-model="category" class="uk-select">
-                                                    <option value="1">Anime</option>
-                                                    <option value="2">Juegos</option>
-                                                    <option value="0">Otro</option>
-                                                </select>
-                                            </div>
+                                            <input type="text" placeholder="Nombre de la plantilla" class="uk-input" v-model="name">
                                         </div>
 
                                     </p>
