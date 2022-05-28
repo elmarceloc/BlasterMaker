@@ -3,6 +3,9 @@
 // No Node.js APIs are available in this process because
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
+
+const { html } = require("cheerio");
+
 // process.
 const isElectron = navigator.userAgent.toLowerCase().indexOf(" electron/") > -1;
 
@@ -272,12 +275,7 @@ function saveCanvasAsImage(canvas) {
 }
 
 
-/**
- * Downloads the page as image
- *
- */
-
-function printTable() {
+function generateTable() {
   var sheet = $("#colorssheet").html();
 
   let date = new Date()
@@ -433,16 +431,19 @@ function printTable() {
   </style>`
 
 
-  var page = `
-  <!doctype html>
-  <html>
-  <head>
-      <meta charset="utf-8">
-      <title>${app.name}</title>
+  var colorsHTML = ''
+  app.colors.map(color => {
+    colorsHTML+= `
+    <tr class="item">
+        <td class="color" >></td>
+        <td>${ app.size == '5' ? 'Bolsa de beads de 5 mm de color' : 'Bolsa de beads de 2.6mm de color'}</td>
+        <td>${ Math.ceil(color.amount/1000) }</td>
+    </tr>`
+  })
+
+
+ var page = `
       ${style}
-  </head>
-  
-  <body>
       <div class="invoice-box">
           <table cellpadding="0" cellspacing="0">
 
@@ -465,22 +466,65 @@ function printTable() {
 
               ${sheet}
 
-            <div class="footer">
-              Plantilla realizada con Blaster Maker | <b>blasterchile.cl</b>
-            </div>
 
-      </div>
-  </body>
-  </html>`;
+              <div id="color-table" class="table-container">
+              <table class="uk-table uk-table-divider uk-table-small  uk-light uk-background-secondary">
+                  <thead>
+                    <thead>
+                    <tr class="heading">
+                        <th><i class="fa-solid fa-bag-shopping"></i></th>
+                        <th>Productos recomendados</th>
+                        <th></th>
+                        <th style="width: 20px;">#</th>
+                    </tr>
+                    ${colorsHTML}
+
+                </thead>
+                <tbody>
+
+                
+            </div>
+`;
+
+  return page
+}
+
+/**
+ * Downloads the page as image
+ *
+ */
+
+function printTable() {
+   var page = `
+  <!doctype html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <title>${app.name}</title>
+      </head>
+      
+      <body>  ${generateTable()}
+      <div class="footer">
+      Plantilla realizada con Blaster Maker | <b>blasterchile.cl</b>
+    </div>
+      </body>
+  </html>`
 
   printPDF(page)
 }
 
 
 function printReal(images) {
+  var colors = generateTable()
 
-  var style = `
-    <style>
+  var page = `
+  <!doctype html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <title>${app.name}</title>
+      </head>
+      <style>
       .footer {
         position: fixed;
         bottom: 0;
@@ -521,25 +565,14 @@ function printReal(images) {
         border: black solid 1px;
         text-align: center;
     </style>
-  `
+      <body>  ${generateTable()}
+      ${images}
+      <div class="footer">
+      Plantilla realizada con Blaster Maker | <b>blasterchile.cl</b>
+    </div>
 
-  var page = `
-  <!doctype html>
-  <html>
-  <head>
-      <meta charset="utf-8">
-      <title>${app.name}</title>
-       ${style}
-  </head>
-  
-  <body>
-     ${images}
-     <div class="footer">
-        Plantilla realizada con Blaster Maker | <b>blasterchile.cl</b>
-      </div>
-
-  </body>
-  </html>`;
+      </body>
+  </html>`
 
   printPDF(page)
 }
