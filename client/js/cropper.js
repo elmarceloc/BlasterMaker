@@ -48,7 +48,8 @@ var imageData;
 
 var image;
 
-function changePalette(img, wd, hd){
+ 
+function  (img, wd, hd){
   oldCtx.canvas.width = wd;
   oldCtx.canvas.height = hd;
 
@@ -96,7 +97,7 @@ function changePalette(img, wd, hd){
   oldCtx.putImageData(imageData, 0, 0);
 
 }
-
+// updates 
 function updatePreview(img, width, angle = 0) {
     var height = (oldCtx.canvas.height * width) / oldCtx.canvas.width;
 

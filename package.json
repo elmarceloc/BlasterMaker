@@ -1,6 +1,6 @@
 {
   "name": "BlasterMaker",
-  "version": "1.0.12",
+  "version": "1.0.1",
   "description": "Software para la creacion de patrones con hama beads",
   "main": "main.js",
   "scripts": {

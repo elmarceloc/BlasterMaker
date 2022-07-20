@@ -53,7 +53,7 @@ var app = new Vue({
       formData.append("category", '');
       
       // Post via axios or other transport method
-      axios.post(" https://lbt.ger.mybluehost.me/blaster/save.php", formData, {
+      axios.post("https://lbt.ger.mybluehost.me/blaster/save.php", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -192,20 +192,9 @@ function updateRealSize(){
   }else{
     realSize = 2.6
   }
-  realWidth = realWidth * realSize
-  realHeight = realHeight * realSize
+  app.realSize = realWidth + ' cm X ' + realHeight +' cm'
+  // refactor using literal strings
 
-  let min = Math.min(realWidth, realHeight)
-
-  console.log(realWidth, realHeight, min)
-
-  if(min < 10) {
-    app.realSize = realWidth + ' mm X ' + realHeight +' mm'
-  }else if(min >= 10  && min < 1000) {
-    app.realSize = realWidth/10 + ' cm X ' + realHeight/10 +' cm'
-  }else if(min >= 1000) {
-    app.realSize = realWidth/1000 + ' m X ' + realHeight/1000 +' m'
-  }
 }
 
 function updateMoney(){
