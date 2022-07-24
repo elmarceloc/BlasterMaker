@@ -4,8 +4,6 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 
-const { html } = require("cheerio");
-
 // process.
 const isElectron = navigator.userAgent.toLowerCase().indexOf(" electron/") > -1;
 
@@ -435,7 +433,7 @@ function generateTable() {
   app.colors.map(color => {
     colorsHTML+= `
     <tr class="item">
-        <td class="color" >></td>
+        <td class="color"></td>
         <td>${ app.size == '5' ? 'Bolsa de beads de 5 mm de color' : 'Bolsa de beads de 2.6mm de color'}</td>
         <td>${ Math.ceil(color.amount/1000) }</td>
     </tr>`
@@ -447,7 +445,7 @@ function generateTable() {
       <div class="invoice-box">
           <table cellpadding="0" cellspacing="0">
 
-              
+                
               <tr class="information">
                   <td colspan="2">
                       <table>
